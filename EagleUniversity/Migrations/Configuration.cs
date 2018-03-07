@@ -21,6 +21,18 @@ namespace EagleUniversity.Migrations
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data.
+            context.Courses.AddOrUpdate(
+              c => c.CourseName,
+            new Course { CourseName = "C#", StartDate=DateTime.Now, EndDate=DateTime.Now },
+            new Course { CourseName = ".Net", StartDate = DateTime.Now, EndDate = DateTime.Now }
+            );
+            context.ActivityTypes.AddOrUpdate(
+            c => c.ActivityTypeName,
+            new ActivityType { ActivityTypeName="E-Learning" },
+            new ActivityType { ActivityTypeName = "Forelasningar" }
+            );
+
+
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
             var emails = new[] { "admin@eagle.com" };

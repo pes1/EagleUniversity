@@ -12,9 +12,9 @@ namespace EagleUniversity.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public int ActivityId { get; set; }
+        public int CourseId { get; set; }
         //Nav Prop
-        public virtual Activity Activity { get; set; }
-        public virtual ICollection<Course> Courses { get; set; }
+        public virtual Course Course { get; set; }
+        public virtual ICollection<Activity> Activities { get; set; }
     }
 }
