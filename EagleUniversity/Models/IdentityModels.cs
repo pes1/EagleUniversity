@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -9,6 +10,9 @@ namespace EagleUniversity.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        //Nav prop
+        public virtual ICollection<Assignments> ApplicationUserAssigments { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -25,6 +29,7 @@ namespace EagleUniversity.Models
         public DbSet<Module> Modules { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Document> Documents { get; set; }
+        public DbSet<Assignments> Assignments { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -35,5 +40,7 @@ namespace EagleUniversity.Models
         {
             return new ApplicationDbContext();
         }
+
+        
     }
 }

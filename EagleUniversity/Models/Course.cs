@@ -11,8 +11,10 @@ namespace EagleUniversity.Models
             public string CourseName { get; set; }
             public DateTime StartDate { get; set; }
             public DateTime EndDate { get; set; }
+            public string OwnerId { get; set; }
             //Nav Prop
             public virtual ICollection<Module> Modules { get; set; }
+            public virtual ICollection<Assignments> CourseAssignments { get; set; }
 
     }
 }
