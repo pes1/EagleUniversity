@@ -7,13 +7,13 @@ namespace EagleUniversity.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class First : IMigrationMetadata
+    public sealed partial class Change1 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(First));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Change1));
         
         string IMigrationMetadata.Id
         {
-            get { return "201803071206460_First"; }
+            get { return "201803071403568_Change1"; }
         }
         
         string IMigrationMetadata.Source
