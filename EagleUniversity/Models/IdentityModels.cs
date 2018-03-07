@@ -20,6 +20,12 @@ namespace EagleUniversity.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<ActivityType> ActivityTypes { get; set; }
+        public DbSet<Activity> Activities { get; set; }
+        public DbSet<Module> Modules { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Document> Documents { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
