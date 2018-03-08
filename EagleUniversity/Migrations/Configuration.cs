@@ -38,6 +38,24 @@ namespace EagleUniversity.Migrations
                     new DocumentType {  DocumentTypeName = "Task" }
                     );
 
+            var rolestore = new RoleStore<IdentityRole>(context);
+            var roleManager = new RoleManager<IdentityRole>(rolestore);
+
+            var roleNames = new[] { "Admin", "Student", "Teacher" };
+            
+            foreach (var roleName in roleNames)
+            {
+                if (!context.Roles.Any(r => r.Name == roleName))
+                {
+                    var role = new IdentityRole { Name = roleName };
+                    var result = roleManager.Create(role);
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(string.Join("\n", result.Errors));
+                    }
+                }
+            }
+
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
             var emails = new[] { "admin@eagle.com" };
@@ -45,7 +63,7 @@ namespace EagleUniversity.Migrations
             {
                 if (!context.Users.Any(r => r.UserName == email))
                 {
-                    var user = new ApplicationUser { UserName = email, Email = email };
+                    var user = new ApplicationUser { UserName = email, Email = email, LastName = email, RegistrationTime=DateTime.Now};
                     var result = userManager.Create(user, "Admin12345");
                     if (!result.Succeeded)
                     {
@@ -54,6 +72,22 @@ namespace EagleUniversity.Migrations
                 }
 
             }
+            //Add to roles
+            var adminUser = userManager.FindByName("admin@eagle.com");
+            var adminRole = roleManager.FindByName("Admin");
+
+
+            userManager.AddToRole(adminUser.Id, adminRole.Name);
+            userManager.AddToRole(adminUser.Id, "Teacher");
+            //if (!adminUser.Roles.Any(r => r.RoleId == adminRole.Id))
+            //{
+
+            //    userManager.AddToRole(adminUser.Id, adminRole.Name);
+            //}
+
+
+
+
         }
     }
 }
