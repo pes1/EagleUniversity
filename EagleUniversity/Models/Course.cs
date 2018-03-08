@@ -14,7 +14,7 @@ namespace EagleUniversity.Models
             public string OwnerId { get; set; }
             //Nav Prop
             public virtual ICollection<Module> Modules { get; set; }
-            public virtual ICollection<Assignments> CourseAssignments { get; set; }
-
+            public virtual ICollection<Assignments> UserCourseAssignments { get; set; }
+            public virtual ICollection<CourseDocument> DocumentCourseAssignments { get; set; }
     }
 }

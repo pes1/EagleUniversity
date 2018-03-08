@@ -1,0 +1,50 @@
+﻿@model EagleUniversity.Models.ActivityDocument
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ActivityDocument</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AssignedActivity.ActivityName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AssignedActivity.ActivityName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AssignedDocument.DocumentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AssignedDocument.DocumentName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AssignDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AssignDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

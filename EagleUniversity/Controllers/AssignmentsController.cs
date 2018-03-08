@@ -10,6 +10,7 @@ using EagleUniversity.Models;
 
 namespace EagleUniversity.Controllers
 {
+    [Authorize]
     public class AssignmentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

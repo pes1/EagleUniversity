@@ -32,6 +32,11 @@ namespace EagleUniversity.Migrations
             new ActivityType { ActivityTypeName = "Forelasningar" }
             );
 
+            context.DocumentTypes.AddOrUpdate(
+                c => c.DocumentTypeName,
+                    new DocumentType {  DocumentTypeName="Description" },
+                    new DocumentType {  DocumentTypeName = "Task" }
+                    );
 
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);

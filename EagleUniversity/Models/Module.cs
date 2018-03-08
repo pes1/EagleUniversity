@@ -16,5 +16,6 @@ namespace EagleUniversity.Models
         //Nav Prop
         public virtual Course Course { get; set; }
         public virtual ICollection<Activity> Activities { get; set; }
+        public virtual ICollection<ModuleDocument> DocumentModuleAssignments { get; set; }
     }
 }

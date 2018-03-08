@@ -11,7 +11,7 @@ namespace EagleUniversity.Models
     public class ApplicationUser : IdentityUser
     {
         //Nav prop
-        public virtual ICollection<Assignments> ApplicationUserAssigments { get; set; }
+        public virtual ICollection<Assignments> CourseUserAssigments { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -30,6 +30,10 @@ namespace EagleUniversity.Models
         public DbSet<Course> Courses { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Assignments> Assignments { get; set; }
+        public DbSet<DocumentType> DocumentTypes { get; set; }
+        public DbSet<CourseDocument> CourseDocuments { get; set; }
+        public DbSet<ModuleDocument> ModuleDocuments { get; set; }
+        public DbSet<ActivityDocument> ActivityDocuments { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

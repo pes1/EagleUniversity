@@ -191,28 +191,36 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActivitiesController.cs" />
+    <Compile Include="Controllers\ActivityDocumentsController.cs" />
     <Compile Include="Controllers\AssignmentsController.cs" />
+    <Compile Include="Controllers\CourseDocumentsController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
+    <Compile Include="Controllers\DocumentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ModuleDocumentsController.cs" />
     <Compile Include="Controllers\ModulesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803071550495_First.cs" />
-    <Compile Include="Migrations\201803071550495_First.Designer.cs">
-      <DependentUpon>201803071550495_First.cs</DependentUpon>
+    <Compile Include="Migrations\201803080809478_test.cs" />
+    <Compile Include="Migrations\201803080809478_test.Designer.cs">
+      <DependentUpon>201803080809478_test.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Activity.cs" />
+    <Compile Include="Models\ActivityDocument.cs" />
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\Assignments.cs" />
     <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\CourseDocument.cs" />
     <Compile Include="Models\Document.cs" />
+    <Compile Include="Models\DocumentType.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Module.cs" />
+    <Compile Include="Models\ModuleDocument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -295,6 +303,26 @@
     <Content Include="Views\Assignments\Details.cshtml" />
     <Content Include="Views\Assignments\Edit.cshtml" />
     <Content Include="Views\Assignments\Index.cshtml" />
+    <Content Include="Views\Documents\Create.cshtml" />
+    <Content Include="Views\Documents\Delete.cshtml" />
+    <Content Include="Views\Documents\Details.cshtml" />
+    <Content Include="Views\Documents\Edit.cshtml" />
+    <Content Include="Views\Documents\Index.cshtml" />
+    <Content Include="Views\CourseDocuments\Create.cshtml" />
+    <Content Include="Views\CourseDocuments\Delete.cshtml" />
+    <Content Include="Views\CourseDocuments\Details.cshtml" />
+    <Content Include="Views\CourseDocuments\Edit.cshtml" />
+    <Content Include="Views\CourseDocuments\Index.cshtml" />
+    <Content Include="Views\ModuleDocuments\Create.cshtml" />
+    <Content Include="Views\ModuleDocuments\Delete.cshtml" />
+    <Content Include="Views\ModuleDocuments\Details.cshtml" />
+    <Content Include="Views\ModuleDocuments\Edit.cshtml" />
+    <Content Include="Views\ModuleDocuments\Index.cshtml" />
+    <Content Include="Views\ActivityDocuments\Create.cshtml" />
+    <Content Include="Views\ActivityDocuments\Delete.cshtml" />
+    <Content Include="Views\ActivityDocuments\Details.cshtml" />
+    <Content Include="Views\ActivityDocuments\Edit.cshtml" />
+    <Content Include="Views\ActivityDocuments\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -313,8 +341,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803071550495_First.resx">
-      <DependentUpon>201803071550495_First.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803080809478_test.resx">
+      <DependentUpon>201803080809478_test.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
