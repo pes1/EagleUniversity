@@ -13,7 +13,7 @@ namespace EagleUniversity.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201803071206460_First"; }
+            get { return "201803080918029_First"; }
         }
         
         string IMigrationMetadata.Source

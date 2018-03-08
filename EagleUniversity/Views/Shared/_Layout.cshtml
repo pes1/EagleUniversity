@@ -3,10 +3,26 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Eagle University</title>
+    <script src="~/Scripts/bootstrap.min.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    <style>
+        .navbar{
+            margin-bottom: 0;
+            border-radius: 0;
+            background-color: #605959;
+            color: #FFF;
+            font-size: 1.2em;
+            border: 0;
+        }
+        .dropdown-menu {            
+            background-color: #605959;
+            color: #FFF;            
+        }
+        
+    </style>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -17,18 +33,36 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Eagle University", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Courses", "Index", "Courses")</li>
-                    <li>@Html.ActionLink("Modules", "Index", "Modules")</li>
-                    <li>@Html.ActionLink("Activity", "Index", "Activities")</li>
-                    <li>@Html.ActionLink("Assignment", "Index", "Assignments")</li>
-                    <li>@Html.ActionLink("Docs", "Index", "Documents")</li>
-                    <li>@Html.ActionLink("DocsToCourse", "Index", "CourseDocuments")</li>
-                    <li>@Html.ActionLink("DocsToModule", "Index", "ModuleDocuments")</li>
-                    <li>@Html.ActionLink("DocsToActivity", "Index", "ActivityDocuments")</li>
+                    <li class="dropdown">
+                        <a href=# class="dropdown-toggle" data-toggle="dropdown">Users</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Teachers</a></li>
+                            <li><a href="#">Students</a></li>
+                           
+                        </ul>
+                    <li class="dropdown">
+                        <a href=# class="dropdown-toggle" data-toggle="dropdown">Courses</a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Courses", "Index", "Courses")</li>
+                            <li>@Html.ActionLink("Modules", "Index", "Modules")</li>
+                            <li>@Html.ActionLink("Activity", "Index", "Activities")</li>
+                        </ul>
+                    <li class="dropdown">
+                        <a href=# class="dropdown-toggle" data-toggle="dropdown">Assigments</a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Assign Users to the Courses", "Index", "Assignments")</li>
+                            <li>@Html.ActionLink("Assign Documents to the Course", "Index", "CourseDocuments")</li>
+                            <li>@Html.ActionLink("Assign Documents To Module", "Index", "ModuleDocuments")</li>
+                            <li>@Html.ActionLink("Assign Documents To Activity", "Index", "ActivityDocuments")</li>
+                            <li></li>
+                        </ul>
+                    <li>@Html.ActionLink("Documents", "Index", "Documents")</li>
+
+
                     @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
         <li>@Html.ActionLink("About", "About", "Home")</li>
         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
@@ -41,7 +75,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Eagle University</p>
         </footer>
     </div>
 
