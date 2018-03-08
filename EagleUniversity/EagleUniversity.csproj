@@ -212,6 +212,7 @@
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityDocument.cs" />
     <Compile Include="Models\ActivityType.cs" />
+    <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Assignments.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\CourseDocument.cs" />
