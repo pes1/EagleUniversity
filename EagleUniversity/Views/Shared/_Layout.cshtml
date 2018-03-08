@@ -9,17 +9,23 @@
     @Scripts.Render("~/bundles/modernizr")
 
     <style>
-        .navbar{
+        .navbar {
             margin-bottom: 0;
             border-radius: 0;
-            background-color: #605959;
-            color: #FFF;
-            font-size: 1.2em;
+            background-color: #1E70B9;
+            color: ghostwhite;
+            font-size: 1.2em;            
             border: 0;
         }
-        .dropdown-menu {            
-            background-color: #605959;
-            color: #FFF;            
+        .dropdown-menu {
+            background-color: #1E70B9;
+            color: ghostwhite;
+        }       
+        .navbar-brand{
+            float:left;
+            min-height:40px;
+            padding:0 15px 5px;
+            width:auto;
         }
         
     </style>
@@ -33,7 +39,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Eagle University", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <a class="navbar-brand" href="~/Home/Index">                    
+                    <img alt="Brand" src="~/Photos/Eagle1.PNG" />
+                    @*@Html.ActionLink("Eagle University", "Index", "Home", new { area = "" }, new { @class = "navbar-brand " })*@
+                </a>                
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
