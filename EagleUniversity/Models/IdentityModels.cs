@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -12,6 +14,13 @@ namespace EagleUniversity.Models
     {
         //Nav prop
         public virtual ICollection<Assignments> CourseUserAssigments { get; set; }
+
+       
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
+        public string Fullname { get { return LastName + " " + FirstName;  }}
+        public DateTime RegistrationTime { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
