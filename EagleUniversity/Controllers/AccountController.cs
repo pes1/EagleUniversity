@@ -33,6 +33,9 @@ namespace EagleUniversity.Controllers
         //Users Views
         public ActionResult Index(string userRoleId = "")
         {
+            //Requested list
+            var role = (from r in _db.Roles where r.Name.Contains(userRoleId) select r).FirstOrDefault();
+
             //CurrentUserRoles
             var currentUserRole = "";
 
@@ -49,31 +52,11 @@ namespace EagleUniversity.Controllers
                 currentUserRole = "Student";
             }
             //Resticted select
-            var viewModel = _db.Users.Select(r => new UserViewModel
-            {
-                Id = r.Id,
-                FirstName = r.FirstName,
-                Email = r.Email,
-                RegistrationTime = r.RegistrationTime,
-                AuthUserRole = currentUserRole,
-                Role = userRoleId,
-                LastName = r.LastName
-            });
-
-            if (userRoleId=="Teacher")
-            {
-                var role = (from r in _db.Roles where r.Name.Contains("Teacher") select r).FirstOrDefault();
-
-                if (currentUserRole=="Student")
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-
-                viewModel = _db.Users
-                    .Where(
-                    x => x.Roles.Select(r => r.RoleId)
-                    .Contains(role.Id)
-                    ).Select(r => new UserViewModel
+            var viewModel = _db.Users
+                .Where(
+                x => x.Roles.Select(r => r.RoleId)
+                .Contains(role.Id)
+                ).Select(r => new UserViewModel
                 {
                     Id = r.Id,
                     FirstName = r.FirstName,
@@ -84,29 +67,10 @@ namespace EagleUniversity.Controllers
                     LastName = r.LastName
                 });
 
-            }
-            else if (userRoleId == "Student")
-            {
-
-                var role = (from r in _db.Roles where r.Name.Contains("Student") select r).FirstOrDefault();
-
-                viewModel = _db.Users
-                    .Where(
-                    x => x.Roles.Select(r => r.RoleId)
-                    .Contains(role.Id)
-                    )
-                    .Select(r => new UserViewModel
-                {
-                    Id = r.Id,
-                    FirstName = r.FirstName,
-                    Email = r.Email,
-                    RegistrationTime = r.RegistrationTime,
-                    AuthUserRole = currentUserRole,
-                    Role = userRoleId,
-                    LastName = r.LastName
-                });
-            }
-
+            if (userRoleId!="Student" && currentUserRole == "Student" || role==null)
+             {
+                return RedirectToAction("Index", "Home");
+             }
             return View(viewModel);
         }
 
