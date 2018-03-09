@@ -27,6 +27,6 @@ namespace EagleUniversity.Models
             return new ApplicationDbContext();
         }
 
-        
+      
     }
 }
