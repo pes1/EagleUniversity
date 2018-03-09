@@ -18,6 +18,9 @@ namespace EagleUniversity.Controllers
         // GET: Activities
         public ActionResult Index()
         {
+            var xxx = db.Activities.Select(r => r.ActivityTypes.ActivityTypeName);
+
+
             var activities = db.Activities.Include(a => a.ActivityTypes).Include(a => a.Modules);
             return View(activities.ToList());
         }

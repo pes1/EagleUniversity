@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Security;
 
 namespace EagleUniversity.Models
 {
@@ -79,6 +82,16 @@ namespace EagleUniversity.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
+        public string Fullname { get { return LastName + " " + FirstName; } }
+        public DateTime RegistrationTime { get; set; }
+
+        public string Role { get; set; }
+        public IEnumerable<IdentityRole>  Roles { get; set; }
+
     }
 
     public class ResetPasswordViewModel
