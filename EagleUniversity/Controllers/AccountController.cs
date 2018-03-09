@@ -9,12 +9,14 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EagleUniversity.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace EagleUniversity.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext _db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -139,7 +141,11 @@ namespace EagleUniversity.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            var viewModel = new RegisterViewModel()
+            {
+                Roles = _db.Roles.ToList()
+            };
+            return View(viewModel);
         }
 
         //
@@ -149,19 +155,31 @@ namespace EagleUniversity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            var userStore = new UserStore<ApplicationUser>(_db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+            var rolestore = new RoleStore<IdentityRole>(_db);
+            var roleManager = new RoleManager<IdentityRole>(rolestore);
+
             if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            {              
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email
+                    , LastName=model.LastName, FirstName=model.FirstName, RegistrationTime=DateTime.Now };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    //Roles
+
+                    var role = roleManager.FindById(model.Role);
+                    var idResult = userManager.AddToRole(user.Id, role.Name);
+
 
                     return RedirectToAction("Index", "Home");
                 }
