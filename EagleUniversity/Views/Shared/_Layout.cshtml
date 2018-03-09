@@ -51,7 +51,7 @@
                         <ul class="dropdown-menu">
                             @if (User.IsInRole("Teacher"))
                              {
-                        <li>@Html.ActionLink("Teachers", "Index", "Account", new { userRoleId = "Teacher" }, null))</li>
+                        <li>@Html.ActionLink("Teachers", "Index", "Account", new { userRoleId = "Teacher" }, null)</li>
                              }
 
                             <li>@Html.ActionLink("Students", "Index", "Account", new { userRoleId = "Student" }, null)</li>
