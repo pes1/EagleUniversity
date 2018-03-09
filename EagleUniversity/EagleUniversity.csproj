@@ -232,7 +232,6 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Photos\Eagle1.PNG" />
-    <Content Include="Photos\Eagle.PNG" />
     <Content Include="Photos\EagleUn1.jpg" />
     <Content Include="Photos\EagleUn2.jpg" />
     <Content Include="Scripts\bootstrap.js" />
