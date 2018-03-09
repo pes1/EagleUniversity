@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EagleUniversity.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
+using EagleUniversity.Models.ViewModels;
 
 namespace EagleUniversity.Controllers
 {
@@ -29,6 +30,87 @@ namespace EagleUniversity.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
         }
+        //Users Views
+        public ActionResult Index(string userRoleId = "")
+        {
+            //CurrentUserRoles
+            var currentUserRole = "";
+
+            if (User.IsInRole("Admin"))
+            {
+                currentUserRole = "Admin";
+            }
+            else if (User.IsInRole("Teacher"))
+            {
+                currentUserRole = "Teacher";
+            }
+            else if(User.IsInRole("Student")) 
+            {
+                currentUserRole = "Student";
+            }
+            //Resticted select
+            var viewModel = _db.Users.Select(r => new UserViewModel
+            {
+                Id = r.Id,
+                FirstName = r.FirstName,
+                Email = r.Email,
+                RegistrationTime = r.RegistrationTime,
+                AuthUserRole = currentUserRole,
+                Role = userRoleId,
+                LastName = r.LastName
+            });
+
+            if (userRoleId=="Teacher")
+            {
+                var role = (from r in _db.Roles where r.Name.Contains("Teacher") select r).FirstOrDefault();
+
+                if (currentUserRole=="Student")
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                viewModel = _db.Users
+                    .Where(
+                    x => x.Roles.Select(r => r.RoleId)
+                    .Contains(role.Id)
+                    ).Select(r => new UserViewModel
+                {
+                    Id = r.Id,
+                    FirstName = r.FirstName,
+                    Email = r.Email,
+                    RegistrationTime = r.RegistrationTime,
+                    AuthUserRole = currentUserRole,
+                    Role = userRoleId,
+                    LastName = r.LastName
+                });
+
+            }
+            else if (userRoleId == "Student")
+            {
+
+                var role = (from r in _db.Roles where r.Name.Contains("Student") select r).FirstOrDefault();
+
+                viewModel = _db.Users
+                    .Where(
+                    x => x.Roles.Select(r => r.RoleId)
+                    .Contains(role.Id)
+                    )
+                    .Select(r => new UserViewModel
+                {
+                    Id = r.Id,
+                    FirstName = r.FirstName,
+                    Email = r.Email,
+                    RegistrationTime = r.RegistrationTime,
+                    AuthUserRole = currentUserRole,
+                    Role = userRoleId,
+                    LastName = r.LastName
+                });
+            }
+
+            return View(viewModel);
+        }
+
+
 
         public ApplicationSignInManager SignInManager
         {
@@ -138,7 +220,7 @@ namespace EagleUniversity.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
             var viewModel = new RegisterViewModel()
@@ -151,7 +233,7 @@ namespace EagleUniversity.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {

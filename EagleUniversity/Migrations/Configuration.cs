@@ -58,13 +58,13 @@ namespace EagleUniversity.Migrations
 
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
-            var emails = new[] { "admin@eagle.com" };
+            var emails = new[] { "admin@eagle.com", "teacher@eagle.com", "student@eagle.com" };
             foreach (var email in emails)
             {
                 if (!context.Users.Any(r => r.UserName == email))
                 {
                     var user = new ApplicationUser { UserName = email, Email = email, LastName = email, RegistrationTime=DateTime.Now};
-                    var result = userManager.Create(user, "Admin12345");
+                    var result = userManager.Create(user, "Password12345");
                     if (!result.Succeeded)
                     {
                         throw new Exception(string.Join("\n", result.Errors));
@@ -72,21 +72,24 @@ namespace EagleUniversity.Migrations
                 }
 
             }
-            //Add to roles
-            var adminUser = userManager.FindByName("admin@eagle.com");
-            var adminRole = roleManager.FindByName("Admin");
-
-
-            userManager.AddToRole(adminUser.Id, adminRole.Name);
-            userManager.AddToRole(adminUser.Id, "Teacher");
-            //if (!adminUser.Roles.Any(r => r.RoleId == adminRole.Id))
-            //{
-
-            //    userManager.AddToRole(adminUser.Id, adminRole.Name);
-            //}
-
-
-
+            //Add to role
+            foreach (var item in context.Users.ToList())
+            {
+                if (item.UserName == "admin@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Admin");
+                    userManager.AddToRole(item.Id, "Teacher");
+                    userManager.AddToRole(item.Id, "Student");
+                }
+                else if (item.UserName == "teacher@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Teacher");
+                }
+                else if (item.UserName == "student@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+            }
 
         }
     }
