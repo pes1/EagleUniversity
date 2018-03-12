@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using EagleUniversity.Models.ViewModels;
 using System.Net;
 using System.Data.Entity;
+using System.Web.Security;
 
 namespace EagleUniversity.Controllers
 {
@@ -53,8 +54,8 @@ namespace EagleUniversity.Controllers
                         Id = r.Id,
                         FirstName = r.FirstName,
                         Email = r.Email,
-                        RegistrationTime = r.RegistrationTime,
-                        Role = userRoleId,
+                        RegistrationTime =  r.RegistrationTime,
+                        //Role = userRoleId,
                         LastName = r.LastName
                     });
 
@@ -67,7 +68,7 @@ namespace EagleUniversity.Controllers
         //Get /Account/CreateUser
         [Authorize(Roles = "Teacher, Admin")]
         public ActionResult CreateUser(string userRoleId = "Teacher")
-        {
+        {            
             var role = (from r in _db.Roles where r.Name.Contains(userRoleId) select r).FirstOrDefault();
 
             if (role==null)
@@ -109,7 +110,7 @@ namespace EagleUniversity.Controllers
                     var idResult = userManager.AddToRole(user.Id, model.Role);
                     //?
                     _db.SaveChanges();
-                    return RedirectToAction("Index", "Account");
+                    return RedirectToAction("Index", "Account", new { userRoleId = model.Role });
                 }
                 AddErrors(result);
             }
@@ -154,10 +155,11 @@ namespace EagleUniversity.Controllers
             var userStore = new UserStore<ApplicationUser>(_db);
             var userManager = new UserManager<ApplicationUser>(userStore);
             var deletedUser = userManager.FindById(id);
+            var roleUser  = UserViewModel.userToRole(id)?.Name ?? "Not Assigned";
             userManager.Delete(deletedUser);
             _db.SaveChanges();
             
-            return RedirectToAction("Index", "Account");
+            return RedirectToAction("Index", "Account", new { userRoleId = roleUser});
         }
         // Get: /Account/DetailUser
         public ActionResult DetailUser(string id)
@@ -219,7 +221,7 @@ namespace EagleUniversity.Controllers
         {
             var userStore = new UserStore<ApplicationUser>(_db);
             var userManager = new UserManager<ApplicationUser>(userStore);
-            //var userBeforeEdit = userManager.FindById(model.Id);
+            var roleUser = UserViewModel.userToRole(model.Id)?.Name ?? "Not Assigned";
             if (ModelState.IsValid)
             {
                 var changedUser = userManager.FindById(model.Id);
@@ -229,7 +231,7 @@ namespace EagleUniversity.Controllers
                 _db.Entry(changedUser).State = EntityState.Modified;
                 _db.SaveChanges();
             }
-            return RedirectToAction("Index", "Account");
+            return RedirectToAction("Index", "Account", new { userRoleId = model.Role });
         }
 
         //-------------------------------

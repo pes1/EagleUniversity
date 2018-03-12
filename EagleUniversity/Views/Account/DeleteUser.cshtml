@@ -4,11 +4,10 @@
     ViewBag.Title = "DeleteUser";
 }
 
-<h2>DeleteUser</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>CreateUserViewModel</h4>
+    <h4>Delete</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -52,8 +51,10 @@
         </dd>
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Role)
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |

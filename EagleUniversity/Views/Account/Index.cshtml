@@ -8,8 +8,7 @@
 
 <p>
     @if (User.IsInRole("Teacher"))
-    {
-               
+    {               
         @Html.ActionLink("Create New ","CreateUser","Account",new { userRoleId = ViewBag.RolesList }, null)
     }
 </p>
@@ -27,9 +26,6 @@
         <th>
             @Html.DisplayNameFor(model => model.Role)
         </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.AuthUserRole)
-        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.CourseName)
         </th>
@@ -58,7 +54,7 @@
         {
             @Html.ActionLink("Edit ", "EditUser", new {  id=item.Id })
             @Html.ActionLink("Delete ", "DeleteUser", new {  id=item.Id  })
-    }
+        }
             @Html.ActionLink("Details ", "DetailUser", new { id=item.Id })
 
         </td>
