@@ -41,23 +41,44 @@ namespace EagleUniversity.Controllers
             ViewBag.RolesList = userRoleId;
             var userId = User.Identity.GetUserId();
             var role = (from r in _db.Roles where r.Name.Contains(userRoleId) select r).FirstOrDefault();
+            var course = _db.Assignments.Where(r=>r.ApplicationUserId.Contains(userId)).Select(r=> r.Course).FirstOrDefault();
             //For the students should be implemented restriction to assigned course 
             //Resticted select
-
-
             var viewModel = _db.Users
-                    .Where(
-                    x => x.Roles.Select(r => r.RoleId)
-                    .Contains(role.Id)
-                    ).Select(r => new UserViewModel
-                    {
-                        Id = r.Id,
-                        FirstName = r.FirstName,
-                        Email = r.Email,
-                        RegistrationTime =  r.RegistrationTime,
+            .Where(
+            x => x.Roles.Select(r => r.RoleId)
+            .Contains(role.Id)
+            ).Select(r => new UserViewModel
+            {
+            Id = r.Id,
+            FirstName = r.FirstName,
+            Email = r.Email,
+            RegistrationTime = r.RegistrationTime,
+            LastName = r.LastName
+            });
+
+            if (User.IsInRole("Student"))
+            {
+                viewModel = _db.Users
+                        .Where(
+                        x => x.Roles.Select(r => r.RoleId)
+                        .Contains(role.Id)
+                        )
+                        .Where(
+                            x => x.CourseUserAssigments.Select
+                            (k => k.CourseId)
+                            .Contains(course.Id)
+                            )
+                        .Select(r => new UserViewModel
+                        {
+                            Id = r.Id,
+                            FirstName = r.FirstName,
+                            Email = r.Email,
+                            RegistrationTime = r.RegistrationTime,
                         //Role = userRoleId,
                         LastName = r.LastName
-                    });
+                        });
+            }
 
             if (userRoleId!="Student" && User.IsInRole("Student") || role==null)
              {

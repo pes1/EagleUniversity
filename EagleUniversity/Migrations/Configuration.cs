@@ -78,8 +78,6 @@ namespace EagleUniversity.Migrations
                 if (item.UserName == "admin@eagle.com")
                 {
                     userManager.AddToRole(item.Id, "Admin");
-                    userManager.AddToRole(item.Id, "Teacher");
-                    userManager.AddToRole(item.Id, "Student");
                 }
                 else if (item.UserName == "teacher@eagle.com")
                 {
