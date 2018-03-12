@@ -30,44 +30,32 @@ namespace EagleUniversity.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
         }
-        //Users Views
+
+
         public ActionResult Index(string userRoleId = "")
         {
             //Requested list
+            var userId = User.Identity.GetUserId();
             var role = (from r in _db.Roles where r.Name.Contains(userRoleId) select r).FirstOrDefault();
-
-            //CurrentUserRoles
-            var currentUserRole = "";
-
-            if (User.IsInRole("Admin"))
-            {
-                currentUserRole = "Admin";
-            }
-            else if (User.IsInRole("Teacher"))
-            {
-                currentUserRole = "Teacher";
-            }
-            else if(User.IsInRole("Student")) 
-            {
-                currentUserRole = "Student";
-            }
+            //For the students should be implemented restriction to assigned course 
             //Resticted select
-            var viewModel = _db.Users
-                .Where(
-                x => x.Roles.Select(r => r.RoleId)
-                .Contains(role.Id)
-                ).Select(r => new UserViewModel
-                {
-                    Id = r.Id,
-                    FirstName = r.FirstName,
-                    Email = r.Email,
-                    RegistrationTime = r.RegistrationTime,
-                    AuthUserRole = currentUserRole,
-                    Role = userRoleId,
-                    LastName = r.LastName
-                });
 
-            if (userRoleId!="Student" && currentUserRole == "Student" || role==null)
+            var viewModel = _db.Users
+                    .Where(
+                    x => x.Roles.Select(r => r.RoleId)
+                    .Contains(role.Id)
+                    ).Select(r => new UserViewModel
+                    {
+                        Id = r.Id,
+                        FirstName = r.FirstName,
+                        Email = r.Email,
+                        RegistrationTime = r.RegistrationTime,
+                        //AuthUserRole = currentUserRole,
+                        Role = userRoleId,
+                        LastName = r.LastName
+                    });
+
+            if (userRoleId!="Student" && User.IsInRole("Student") || role==null)
              {
                 return RedirectToAction("Index", "Home");
              }

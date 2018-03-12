@@ -7,7 +7,10 @@
 <h2>Users</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @if (User.IsInRole("Teacher"))
+    {
+        @Html.ActionLink("Create New", "Create")
+    }
 </p>
 <table class="table">
     <tr>
@@ -23,8 +26,11 @@
         <th>
             @Html.DisplayNameFor(model => model.Role)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.AuthUserRole)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.CourseName)
         </th>
         <th></th>
     </tr>
@@ -43,15 +49,18 @@
         <td>
             @Html.DisplayFor(modelItem => item.Role)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.AuthUserRole)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.CourseName)
         </td>
         <td>
             @if (User.IsInRole("Teacher"))
-            {
-            @Html.ActionLink("Edit ", "Edit", new { /* id=item.PrimaryKey */ }) 
-            @Html.ActionLink("Delete ", "Delete", new { /* id=item.PrimaryKey */ }) 
-            }
+        {
+            @Html.ActionLink("Edit ", "Edit", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Delete ", "Delete", new { /* id=item.PrimaryKey */ })
+    }
             @Html.ActionLink("Details ", "Details", new { /* id=item.PrimaryKey */ })
 
         </td>
