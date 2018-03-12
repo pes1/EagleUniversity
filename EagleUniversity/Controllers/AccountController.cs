@@ -11,6 +11,8 @@ using Microsoft.Owin.Security;
 using EagleUniversity.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using EagleUniversity.Models.ViewModels;
+using System.Net;
+using System.Data.Entity;
 
 namespace EagleUniversity.Controllers
 {
@@ -62,7 +64,7 @@ namespace EagleUniversity.Controllers
              }
             return View(viewModel);
         }
-        //Create user
+        //Get /Account/CreateUser
         [Authorize(Roles = "Teacher, Admin")]
         public ActionResult CreateUser(string userRoleId = "Teacher")
         {
@@ -105,9 +107,9 @@ namespace EagleUniversity.Controllers
                     //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     //Roles
                     var idResult = userManager.AddToRole(user.Id, model.Role);
-
-
-                    return RedirectToAction("Index", "Home");
+                    //?
+                    _db.SaveChanges();
+                    return RedirectToAction("Index", "Account");
                 }
                 AddErrors(result);
             }
@@ -115,7 +117,121 @@ namespace EagleUniversity.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        //
+        // Get: /Account/DeleteUser
+        [Authorize(Roles = "Teacher, Admin")]
+        public ActionResult DeleteUser(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var viewModel = _db.Users
+            .Where(r => r.Id==id )
+            .Select(r => new UserViewModel
+            {
+            Id = r.Id,
+            FirstName = r.FirstName,
+            Email = r.Email,
+            RegistrationTime = r.RegistrationTime,
+            LastName = r.LastName
+        }).SingleOrDefault();
+
+
+            if (viewModel == null)
+            {
+                return HttpNotFound();
+            }
+            return View(viewModel);
+        }
+
+        //POST: Account/DeleteUser
+        [HttpPost, ActionName("DeleteUser")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher, Admin")]
+        public ActionResult DeleteUserConfirmed(string id)
+        {
+            var userStore = new UserStore<ApplicationUser>(_db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+            var deletedUser = userManager.FindById(id);
+            userManager.Delete(deletedUser);
+            _db.SaveChanges();
+            
+            return RedirectToAction("Index", "Account");
+        }
+        // Get: /Account/DetailUser
+        public ActionResult DetailUser(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var viewModel = _db.Users
+            .Where(r => r.Id == id)
+            .Select(r => new UserViewModel
+            {
+                Id = r.Id,
+                FirstName = r.FirstName,
+                Email = r.Email,
+                RegistrationTime = r.RegistrationTime,
+                LastName = r.LastName
+            }).SingleOrDefault();
+
+
+            if (viewModel == null)
+            {
+                return HttpNotFound();
+            }
+            return View(viewModel);
+        }
+        // Get: /Account/EditUser
+        [Authorize(Roles = "Teacher, Admin")]
+        public ActionResult EditUser(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var viewModel = _db.Users
+            .Where(r => r.Id == id)
+            .Select(r => new UserViewModel
+            {
+                Id = r.Id,
+                FirstName = r.FirstName,
+                Email = r.Email,
+                LastName = r.LastName
+            }).SingleOrDefault();
+
+
+            if (viewModel == null)
+            {
+                return HttpNotFound();
+            }
+            return View(viewModel);
+        }
+        //POST: Account/EditUser
+        [HttpPost, ActionName("EditUser")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher, Admin")]
+        public ActionResult EditUserConfirmed(UserViewModel model)
+        {
+            var userStore = new UserStore<ApplicationUser>(_db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+            //var userBeforeEdit = userManager.FindById(model.Id);
+            if (ModelState.IsValid)
+            {
+                var changedUser = userManager.FindById(model.Id);
+                changedUser.LastName = model.LastName;
+                changedUser.FirstName = model.FirstName;
+                changedUser.Email = model.Email;
+                _db.Entry(changedUser).State = EntityState.Modified;
+                _db.SaveChanges();
+            }
+            return RedirectToAction("Index", "Account");
+        }
+
         //-------------------------------
 
 
