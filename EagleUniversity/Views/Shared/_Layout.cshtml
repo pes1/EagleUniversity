@@ -45,40 +45,43 @@
                 </a>                
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a href=# class="dropdown-toggle" data-toggle="dropdown">Users</a>
-                        <ul class="dropdown-menu">
-                            @if (User.IsInRole("Teacher"))
-                             {
-                        <li>@Html.ActionLink("Teachers", "Index", "Account", new { userRoleId = "Teacher" }, null)</li>
-                             }
+                @if (User.Identity.IsAuthenticated)
+                {                
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href=# class="dropdown-toggle" data-toggle="dropdown">Users</a>
+                    <ul class="dropdown-menu">
+                        @if (User.IsInRole("Teacher"))
+            {
+                <li>@Html.ActionLink("Teachers", "Index", "Account", new { userRoleId = "Teacher" }, null)</li>
+}
 
-                            <li>@Html.ActionLink("Students", "Index", "Account", new { userRoleId = "Student" }, null)</li>
+                        <li>@Html.ActionLink("Students", "Index", "Account", new { userRoleId = "Student" }, null)</li>
 
-                        </ul>
-                    <li class="dropdown">
-                        <a href=# class="dropdown-toggle" data-toggle="dropdown">Courses</a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Courses", "Index", "Courses")</li>
-                            <li>@Html.ActionLink("Modules", "Index", "Modules")</li>
-                            <li>@Html.ActionLink("Activity", "Index", "Activities")</li>
-                        </ul>
-                    <li class="dropdown">
-                        <a href=# class="dropdown-toggle" data-toggle="dropdown">Assigments</a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Assign Users to the Courses", "Index", "Assignments")</li>
-                            <li>@Html.ActionLink("Assign Documents to the Course", "Index", "CourseDocuments")</li>
-                            <li>@Html.ActionLink("Assign Documents To Module", "Index", "ModuleDocuments")</li>
-                            <li>@Html.ActionLink("Assign Documents To Activity", "Index", "ActivityDocuments")</li>                           
-                        </ul>
-                    <li>@Html.ActionLink("Documents", "Index", "Documents")</li>                   
+                    </ul>
+                <li class="dropdown">
+                    <a href=# class="dropdown-toggle" data-toggle="dropdown">Courses</a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Courses", "Index", "Courses")</li>
+                        <li>@Html.ActionLink("Modules", "Index", "Modules")</li>
+                        <li>@Html.ActionLink("Activity", "Index", "Activities")</li>
+                    </ul>
+                <li class="dropdown">
+                    <a href=# class="dropdown-toggle" data-toggle="dropdown">Assigments</a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Assign Users to the Courses", "Index", "Assignments")</li>
+                        <li>@Html.ActionLink("Assign Documents to the Course", "Index", "CourseDocuments")</li>
+                        <li>@Html.ActionLink("Assign Documents To Module", "Index", "ModuleDocuments")</li>
+                        <li>@Html.ActionLink("Assign Documents To Activity", "Index", "ActivityDocuments")</li>
+                    </ul>
+                <li>@Html.ActionLink("Documents", "Index", "Documents")</li>
 
 
-                        @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-                </ul>
+                @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+            </ul>
+                }
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
