@@ -4,12 +4,13 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Users</h2>
+<h2>@ViewBag.RolesList </h2>
 
 <p>
     @if (User.IsInRole("Teacher"))
     {
-        @Html.ActionLink("Create New", "Create")
+               
+        @Html.ActionLink("Create New ","CreateUser","Account",new { userRoleId = ViewBag.RolesList }, null)
     }
 </p>
 <table class="table">
@@ -49,9 +50,6 @@
         <td>
             @Html.DisplayFor(modelItem => item.Role)
         </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.AuthUserRole)
-        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.CourseName)
         </td>

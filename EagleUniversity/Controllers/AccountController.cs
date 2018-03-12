@@ -31,14 +31,16 @@ namespace EagleUniversity.Controllers
             SignInManager = signInManager;
         }
 
-
-        public ActionResult Index(string userRoleId = "")
+        //Manage User Part
+        public ActionResult Index(string userRoleId = "Teacher")
         {
             //Requested list
+            ViewBag.RolesList = userRoleId;
             var userId = User.Identity.GetUserId();
             var role = (from r in _db.Roles where r.Name.Contains(userRoleId) select r).FirstOrDefault();
             //For the students should be implemented restriction to assigned course 
             //Resticted select
+
 
             var viewModel = _db.Users
                     .Where(
@@ -50,7 +52,6 @@ namespace EagleUniversity.Controllers
                         FirstName = r.FirstName,
                         Email = r.Email,
                         RegistrationTime = r.RegistrationTime,
-                        //AuthUserRole = currentUserRole,
                         Role = userRoleId,
                         LastName = r.LastName
                     });
@@ -61,7 +62,61 @@ namespace EagleUniversity.Controllers
              }
             return View(viewModel);
         }
+        //Create user
+        [Authorize(Roles = "Teacher, Admin")]
+        public ActionResult CreateUser(string userRoleId = "Teacher")
+        {
+            var role = (from r in _db.Roles where r.Name.Contains(userRoleId) select r).FirstOrDefault();
 
+            if (role==null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var viewModel = new CreateUserViewModel()
+            {
+                Role = role.Name
+            };
+            return View(viewModel);
+        }
+        // POST: /Account/CreateUser
+        [HttpPost]
+        [Authorize(Roles = "Teacher, Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateUser(CreateUserViewModel model)
+        {
+            var userStore = new UserStore<ApplicationUser>(_db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    LastName = model.LastName,
+                    FirstName = model.FirstName,
+                    RegistrationTime = DateTime.Now,
+                     
+                };
+                var result = await UserManager.CreateAsync(user, "Passoword12345");
+                if (result.Succeeded)
+                {
+                    //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    //Roles
+                    var idResult = userManager.AddToRole(user.Id, model.Role);
+
+
+                    return RedirectToAction("Index", "Home");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+        //
+        //-------------------------------
 
 
         public ApplicationSignInManager SignInManager
