@@ -49,8 +49,9 @@ namespace EagleUniversity.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,DocumentName,DocumentContent,UploadDate,DueDate,DocumentTypeId")] Document document)
+        public ActionResult Create([Bind(Include = "Id,DocumentName,DocumentContent,DueDate,DocumentTypeId")] Document document)
         {
+            document.UploadDate = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Documents.Add(document);
