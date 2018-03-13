@@ -4,21 +4,36 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Create a course with modules and its activities</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create Module", "Create", "Modules")
+</p>
+<p>
+    @Html.ActionLink("Create Activity", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ActivityTypes.ActivityTypeName)
+            @Html.DisplayNameFor(model => model.Modules.Course.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Modules.Course.CourseName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Modules.Id)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Modules.ModuleName)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.ActivityName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActivityTypes.ActivityTypeName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.StartDate)
@@ -32,13 +47,25 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.ActivityTypes.ActivityTypeName)
+            @Html.DisplayFor(modelItem => item.Modules.Course.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Modules.Course.CourseName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Modules.Id)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Modules.ModuleName)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.ActivityName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActivityTypes.ActivityTypeName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.StartDate)
@@ -47,9 +74,9 @@
             @Html.DisplayFor(modelItem => item.EndDate)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
         </td>
     </tr>
 }
