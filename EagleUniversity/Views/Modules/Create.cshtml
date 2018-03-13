@@ -4,13 +4,47 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<h2>Create Module</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Course.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Course.CourseName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Course.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Course.EndDate)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Course.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Course.CourseName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Course.StartDate)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Course.EndDate)
+    </td>
+</tr>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Module</h4>
         <hr />

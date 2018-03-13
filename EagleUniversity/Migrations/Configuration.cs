@@ -29,7 +29,8 @@ namespace EagleUniversity.Migrations
             context.ActivityTypes.AddOrUpdate(
             c => c.ActivityTypeName,
             new ActivityType { ActivityTypeName="E-Learning" },
-            new ActivityType { ActivityTypeName = "Forelasningar" }
+            new ActivityType { ActivityTypeName = "Seminar" },
+            new ActivityType { ActivityTypeName = "Excersise" }
             );
 
             context.DocumentTypes.AddOrUpdate(
@@ -63,7 +64,7 @@ namespace EagleUniversity.Migrations
             {
                 if (!context.Users.Any(r => r.UserName == email))
                 {
-                    var user = new ApplicationUser { UserName = email, Email = email, LastName = email, RegistrationTime=DateTime.Now};
+                    var user = new ApplicationUser { UserName = email, Email = email, LastName = email, RegistrationTime = DateTime.Now };
                     var result = userManager.Create(user, "Admin12345");
                     if (!result.Succeeded)
                     {
@@ -77,8 +78,8 @@ namespace EagleUniversity.Migrations
             var adminRole = roleManager.FindByName("Admin");
 
 
-            userManager.AddToRole(adminUser.Id, adminRole.Name);
-            userManager.AddToRole(adminUser.Id, "Teacher");
+            //userManager.AddToRole(adminUser.Id, adminRole.Name);
+            //userManager.AddToRole(adminUser.Id, "Teacher");
             //if (!adminUser.Roles.Any(r => r.RoleId == adminRole.Id))
             //{
 
