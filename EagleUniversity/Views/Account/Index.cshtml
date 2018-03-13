@@ -9,10 +9,10 @@
 <p>
     @if (User.IsInRole("Teacher"))
     {               
-        @Html.ActionLink("Create New ","CreateUser","Account",new { userRoleId = ViewBag.RolesList }, null)
+        @Html.ActionLink("Create New ","CreateUser","Account",new { userRoleId = ViewBag.RolesList }, new { @class = "btn btn-primary" })
     }
 </p>
-<table class="table">
+<table class="table table-hover">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Email)
@@ -50,15 +50,21 @@
             @Html.DisplayFor(modelItem => item.course.CourseName)
         </td>
         <td>
-            @if (User.IsInRole("Teacher"))
-    {
-        @Html.ActionLink("Edit ", "EditUser", new { id = item.Id })
-        @Html.ActionLink("Delete ", "DeleteUser", new { id = item.Id })
-        @Html.ActionLink("AssignToCourse ", "Create", "Assignments", new { studentId = item.Id, courseId = item.course.Id }, null)
-        @Html.ActionLink("RemoveFromCourse ", "Delete", "Assignments", new { studentId = item.Id, courseId = item.course.Id }, null)
-}
-            @Html.ActionLink("Details ", "DetailUser", new { id = item.Id })
-
+            <div class="dropdown">
+                <a href=# class="dropdown-toggle btn btn-primary" data-toggle="dropdown">More ... </a>
+                <ul class="dropdown-menu">
+                    @if (User.IsInRole("Teacher")){
+            <li>@Html.ActionLink("Edit ", "EditUser", new { id = item.Id })</li>
+            <li>@Html.ActionLink("Delete ", "DeleteUser", new { id = item.Id })</li>
+                    if (item.course.CourseName == "Not Assigned"){
+            <li>@Html.ActionLink("AssignToCourse ", "Create", "Assignments",new { studentId = item.Id, courseId = item.course.Id },null)</li>
+                        }else
+                        {
+            <li>@Html.ActionLink("RemoveFromCourse ", "Delete", "Assignments", new { studentId = item.Id, courseId = item.course.Id },null)</li>
+                        }}
+                    <li>@Html.ActionLink("Details ", "DetailUser", new { id = item.Id })</li>
+                </ul>
+            </div>
         </td>
     </tr>
 }

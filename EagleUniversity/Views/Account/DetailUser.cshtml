@@ -4,14 +4,18 @@
     ViewBag.Title = "DetailUser";
 }
 
-<h2>DetailUser</h2>
+<h2>
+    Detail of User:
+    @Html.DisplayFor(model => model.Fullname)
+</h2>
+
 
 <div>
-    <h4>UserViewModel</h4>
+
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
+        <dt >
+            @Html.DisplayNameFor(model => model.Email) :
         </dt>
 
         <dd>
@@ -19,7 +23,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayNameFor(model => model.FirstName) :
         </dt>
 
         <dd>
@@ -27,7 +31,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayNameFor(model => model.LastName) :
         </dt>
 
         <dd>
@@ -35,7 +39,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Fullname)
+            @Html.DisplayNameFor(model => model.Fullname) :
         </dt>
 
         <dd>
@@ -43,7 +47,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.RegistrationTime)
+            @Html.DisplayNameFor(model => model.RegistrationTime) :
         </dt>
 
         <dd>
@@ -51,7 +55,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Role)
+            @Html.DisplayNameFor(model => model.Role) :
         </dt>
 
         <dd>
@@ -59,7 +63,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.course.CourseName)
+            @Html.DisplayNameFor(model => model.course.CourseName) :
         </dt>
 
         <dd>
@@ -70,5 +74,5 @@
 </div>
 <p>
     @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index","Account", new { @class="btn btn-primary" })
 </p>
