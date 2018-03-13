@@ -27,7 +27,7 @@
             @Html.DisplayNameFor(model => model.Role)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CourseName)
+            @Html.DisplayNameFor(model => model.course.CourseName)
         </th>
         <th></th>
     </tr>
@@ -47,15 +47,17 @@
             @Html.DisplayFor(modelItem => item.Role)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CourseName)
+            @Html.DisplayFor(modelItem => item.course.CourseName)
         </td>
         <td>
             @if (User.IsInRole("Teacher"))
-        {
-            @Html.ActionLink("Edit ", "EditUser", new {  id=item.Id })
-            @Html.ActionLink("Delete ", "DeleteUser", new {  id=item.Id  })
-        }
-            @Html.ActionLink("Details ", "DetailUser", new { id=item.Id })
+    {
+        @Html.ActionLink("Edit ", "EditUser", new { id = item.Id })
+        @Html.ActionLink("Delete ", "DeleteUser", new { id = item.Id })
+        @Html.ActionLink("AssignToCourse ", "Create", "Assignments", new { studentId = item.Id, courseId = item.course.Id }, null)
+        @Html.ActionLink("RemoveFromCourse ", "Delete", "Assignments", new { studentId = item.Id, courseId = item.course.Id }, null)
+}
+            @Html.ActionLink("Details ", "DetailUser", new { id = item.Id })
 
         </td>
     </tr>

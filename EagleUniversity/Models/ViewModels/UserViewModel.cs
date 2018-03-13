@@ -27,11 +27,16 @@ namespace EagleUniversity.Models.ViewModels
                 }
             }
         //public string AuthUserRole { get; set; }
-        public string CourseName
+        public Course course
             {
             get
+            {
+                var course = new Course()
                 {
-                var course = Assignments.userToCourse(Id)?.Course.CourseName ?? "Not Assigned" ;
+                    Id = Assignments.userToCourse(Id)?.Course.Id ?? 0
+                    ,
+                    CourseName = Assignments.userToCourse(Id)?.Course.CourseName ?? "Not Assigned"
+                };
                 return course;
                 }
             }
