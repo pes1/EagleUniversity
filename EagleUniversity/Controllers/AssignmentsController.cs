@@ -126,7 +126,7 @@ namespace EagleUniversity.Controllers
             Assignments assignments = db.Assignments.Where(r=>r.CourseId==courseId).Where(r=>r.ApplicationUserId.Contains(studentId)).FirstOrDefault();
             if (assignments == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Account", new { userRoleId = "Student" });
             }
             return View(assignments);
         }

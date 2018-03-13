@@ -16,10 +16,43 @@ namespace EagleUniversity.Models
 
         public int DocumentTypeId { get; set; }
         //Nav Prop
-        public virtual DocumentType DocumentTypes { get; set; }
+        public string AssignedEntity
+        {
+            get
+            {
+                return Document.DocToEtity(Id);
+            }
+        }
 
+
+        public virtual DocumentType DocumentTypes { get; set; }
         public virtual ICollection<CourseDocument> CourseDocumentAssignments { get; set; }
         public virtual ICollection<ModuleDocument> ModuleDocumentAssignments { get; set; }
         public virtual ICollection<ActivityDocument> ActivityDocumentAssignments { get; set; }
+
+        //Users Views
+        public static string DocToEtity(int documentId)
+        {
+            ApplicationDbContext _db = new ApplicationDbContext();
+            var docToCour = (from r in _db.CourseDocuments where r.DocumentId==documentId select r).FirstOrDefault();
+            if (docToCour!=null)
+            {
+                return $"Course {docToCour.AssignedCourse.CourseName}";
+            }
+
+            var docToMod = (from r in _db.ModuleDocuments where r.DocumentId == documentId select r).FirstOrDefault();
+            if (docToMod != null)
+            {
+                return $"Module {docToMod.AssignedModule.ModuleName}";
+            }
+
+            var docToAct = (from r in _db.ActivityDocuments where r.DocumentId == documentId select r).FirstOrDefault();
+            if (docToAct != null)
+            {
+                return $"Activity {docToAct.AssignedActivity.ActivityName}";
+            }
+
+            return "Not Assigned";
+        }
     }
 }

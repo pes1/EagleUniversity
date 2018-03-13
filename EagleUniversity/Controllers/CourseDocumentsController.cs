@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using EagleUniversity.Models;
+using Microsoft.AspNet.Identity;
 
 namespace EagleUniversity.Controllers
 {
@@ -38,11 +39,24 @@ namespace EagleUniversity.Controllers
         }
 
         // GET: CourseDocuments/Create
-        public ActionResult Create()
+        public ActionResult Create(int DocumentId)
         {
+            var alreadyExist = db.CourseDocuments.Where(r => r.DocumentId==DocumentId);
+
+            var document = db.Documents.Where(r => r.Id == DocumentId).SingleOrDefault();
+
+            if (alreadyExist.Count() > 0)
+            {
+                return RedirectToAction("Index", "Documents");
+            }
+
+            var viewModel = new CourseDocument()
+            { DocumentId=DocumentId, AssignedDocument= document };
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseName");
-            ViewBag.DocumentId = new SelectList(db.Documents, "Id", "DocumentName");
-            return View();
+
+
+            //ViewBag.DocumentId = new SelectList(db.Documents, "Id", "DocumentName");
+            return View(viewModel);
         }
 
         // POST: CourseDocuments/Create
@@ -50,13 +64,15 @@ namespace EagleUniversity.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DocumentId,CourseId,AssignDate,OwnerId")] CourseDocument courseDocument)
+        public ActionResult Create([Bind(Include = "DocumentId,CourseId")] CourseDocument courseDocument)
         {
+            courseDocument.OwnerId= User.Identity.GetUserId();
+            courseDocument.AssignDate = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.CourseDocuments.Add(courseDocument);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Documents");
             }
 
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseName", courseDocument.CourseId);
@@ -100,16 +116,16 @@ namespace EagleUniversity.Controllers
         }
 
         // GET: CourseDocuments/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? DocumentId)
         {
-            if (id == null)
+            if (DocumentId == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Documents");
             }
-            CourseDocument courseDocument = db.CourseDocuments.Find(id);
+            CourseDocument courseDocument = db.CourseDocuments.Where(r=>r.DocumentId==DocumentId).SingleOrDefault();
             if (courseDocument == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Documents");
             }
             return View(courseDocument);
         }
@@ -117,12 +133,12 @@ namespace EagleUniversity.Controllers
         // POST: CourseDocuments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(CourseDocument document)
         {
-            CourseDocument courseDocument = db.CourseDocuments.Find(id);
+            CourseDocument courseDocument = db.CourseDocuments.Where(r=>r.DocumentId==document.DocumentId).SingleOrDefault();
             db.CourseDocuments.Remove(courseDocument);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Documents");
         }
 
         protected override void Dispose(bool disposing)
