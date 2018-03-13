@@ -35,22 +35,24 @@
             @Html.DisplayFor(model => model.AssignDate)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.OwnerId)
-        </dt>
+        @*<dt>
+                @Html.DisplayNameFor(model => model.OwnerId)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.OwnerId)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.OwnerId)
+            </dd>*@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
-
+        @Html.HiddenFor(model => model.ApplicationUserId)
+        @Html.HiddenFor(model => model.CourseId)
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @*@Html.ActionLink("Back to List", "Index")*@
         </div>
     }
 </div>

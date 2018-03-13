@@ -38,11 +38,25 @@ namespace EagleUniversity.Controllers
         }
 
         // GET: Assignments/Create
-        public ActionResult Create()
+        public ActionResult Create(string studentId="", int courseId=0)
         {
+            ApplicationUser user= new ApplicationUser();
+            if (studentId!="")
+            {
+                user = db.Users.Where(r => r.Id.Contains(studentId)).SingleOrDefault();
+            }
+            var alreadyExist = db.Assignments.Where(r => r.ApplicationUserId.Contains(studentId));
+            if (alreadyExist.Count()>0)
+            {
+                return RedirectToAction("Index", "Account", new { userRoleId = "Student" });
+            } 
+
+            var viewModel = new Assignments()
+            {  ApplicationUserId=studentId, CourseId= courseId, ApplicationUser  = user  };
             ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email");
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseName");
-            return View();
+
+            return View(viewModel);
         }
 
         // POST: Assignments/Create
@@ -50,13 +64,14 @@ namespace EagleUniversity.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ApplicationUserId,CourseId,AssignDate,OwnerId")] Assignments assignments)
+        public ActionResult Create([Bind(Include = "ApplicationUserId,CourseId")] Assignments assignments)
         {
+            assignments.AssignDate = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Assignments.Add(assignments);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Account", new { userRoleId = "Student" });
             }
 
             ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email", assignments.ApplicationUserId);
@@ -100,13 +115,15 @@ namespace EagleUniversity.Controllers
         }
 
         // GET: Assignments/Delete/5
-        public ActionResult Delete(string id)
+        public ActionResult Delete(string studentId = "", int courseId = 0)
         {
-            if (id == null)
+            if (studentId == "" || courseId==0)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Account", new { userRoleId = "Student" });
             }
-            Assignments assignments = db.Assignments.Find(id);
+
+
+            Assignments assignments = db.Assignments.Where(r=>r.CourseId==courseId).Where(r=>r.ApplicationUserId.Contains(studentId)).FirstOrDefault();
             if (assignments == null)
             {
                 return HttpNotFound();
@@ -117,12 +134,12 @@ namespace EagleUniversity.Controllers
         // POST: Assignments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(Assignments assignments)
         {
-            Assignments assignments = db.Assignments.Find(id);
-            db.Assignments.Remove(assignments);
+            Assignments deleteAssigments = db.Assignments.Where(r => r.CourseId == assignments.CourseId).Where(r => r.ApplicationUserId.Contains(assignments.ApplicationUserId)).FirstOrDefault();
+            db.Assignments.Remove(deleteAssigments);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Account", new { userRoleId = "Student" });
         }
 
         protected override void Dispose(bool disposing)
