@@ -38,10 +38,13 @@ namespace EagleUniversity.Controllers
         }
 
         // GET: Modules/Create
-        public ActionResult Create()
+        public ActionResult Create(int courseId=0)
         {
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseName");
-            return View();
+            var course = db.Courses.Where(r => r.Id==(courseId)).SingleOrDefault();
+            var viewModel = new Module()
+            { CourseId = courseId, Course = course };
+            return View(viewModel);
         }
 
         // POST: Modules/Create
@@ -55,7 +58,7 @@ namespace EagleUniversity.Controllers
             {
                 db.Modules.Add(module);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Courses");
             }
 
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseName", module.CourseId);

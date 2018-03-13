@@ -41,11 +41,14 @@ namespace EagleUniversity.Controllers
         }
 
         // GET: Activities/Create
-        public ActionResult Create()
+        public ActionResult Create(int moduleId=0)
         {
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "ActivityTypeName");
             ViewBag.ModuleId = new SelectList(db.Modules, "Id", "ModuleName");
-            return View();
+            var module = db.Modules.Where(r => r.Id == (moduleId)).SingleOrDefault();
+            var viewModel = new Activity()
+            { ModuleId = moduleId, Modules = module };
+            return View(viewModel);
         }
 
         // POST: Activities/Create
@@ -59,7 +62,7 @@ namespace EagleUniversity.Controllers
             {
                 db.Activities.Add(activity);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Modules");
             }
 
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "ActivityTypeName", activity.ActivityTypeId);
