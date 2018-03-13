@@ -9,12 +9,18 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EagleUniversity.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using EagleUniversity.Models.ViewModels;
+using System.Net;
+using System.Data.Entity;
+using System.Web.Security;
 
 namespace EagleUniversity.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext _db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -27,6 +33,230 @@ namespace EagleUniversity.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
         }
+
+        //Manage User Part
+        public ActionResult Index(string userRoleId = "Teacher")
+        {
+            //Requested list
+            ViewBag.RolesList = userRoleId;
+            var userId = User.Identity.GetUserId();
+            var role = (from r in _db.Roles where r.Name.Contains(userRoleId) select r).FirstOrDefault();
+            var course = _db.Assignments.Where(r=>r.ApplicationUserId.Contains(userId)).Select(r=> r.Course).FirstOrDefault();
+            //For the students should be implemented restriction to assigned course 
+            //Resticted select
+            var viewModel = _db.Users
+            .Where(
+            x => x.Roles.Select(r => r.RoleId)
+            .Contains(role.Id)
+            ).Select(r => new UserViewModel
+            {
+            Id = r.Id,
+            FirstName = r.FirstName,
+            Email = r.Email,
+            RegistrationTime = r.RegistrationTime,
+            LastName = r.LastName
+            });
+
+            if (User.IsInRole("Student"))
+            {
+                viewModel = _db.Users
+                        .Where(
+                        x => x.Roles.Select(r => r.RoleId)
+                        .Contains(role.Id)
+                        )
+                        .Where(
+                            x => x.CourseUserAssigments.Select
+                            (k => k.CourseId)
+                            .Contains(course.Id)
+                            )
+                        .Select(r => new UserViewModel
+                        {
+                            Id = r.Id,
+                            FirstName = r.FirstName,
+                            Email = r.Email,
+                            RegistrationTime = r.RegistrationTime,
+                        //Role = userRoleId,
+                        LastName = r.LastName
+                        });
+            }
+
+            if (userRoleId!="Student" && User.IsInRole("Student") || role==null)
+             {
+                return RedirectToAction("Index", "Home");
+             }
+            return View(viewModel);
+        }
+        //Get /Account/CreateUser
+        [Authorize(Roles = "Teacher, Admin")]
+        public ActionResult CreateUser(string userRoleId = "Teacher")
+        {            
+            var role = (from r in _db.Roles where r.Name.Contains(userRoleId) select r).FirstOrDefault();
+
+            if (role==null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var viewModel = new CreateUserViewModel()
+            {
+                Role = role.Name
+            };
+            return View(viewModel);
+        }
+        // POST: /Account/CreateUser
+        [HttpPost]
+        [Authorize(Roles = "Teacher, Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateUser(CreateUserViewModel model)
+        {
+            var userStore = new UserStore<ApplicationUser>(_db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    LastName = model.LastName,
+                    FirstName = model.FirstName,
+                    RegistrationTime = DateTime.Now,
+                     
+                };
+                var result = await UserManager.CreateAsync(user, "Passoword12345");
+                if (result.Succeeded)
+                {
+                    //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    //Roles
+                    var idResult = userManager.AddToRole(user.Id, model.Role);
+                    //?
+                    _db.SaveChanges();
+                    return RedirectToAction("Index", "Account", new { userRoleId = model.Role });
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+        // Get: /Account/DeleteUser
+        [Authorize(Roles = "Teacher, Admin")]
+        public ActionResult DeleteUser(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var viewModel = _db.Users
+            .Where(r => r.Id==id )
+            .Select(r => new UserViewModel
+            {
+            Id = r.Id,
+            FirstName = r.FirstName,
+            Email = r.Email,
+            RegistrationTime = r.RegistrationTime,
+            LastName = r.LastName
+        }).SingleOrDefault();
+
+
+            if (viewModel == null)
+            {
+                return HttpNotFound();
+            }
+            return View(viewModel);
+        }
+
+        //POST: Account/DeleteUser
+        [HttpPost, ActionName("DeleteUser")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher, Admin")]
+        public ActionResult DeleteUserConfirmed(string id)
+        {
+            var userStore = new UserStore<ApplicationUser>(_db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+            var deletedUser = userManager.FindById(id);
+            var roleUser  = UserViewModel.userToRole(id)?.Name ?? "Not Assigned";
+            userManager.Delete(deletedUser);
+            _db.SaveChanges();
+            
+            return RedirectToAction("Index", "Account", new { userRoleId = roleUser});
+        }
+        // Get: /Account/DetailUser
+        public ActionResult DetailUser(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var viewModel = _db.Users
+            .Where(r => r.Id == id)
+            .Select(r => new UserViewModel
+            {
+                Id = r.Id,
+                FirstName = r.FirstName,
+                Email = r.Email,
+                RegistrationTime = r.RegistrationTime,
+                LastName = r.LastName
+            }).SingleOrDefault();
+
+
+            if (viewModel == null)
+            {
+                return HttpNotFound();
+            }
+            return View(viewModel);
+        }
+        // Get: /Account/EditUser
+        [Authorize(Roles = "Teacher, Admin")]
+        public ActionResult EditUser(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var viewModel = _db.Users
+            .Where(r => r.Id == id)
+            .Select(r => new UserViewModel
+            {
+                Id = r.Id,
+                FirstName = r.FirstName,
+                Email = r.Email,
+                LastName = r.LastName
+            }).SingleOrDefault();
+
+
+            if (viewModel == null)
+            {
+                return HttpNotFound();
+            }
+            return View(viewModel);
+        }
+        //POST: Account/EditUser
+        [HttpPost, ActionName("EditUser")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher, Admin")]
+        public ActionResult EditUserConfirmed(UserViewModel model)
+        {
+            var userStore = new UserStore<ApplicationUser>(_db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+            var roleUser = UserViewModel.userToRole(model.Id)?.Name ?? "Not Assigned";
+            if (ModelState.IsValid)
+            {
+                var changedUser = userManager.FindById(model.Id);
+                changedUser.LastName = model.LastName;
+                changedUser.FirstName = model.FirstName;
+                changedUser.Email = model.Email;
+                _db.Entry(changedUser).State = EntityState.Modified;
+                _db.SaveChanges();
+            }
+            return RedirectToAction("Index", "Account", new { userRoleId = model.Role });
+        }
+
+        //-------------------------------
+
 
         public ApplicationSignInManager SignInManager
         {
@@ -136,32 +366,48 @@ namespace EagleUniversity.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
-            return View();
+            var viewModel = new RegisterViewModel()
+            {
+                Roles = _db.Roles.ToList()
+            };
+            return View(viewModel);
         }
 
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            var userStore = new UserStore<ApplicationUser>(_db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+            var rolestore = new RoleStore<IdentityRole>(_db);
+            var roleManager = new RoleManager<IdentityRole>(rolestore);
+
             if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            {              
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email
+                    , LastName=model.LastName, FirstName=model.FirstName, RegistrationTime=DateTime.Now };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    //Roles
+
+                    var role = roleManager.FindById(model.Role);
+                    var idResult = userManager.AddToRole(user.Id, role.Name);
+
 
                     return RedirectToAction("Index", "Home");
                 }

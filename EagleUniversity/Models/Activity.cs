@@ -12,10 +12,13 @@ namespace EagleUniversity.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int ModuleId { get; set; }
+
         public int ActivityTypeId { get; set; }
         //Nav Prop
         public virtual ActivityType ActivityTypes { get; set; }
         public virtual Module Modules { get; set; }
+
+        public virtual ICollection<ActivityDocument> DocumentActivityAssignments { get; set; }
     }
 
 

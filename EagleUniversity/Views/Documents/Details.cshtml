@@ -1,0 +1,58 @@
+﻿@model EagleUniversity.Models.Document
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Document</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentTypes.DocumentTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DocumentTypes.DocumentTypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DocumentName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentContent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DocumentContent)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UploadDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UploadDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DueDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DueDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -32,16 +32,39 @@ namespace EagleUniversity.Migrations
             new ActivityType { ActivityTypeName = "Forelasningar" }
             );
 
+            context.DocumentTypes.AddOrUpdate(
+                c => c.DocumentTypeName,
+                    new DocumentType {  DocumentTypeName="Description" },
+                    new DocumentType {  DocumentTypeName = "Task" }
+                    );
+
+            var rolestore = new RoleStore<IdentityRole>(context);
+            var roleManager = new RoleManager<IdentityRole>(rolestore);
+
+            var roleNames = new[] { "Admin", "Student", "Teacher" };
+            
+            foreach (var roleName in roleNames)
+            {
+                if (!context.Roles.Any(r => r.Name == roleName))
+                {
+                    var role = new IdentityRole { Name = roleName };
+                    var result = roleManager.Create(role);
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(string.Join("\n", result.Errors));
+                    }
+                }
+            }
 
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
-            var emails = new[] { "admin@eagle.com" };
+            var emails = new[] { "admin@eagle.com", "teacher@eagle.com", "student@eagle.com" };
             foreach (var email in emails)
             {
                 if (!context.Users.Any(r => r.UserName == email))
                 {
-                    var user = new ApplicationUser { UserName = email, Email = email };
-                    var result = userManager.Create(user, "Admin12345");
+                    var user = new ApplicationUser { UserName = email, Email = email, LastName = email, RegistrationTime=DateTime.Now};
+                    var result = userManager.Create(user, "Password12345");
                     if (!result.Succeeded)
                     {
                         throw new Exception(string.Join("\n", result.Errors));
@@ -49,6 +72,23 @@ namespace EagleUniversity.Migrations
                 }
 
             }
+            //Add to role
+            foreach (var item in context.Users.ToList())
+            {
+                if (item.UserName == "admin@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Admin");
+                }
+                else if (item.UserName == "teacher@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Teacher");
+                }
+                else if (item.UserName == "student@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+            }
+
         }
     }
 }
