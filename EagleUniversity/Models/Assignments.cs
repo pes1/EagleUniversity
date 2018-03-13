@@ -22,5 +22,14 @@ namespace EagleUniversity.Models
         //Nav Prop
         public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual Course Course { get; set; }
+
+        //Users Views
+        public static Assignments userToCourse(string userId)
+        {
+            ApplicationDbContext _db = new ApplicationDbContext();
+            var assignments = (from r in _db.Assignments where r.ApplicationUserId.Contains(userId) select r).FirstOrDefault();
+
+            return assignments;
+        }
     }
 }
