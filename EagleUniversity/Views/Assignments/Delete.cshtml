@@ -51,8 +51,8 @@
         @Html.HiddenFor(model => model.ApplicationUserId)
         @Html.HiddenFor(model => model.CourseId)
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @*@Html.ActionLink("Back to List", "Index")*@
+            <input type="submit" value="Delete" class="btn btn-primary  fault" /> |
+            @Html.ActionLink("Back to List", "Index","Account",new {@class="btn btn-primary" })
         </div>
     }
 </div>
