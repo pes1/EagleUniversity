@@ -34,9 +34,93 @@
             @Html.DisplayFor(model => model.EndDate)
         </dd>
 
+        <dt>
+            Documents
+        </dt>
+
+        <dd>
+            <table class="table">
+                <tr>
+                    <th> Doc Name</th>
+                    <th> Doc Type</th>
+                    <th> UploadDate </th>
+                    <th> DueDate </th>
+                    <th></th>
+                </tr>
+                @foreach (var doc in Model.DocumentCourseAssignments)
+                {
+                <tr>
+                    <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentName)</td>
+                    <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentTypes.DocumentTypeName)</td>
+                    <td>@Html.DisplayFor(x => doc.AssignedDocument.UploadDate)</td>
+                    <td>@Html.DisplayFor(x => doc.AssignedDocument.DueDate)</td>
+                    <td>@Html.ActionLink("Remove ", "Delete", "CourseDocuments", new { DocumentId = doc.DocumentId }, null)</td>
+                </tr>
+                }
+            </table>
+        </dd>
+
+        <dt>
+            Modules
+        </dt>
+
+        <dd>
+            <table class="table">
+                <tr>
+                    <th> Module Name</th>
+                    <th> StartDate </th>
+                    <th> EndDate </th>
+                    <th>@Html.ActionLink("Create Module", "Create", "Modules", new { courseId = Model.Id }, null)</th>
+                    <th></th>
+                </tr>
+                @foreach (var modul in Model.Modules)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(x => modul.ModuleName)</td>
+                        <td>@Html.DisplayFor(x => modul.StartDate)</td>
+                        <td>@Html.DisplayFor(x => modul.EndDate)</td>
+                        <td>@Html.ActionLink("Delete", "Delete", "Modules", new { id = modul.Id }, null)</td>
+
+                        <td>
+                            <table class="table">
+                                <tr>
+                                    <th> Activity Name</th>
+                                    <th> Activity Type</th>
+                                    <th> StartDate </th>
+                                    <th> EndDate </th>
+                                    <th>
+                                        @Html.ActionLink("Create Activity", "Create", "Activities", new { moduleId = modul.Id }, null)
+                                    </th>
+                                </tr>
+                                @foreach (var activity in modul.Activities)
+        {
+                                <tr>
+                                    <td>@Html.DisplayFor(x => activity.ActivityName)</td>
+                                    <td>@Html.DisplayFor(x => activity.ActivityTypes.ActivityTypeName)</td>
+                                    <td>@Html.DisplayFor(x => activity.StartDate)</td>
+                                    <td>@Html.DisplayFor(x => activity.EndDate)</td>
+                                    <td>@Html.ActionLink("Delete", "Delete", "Activities", new { id = activity.Id }, null)</td>
+                                </tr>
+}
+                            </table>
+                        </td>
+
+
+                    </tr>
+                }
+            </table>
+        </dd>
+
+
+
+
     </dl>
 </div>
+
+
+<div>@Html.ActionLink("CreateDocForCourse ", "Create", "Documents", new { CourseId = Model.Id }, null) </div>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
     @Html.ActionLink("Back to List", "Index")
 </p>
