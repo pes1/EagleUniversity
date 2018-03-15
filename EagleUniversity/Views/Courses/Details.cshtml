@@ -4,108 +4,86 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<br />
+<h2 class="col-md-4">
+    <b>@Html.DisplayNameFor(model => model.CourseName):</b>
+    @Html.DisplayFor(model => model.CourseName)
+</h2>
+<h3 class="col-md-4">
+    <b> @Html.DisplayNameFor(model => model.StartDate):</b>
+    @Html.DisplayFor(model => model.StartDate)
+</h3>
+<h3 class="col-md-4">
+    <b>@Html.DisplayNameFor(model => model.EndDate):</b>
+    @Html.DisplayFor(model => model.EndDate)
+</h3>
 
-<div>
-    <h4>Course</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CourseName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CourseName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-
-        <dt>
-            Documents
-        </dt>
-
-        <dd>
-            @Html.Partial("_CourseDoc", this.Model)
-        </dd>
-
-    </dl>
-</div>
-
-
+<div> . <hr /> <br /> </div>
 <div class="container">
-    <header><h2 class="greypapper">Course Detail Information</h2></header>
+    @*<header><h2 class="greypapper">Course Detail Information</h2></header>*@
+
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#home">Schedule </a></li>
         <li><a data-toggle="tab" href="#menu1">Students </a></li>
+        <li><a data-toggle="tab" href="#menu2">Document </a></li>        
+        
     </ul>
 
     <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
             <div class="row">
-                    <table class="table">
+                <table class="table">
+                    <tr>
+                        <th> Module Name</th>
+                        <th> StartDate </th>
+                        <th> EndDate </th>
+                        <th>@Html.ActionLink("Create Mod", "Create", "Modules", new { courseId = Model.Id }, null)</th>
+                        <th></th>
+                    </tr>
+                    @foreach (var modul in Model.Modules)
+                    {
                         <tr>
-                            <th> Module Name</th>
-                            <th> StartDate </th>
-                            <th> EndDate </th>
-                            <th>@Html.ActionLink("Create Mod", "Create", "Modules", new { courseId = Model.Id }, null)</th>
-                            <th></th>
-                        </tr>
-                        @foreach (var modul in Model.Modules)
-                        {
-                            <tr>
-                                <td>@Html.DisplayFor(x => modul.ModuleName)</td>
-                                <td>@Html.DisplayFor(x => modul.StartDate)</td>
-                                <td>@Html.DisplayFor(x => modul.EndDate)</td>
-                                <td>Edit @*@Html.ActionLink("Edit", "Edit", "Modules", new { id = modul.Id }, null)*@</td>
-                                <td>@Html.ActionLink("Delete", "Delete", "Modules", new { id = modul.Id }, null)</td>
+                            <td>@Html.DisplayFor(x => modul.ModuleName)</td>
+                            <td>@Html.DisplayFor(x => modul.StartDate)</td>
+                            <td>@Html.DisplayFor(x => modul.EndDate)</td>
+                            <td>Edit @*@Html.ActionLink("Edit", "Edit", "Modules", new { id = modul.Id }, null)*@</td>
+                            <td>@Html.ActionLink("Delete", "Delete", "Modules", new { id = modul.Id }, null)</td>
 
-                                <td>
+                            <td>
 
-                                    @Html.Partial("_ModuleDoc", modul)
+                                @Html.Partial("_ModuleDoc", modul)
 
-                                    <table class="table">
+                                <table class="table">
+                                    <tr>
+                                        <th> Activity Name</th>
+                                        <th> Activity Type</th>
+                                        <th> StartDate </th>
+                                        <th> EndDate </th>
+                                        <th>
+                                            @Html.ActionLink("Create Act", "Create", "Activities", new { moduleId = modul.Id }, null)
+                                        </th>
+                                    </tr>
+                                    @foreach (var activity in modul.Activities)
+                                    {
                                         <tr>
-                                            <th> Activity Name</th>
-                                            <th> Activity Type</th>
-                                            <th> StartDate </th>
-                                            <th> EndDate </th>
-                                            <th>
-                                                @Html.ActionLink("Create Act", "Create", "Activities", new { moduleId = modul.Id }, null)
-                                            </th>
+                                            <td>@Html.DisplayFor(x => activity.ActivityName)</td>
+                                            <td>@Html.DisplayFor(x => activity.ActivityTypes.ActivityTypeName)</td>
+                                            <td>@Html.DisplayFor(x => activity.StartDate)</td>
+                                            <td>@Html.DisplayFor(x => activity.EndDate)</td>
+                                            <td>Edit @*@Html.ActionLink("Edit", "Edit", "Activities", new { id = activity.Id }, null)*@</td>
+                                            <td>@Html.ActionLink("Delete", "Delete", "Activities", new { id = activity.Id }, null)</td>
+                                            <td>@Html.Partial("_ActivityDoc", activity)</td>
                                         </tr>
-                                        @foreach (var activity in modul.Activities)
-                                        {
-                                            <tr>
-                                                <td>@Html.DisplayFor(x => activity.ActivityName)</td>
-                                                <td>@Html.DisplayFor(x => activity.ActivityTypes.ActivityTypeName)</td>
-                                                <td>@Html.DisplayFor(x => activity.StartDate)</td>
-                                                <td>@Html.DisplayFor(x => activity.EndDate)</td>
-                                                <td>Edit @*@Html.ActionLink("Edit", "Edit", "Activities", new { id = activity.Id }, null)*@</td>
-                                                <td>@Html.ActionLink("Delete", "Delete", "Activities", new { id = activity.Id }, null)</td>
-                                                <td>@Html.Partial("_ActivityDoc", activity)</td>
-                                            </tr>
-                                        }
-                                    </table>
-                                </td>
+                                    }
+                                </table>
+                            </td>
 
 
-                            </tr>
-                        }
-                    </table>
+                        </tr>
+                    }
+                </table>
             </div>
         </div>
         <div id="menu1" class="tab-pane fade">
@@ -113,12 +91,15 @@
                 @Html.Action("UserListPartial", "Account", new { CourseId = Model.Id })
             </div>
         </div>
+        <div id="menu2" class="tab-pane fade">
+            <dl class="dl-horizontal">
+                <dt>Documents</dt>
+                <dd>@Html.Partial("_CourseDoc", this.Model)</dd>
+            </dl>
+        </div>  
     </div>
 </div>
-
-
-
-<p>
-    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
-    @Html.ActionLink("Back to List", "Index")
-</p>
+            <p>
+                @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
+                @Html.ActionLink("Back to List", "Index")
+            </p>
