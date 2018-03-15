@@ -58,7 +58,7 @@ namespace EagleUniversity.Controllers
             {
                 db.Modules.Add(module);
                 db.SaveChanges();
-                return RedirectToAction("Index", "Courses");
+                return RedirectToAction("Details", "Courses", new { id = module.CourseId });
             }
 
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseName", module.CourseId);
@@ -119,9 +119,10 @@ namespace EagleUniversity.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Module module = db.Modules.Find(id);
+            var courseId = module.CourseId;
             db.Modules.Remove(module);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Courses", new { id = courseId });
         }
 
         protected override void Dispose(bool disposing)

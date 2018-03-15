@@ -136,9 +136,10 @@ namespace EagleUniversity.Controllers
         public ActionResult DeleteConfirmed(CourseDocument document)
         {
             CourseDocument courseDocument = db.CourseDocuments.Where(r=>r.DocumentId==document.DocumentId).SingleOrDefault();
+            var courseId = courseDocument.CourseId;
             db.CourseDocuments.Remove(courseDocument);
             db.SaveChanges();
-            return RedirectToAction("Index", "Documents");
+            return RedirectToAction("Details", "Courses", new { id = courseId });
         }
 
         protected override void Dispose(bool disposing)

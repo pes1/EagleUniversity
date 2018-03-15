@@ -47,7 +47,7 @@ namespace EagleUniversity.Controllers
             ViewBag.ModuleId = new SelectList(db.Modules, "Id", "ModuleName");
             var module = db.Modules.Where(r => r.Id == (moduleId)).SingleOrDefault();
             var viewModel = new Activity()
-            { ModuleId = moduleId, Modules = module };
+            { ModuleId = moduleId, Modules = module  };
             return View(viewModel);
         }
 
@@ -58,11 +58,12 @@ namespace EagleUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,ActivityName,StartDate,EndDate,ModuleId,ActivityTypeId")] Activity activity)
         {
+            var module = db.Modules.Where(r => r.Id == (activity.ModuleId)).SingleOrDefault();
             if (ModelState.IsValid)
             {
                 db.Activities.Add(activity);
                 db.SaveChanges();
-                return RedirectToAction("Index", "Modules");
+                return RedirectToAction("Details", "Courses", new { id = module.CourseId });
             }
 
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "ActivityTypeName", activity.ActivityTypeId);
@@ -126,9 +127,10 @@ namespace EagleUniversity.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Activity activity = db.Activities.Find(id);
+            var courseId = activity.Modules.CourseId;
             db.Activities.Remove(activity);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Courses", new { id = courseId  });
         }
 
         protected override void Dispose(bool disposing)
