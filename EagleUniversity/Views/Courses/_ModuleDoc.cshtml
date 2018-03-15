@@ -1,4 +1,4 @@
-﻿@model EagleUniversity.Models.Course
+﻿@model EagleUniversity.Models.Module
 
 <table class="table">
     <tr>
@@ -6,16 +6,16 @@
         <th> Doc Type</th>
         <th> UploadDate </th>
         <th> DueDate </th>
-        <th>@Html.ActionLink("CreateDoc ", "Create", "Documents", new { CourseId = Model.Id }, null)</th>
+        <th>@Html.ActionLink("CreateDoc ", "Create", "Documents", new { ModuleId = Model.Id }, null)</th>
     </tr>
-    @foreach (var doc in Model.DocumentCourseAssignments)
+    @foreach (var doc in Model.DocumentModuleAssignments)
     {
         <tr>
             <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentName)</td>
             <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentTypes.DocumentTypeName)</td>
             <td>@Html.DisplayFor(x => doc.AssignedDocument.UploadDate)</td>
             <td>@Html.DisplayFor(x => doc.AssignedDocument.DueDate)</td>
-            <td>@Html.ActionLink("Remove ", "Delete", "CourseDocuments", new { DocumentId = doc.DocumentId }, null)</td>
+            <td>@Html.ActionLink("Remove ", "Delete", "ModuleDocuments", new { DocumentId = doc.DocumentId }, null)</td>
         </tr>
     }
 </table>

@@ -35,6 +35,37 @@ namespace EagleUniversity.Controllers
         }
 
         //Manage User Part
+        [AllowAnonymous]
+        public ActionResult UserListPartial(int CourseId)
+        {
+            var role = (from r in _db.Roles where r.Name.Contains("Student") select r).FirstOrDefault();
+
+            var viewModel = _db.Users
+            .Where(
+            x => x.Roles.Select(r => r.RoleId)
+            .Contains(role.Id)
+            )
+            .Where(
+                    x => x.CourseUserAssigments.Select
+                    (k => k.CourseId)
+                    .Contains(CourseId)
+                )
+            .Select(r => new UserViewModel
+            {
+                Id = r.Id,
+                FirstName = r.FirstName,
+                Email = r.Email,
+                RegistrationTime = r.RegistrationTime,
+                LastName = r.LastName
+            });
+
+            //if (viewModel.Count() <= 0)
+            //{
+            //    return HttpNotFound();
+            //}
+            return PartialView("_UserList", viewModel);
+        }
+
         public ActionResult Index(string userRoleId = "Teacher")
         {
             //Requested list
