@@ -124,6 +124,16 @@ namespace EagleUniversity.Controllers
             db.SaveChanges();
             return RedirectToAction("Details", "Courses", new { id = courseId });
         }
+        //Need to secure
+        [HttpPost]
+        public ActionResult DeleteAjax(int id)
+        {
+            Module module = db.Modules.Find(id);
+            var courseId = module.CourseId;
+            db.Modules.Remove(module);
+            db.SaveChanges();
+            return RedirectToAction("Details", "Courses", new { id = courseId });
+        }
 
         protected override void Dispose(bool disposing)
         {
