@@ -1,7 +1,7 @@
 ﻿@model EagleUniversity.Models.Course
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Course Details";
 }
 
 <br />
@@ -25,8 +25,8 @@
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#home">Schedule </a></li>
         <li><a data-toggle="tab" href="#menu1">Students </a></li>
-        <li><a data-toggle="tab" href="#menu2">Document </a></li>        
-        
+        <li><a data-toggle="tab" href="#menu2">Document </a></li>
+        <li><a data-toggle="tab" href="#menu3">Course</a></li>
     </ul>
 
     <div class="tab-content">
@@ -88,11 +88,45 @@
             </div>
         </div>
         <div id="menu2" class="tab-pane fade">
-            <dl class="dl-horizontal">
-                <dt>Documents</dt>
-                <dd>@Html.Partial("_CourseDoc", this.Model)</dd>
-            </dl>
-        </div>  
+
+            @Html.Partial("_CourseDoc", this.Model)
+
+        </div>
+        <div id="menu3" class="tab-pane fade col-lg-8">
+            <div>
+                <button id="CollapseDetail" class="btn btn-primary">Modules</button>
+                @Ajax.ActionLink("Create Module", "Create", "Modules", new { courseid = Model.Id }, new AjaxOptions { UpdateTargetId = "create-entity" },new { @class = "btn btn-primary" })
+                <div id="Demo" class="row">
+                    <table class="table">
+                        <tr>
+                            <th>Name</th>
+                            <th> StartDate </th>
+                            <th> EndDate </th>                            
+                         </tr>
+
+                        @foreach (var modul in Model.Modules)
+             {
+                        <tr id="listModule">
+                            <td class="btn btn-link col-lg-1">@Html.DisplayFor(x => modul.ModuleName)</td>
+                            <td class="col-lg-2">@Html.DisplayFor(x => modul.StartDate)</td>
+                            <td class="col-lg-2">@Html.DisplayFor(x => modul.EndDate)</td>
+                            <td class="col-sm-5">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#home1">Documents</a></li>
+                                    <li><a data-toggle="tab" href="#menu11">Activities</a></li>
+                                </ul>
+                            </td>
+                            <td class="col-sm-1">@Ajax.ActionLink("Edit", "Edit", "Modules", new { id = modul.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </td>
+                            <td class="col-sm-1">@Ajax.ActionLink("Delete", "DeleteAjax", "Modules", new { id = modul.Id }, new AjaxOptions { HttpMethod = "Post", Confirm = $"Delete module {modul.ModuleName}?", OnComplete = "OnComplete" }, null)</td>
+                        </tr>
+             }
+                    </table>
+
+
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
 
@@ -105,8 +139,11 @@
 
 
 @section Scripts {
+    @Scripts.Render("~/Scripts/Collpase.js")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/test.js")
+    @Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
+    @Scripts.Render("~/Scripts/bootstrap.min.js")
 }
 
 
