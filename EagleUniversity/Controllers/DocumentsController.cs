@@ -172,6 +172,21 @@ namespace EagleUniversity.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        public ActionResult DeleteAjaxDoc(int id)
+        {
+            Document document = db.Documents.Where(r=>r.Id==id).SingleOrDefault();
+            CourseDocument courseDocument = db.CourseDocuments.Where(r => r.DocumentId == document.Id).SingleOrDefault();
+
+            int returnId=0;
+            if (courseDocument!=null)
+            {
+                returnId = courseDocument.CourseId;
+            }
+
+            db.Documents.Remove(document);
+            db.SaveChanges();
+            return RedirectToAction("Details", "Courses", new { id = returnId });
+        }
 
         protected override void Dispose(bool disposing)
         {
