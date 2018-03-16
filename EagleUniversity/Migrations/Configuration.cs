@@ -23,19 +23,22 @@ namespace EagleUniversity.Migrations
             //  to avoid creating duplicate seed data.
             context.Courses.AddOrUpdate(
               c => c.CourseName,
-            new Course { CourseName = "C#", StartDate=DateTime.Now, EndDate=DateTime.Now },
-            new Course { CourseName = ".Net", StartDate = DateTime.Now, EndDate = DateTime.Now }
+            new Course { CourseName = ".NET", StartDate=DateTime.Now, EndDate=DateTime.Now },
+            new Course { CourseName = "OFFICE 365", StartDate = DateTime.Now, EndDate = DateTime.Now },
+            new Course { CourseName = "JAVA", StartDate = DateTime.Now, EndDate = DateTime.Now }
             );
             context.ActivityTypes.AddOrUpdate(
             c => c.ActivityTypeName,
-            new ActivityType { ActivityTypeName="E-Learning" },
-            new ActivityType { ActivityTypeName = "Forelasningar" }
+            new ActivityType { ActivityTypeName= "E-Learning" },
+            new ActivityType { ActivityTypeName = "Seminar" },
+            new ActivityType { ActivityTypeName = "Exercise" }
             );
 
             context.DocumentTypes.AddOrUpdate(
                 c => c.DocumentTypeName,
-                    new DocumentType {  DocumentTypeName="Description" },
-                    new DocumentType {  DocumentTypeName = "Task" }
+                    new DocumentType { DocumentTypeName= "Description" },
+                    new DocumentType { DocumentTypeName = "Task" },
+                    new DocumentType { DocumentTypeName = "Report" }
                     );
 
             var rolestore = new RoleStore<IdentityRole>(context);

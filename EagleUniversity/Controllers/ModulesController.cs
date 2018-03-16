@@ -43,7 +43,7 @@ namespace EagleUniversity.Controllers
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseName");
             var course = db.Courses.Where(r => r.Id==(courseId)).SingleOrDefault();
             var viewModel = new Module()
-            { CourseId = courseId, Course = course };
+            { CourseId = courseId, Course = course, StartDate = course.StartDate, EndDate = course.EndDate };
             return View(viewModel);
         }
 
