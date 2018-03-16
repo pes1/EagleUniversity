@@ -47,7 +47,7 @@ namespace EagleUniversity.Controllers
             ViewBag.ModuleId = new SelectList(db.Modules, "Id", "ModuleName");
             var module = db.Modules.Where(r => r.Id == (moduleId)).SingleOrDefault();
             var viewModel = new Activity()
-            { ModuleId = moduleId, Modules = module  };
+            { ModuleId = moduleId, Modules = module, StartDate = module.StartDate, EndDate = module.EndDate };
             return View(viewModel);
         }
 
