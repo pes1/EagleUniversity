@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using EagleUniversity.Models;
+using EagleUniversity.Models.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace EagleUniversity.Controllers
 {
@@ -38,10 +40,36 @@ namespace EagleUniversity.Controllers
         }
 
         // GET: Documents/Create
-        public ActionResult Create()
+        public ActionResult Create(int CourseId =0, int ModuleId=0, int ActivityId=0)
         {
+            DocumentEntity entity= new DocumentEntity() { EntityType="",Id=0 };
+
+
+            if (CourseId != 0)
+            {
+
+                entity.EntityType = "Course";
+                entity.Id = CourseId;
+                var course = db.Courses.Where(r => r.Id == (CourseId)).SingleOrDefault();
+                entity.EntityName = course.CourseName;
+            }
+            else if (ModuleId != 0)
+            {
+                entity.EntityType = "Module";
+                entity.Id = ModuleId;
+            }
+            else if(ActivityId!=0)
+            {
+                entity.EntityType = "Activity";
+                entity.Id = ActivityId;                    
+            }            
+
+
+            var viewModel = new DocumentViewModel()
+            {  assignedEntity=entity  };
+
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "DocumentTypeName");
-            return View();
+            return View(viewModel);
         }
 
         // POST: Documents/Create
@@ -49,14 +77,37 @@ namespace EagleUniversity.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,DocumentName,DocumentContent,DueDate,DocumentTypeId")] Document document)
+        public ActionResult Create(DocumentViewModel document)
         {
-            document.UploadDate = DateTime.Now;
+            var addDocument = new Document()
+            {
+                //Id = document.Id,
+                DocumentTypeId = document.DocumentTypeId,
+                DocumentContent = document.DocumentContent,
+                DocumentName = document.DocumentName,
+                DueDate = document.DueDate,
+                UploadDate = DateTime.Now
+            };
+
             if (ModelState.IsValid)
             {
-                db.Documents.Add(document);
+                db.Documents.Add(addDocument);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                var user = User.Identity.GetUserId();
+
+                var courseDocument = new CourseDocument()
+                {
+                    DocumentId = addDocument.Id,
+                    AssignDate = DateTime.Now,
+                    OwnerId = User.Identity.GetUserId(),
+                    CourseId =document.assignedEntity.Id
+                 };
+
+                db.CourseDocuments.Add(courseDocument);
+                db.SaveChanges();
+
+                return RedirectToAction("Details", "Courses", new { id = document.assignedEntity.Id });
             }
 
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "DocumentTypeName", document.DocumentTypeId);
