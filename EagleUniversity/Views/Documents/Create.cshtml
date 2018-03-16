@@ -56,11 +56,10 @@
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Create" class="btn btn-default" />
+            @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.assignedEntity.Id, redirect = "Document" }, null)
         </div>
     </div>
 </div>
 }
 
-<div>
-    @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.assignedEntity.Id }, null)
-</div>
+

@@ -22,14 +22,6 @@ namespace EagleUniversity.Models.ViewModels
 
         public int DocumentTypeId { get; set; }
 
-        //public string AssignedEntity
-        //{
-        //    get
-        //    {
-        //        return Document.DocToEtity(Id);
-        //    }
-        //}
-
         public DocumentEntity assignedEntity { get; set; }
     }
 }

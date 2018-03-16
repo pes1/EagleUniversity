@@ -126,8 +126,26 @@ namespace EagleUniversity.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "DocumentTypeName", document.DocumentTypeId);
-            return View(document);
+
+            DocumentEntity entity = new DocumentEntity() { EntityType = "", Id = 0 };
+
+            var assignedCourse = db.CourseDocuments.Where(r => r.DocumentId == (document.Id)).SingleOrDefault();
+
+            if (assignedCourse != null)
+            {
+                entity.EntityType = "Course";
+                entity.Id = assignedCourse.CourseId;
+                entity.EntityName = assignedCourse.AssignedCourse.CourseName;
+                entity.DocumentTypeName = document.DocumentTypes.DocumentTypeName;
+            }
+
+
+
+            var viewModel = new DocumentViewModel()
+            { Id= document.Id, DocumentContent= document.DocumentContent, DocumentName= document.DocumentName, UploadDate=document.UploadDate, DueDate=document.DueDate
+            , DocumentTypeId=document.DocumentTypeId, assignedEntity=entity};
+
+            return View(viewModel);
         }
 
         // POST: Documents/Edit/5
@@ -135,21 +153,19 @@ namespace EagleUniversity.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,DocumentName,DocumentContent,UploadDate,DueDate,DocumentTypeId")] Document document)
+        public ActionResult Edit(DocumentViewModel document)
         {
-            CourseDocument courseDocument = db.CourseDocuments.Where(r => r.DocumentId == document.Id).SingleOrDefault();
+            Document documentToEdit = db.Documents.Find(document.Id);
+            documentToEdit.DocumentName = document.DocumentName;
+            documentToEdit.DocumentContent = document.DocumentContent;
+            documentToEdit.DueDate = document.DueDate;
 
-            int returnId = 0;
-            if (courseDocument != null)
-            {
-                returnId = courseDocument.CourseId;
-            }
 
             if (ModelState.IsValid)
             {
-                db.Entry(document).State = EntityState.Modified;
+                db.Entry(documentToEdit).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Details", "Courses", new { id = returnId, redirect = "Document" });
+                return RedirectToAction("Details", "Courses", new { id = document.assignedEntity.Id, redirect = "Document" });
             }
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "DocumentTypeName", document.DocumentTypeId);
             return View(document);

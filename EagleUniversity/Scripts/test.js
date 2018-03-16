@@ -13,14 +13,12 @@
 $(document).ready(
     function () {
        
-        if ($("#Redirected").text() == "Document")
+        if ($("#Redirected").text() === "Document")
         {
             $("#Default").removeClass("active");
             $("#home").removeClass("in active");
             $("#Document").addClass("active");
             $("#menu2").addClass("in active");
-        }
-        else {
         }
         $("#Redirected").hide();
   
