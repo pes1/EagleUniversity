@@ -107,7 +107,7 @@ namespace EagleUniversity.Controllers
                 db.CourseDocuments.Add(courseDocument);
                 db.SaveChanges();
 
-                return RedirectToAction("Details", "Courses", new { id = document.assignedEntity.Id });
+                return RedirectToAction("Details", "Courses", new { id = document.assignedEntity.Id, redirect = "Document" });
             }
 
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "DocumentTypeName", document.DocumentTypeId);
@@ -137,11 +137,19 @@ namespace EagleUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,DocumentName,DocumentContent,UploadDate,DueDate,DocumentTypeId")] Document document)
         {
+            CourseDocument courseDocument = db.CourseDocuments.Where(r => r.DocumentId == document.Id).SingleOrDefault();
+
+            int returnId = 0;
+            if (courseDocument != null)
+            {
+                returnId = courseDocument.CourseId;
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(document).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Courses", new { id = returnId, redirect = "Document" });
             }
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "DocumentTypeName", document.DocumentTypeId);
             return View(document);
@@ -185,7 +193,7 @@ namespace EagleUniversity.Controllers
 
             db.Documents.Remove(document);
             db.SaveChanges();
-            return RedirectToAction("Details", "Courses", new { id = returnId });
+            return RedirectToAction("Details", "Courses", new { id = returnId, redirect = "Document" });
         }
 
         protected override void Dispose(bool disposing)
