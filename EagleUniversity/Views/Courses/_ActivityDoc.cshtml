@@ -7,16 +7,17 @@
         <th> Doc Type</th>
         <th> UploadDate </th>
         <th> DueDate </th>
-        <th>@Html.ActionLink("CreateDoc ", "Create", "Documents", new { ModuleId = Model.Id }, null)</th>
+        <th>@Ajax.ActionLink("CreateDoc", "Create", "Documents", new { ActivityId = Model.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </th>
     </tr>
     @foreach (var doc in Model.DocumentActivityAssignments)
     {
-        <tr>
-            <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentName)</td>
-            <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentTypes.DocumentTypeName)</td>
-            <td>@Html.DisplayFor(x => doc.AssignedDocument.UploadDate)</td>
-            <td>@Html.DisplayFor(x => doc.AssignedDocument.DueDate)</td>
-            <td>@Html.ActionLink("Remove ", "Delete", "ActivityDocuments", new { DocumentId = doc.DocumentId }, null)</td>
-        </tr>
+    <tr>
+        <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentName)</td>
+        <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentTypes.DocumentTypeName)</td>
+        <td>@Html.DisplayFor(x => doc.AssignedDocument.UploadDate)</td>
+        <td>@Html.DisplayFor(x => doc.AssignedDocument.DueDate)</td>
+        <td>@Ajax.ActionLink("Edit", "Edit", "Documents", new { Id = doc.DocumentId }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </td>
+        <td>@Ajax.ActionLink("Remove", "DeleteAjaxActivityDoc", "ActivityDocuments", new { DocumentId = doc.DocumentId }, new AjaxOptions { HttpMethod = "Post", Confirm = $"Delete module {doc.AssignedDocument.DocumentName}?", OnComplete = "OnComplete" }, null)</td>
+    </tr>
     }
 </table>

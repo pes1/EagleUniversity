@@ -48,6 +48,7 @@
 
 <div class="container">
     <header><h2 class="greypapper">Course Detail Information</h2></header>
+    <span id="create-entity"></span>
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#home">Schedule </a></li>
         <li><a data-toggle="tab" href="#menu1">Students </a></li>
@@ -56,56 +57,54 @@
     <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
             <div class="row">
-                    <table class="table">
-                        <tr>
-                            <th> Module Name</th>
-                            <th> StartDate </th>
-                            <th> EndDate </th>
-                            <th>@Html.ActionLink("Create Mod", "Create", "Modules", new { courseId = Model.Id }, null)</th>
-                            <th></th>
-                        </tr>
-                        @foreach (var modul in Model.Modules)
-                        {
-                            <tr>
-                                <td>@Html.DisplayFor(x => modul.ModuleName)</td>
-                                <td>@Html.DisplayFor(x => modul.StartDate)</td>
-                                <td>@Html.DisplayFor(x => modul.EndDate)</td>
-                                <td>Edit @*@Html.ActionLink("Edit", "Edit", "Modules", new { id = modul.Id }, null)*@</td>
-                                <td>@Html.ActionLink("Delete", "Delete", "Modules", new { id = modul.Id }, null)</td>
+                <table class="table">
 
-                                <td>
+                    <tr>
+                        <th> Module Name</th>
+                        <th> StartDate </th>
+                        <th> EndDate </th>
+                        <th>@Ajax.ActionLink("Create Module", "Create", "Modules", new { courseid = Model.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </th>
+                    </tr>
+                    @foreach (var modul in Model.Modules)
+                    {
+                        <tr id="listModule">
+                            <td>@Html.DisplayFor(x => modul.ModuleName)</td>
+                            <td>@Html.DisplayFor(x => modul.StartDate)</td>
+                            <td>@Html.DisplayFor(x => modul.EndDate)</td>
+                            <td>@Ajax.ActionLink("Edit", "Edit", "Modules", new { id = modul.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </td>
+                            <td>@Ajax.ActionLink("Delete", "DeleteAjax", "Modules", new { id = modul.Id }, new AjaxOptions { HttpMethod = "Post", Confirm = $"Delete module {modul.ModuleName}?", OnComplete = "OnComplete" }, null)</td>
+                            <td>
 
-                                    @Html.Partial("_ModuleDoc", modul)
+                                @Html.Partial("_ModuleDoc", modul)
 
-                                    <table class="table">
+                                <table class="table">
+                                    <tr>
+                                        <th> Activity Name</th>
+                                        <th> Activity Type</th>
+                                        <th> StartDate </th>
+                                        <th> EndDate </th>
+                                        <th>@Ajax.ActionLink("Create Act", "Create", "Activities", new { moduleId = modul.Id }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)</th>
+                                    </tr>
+
+                                    @foreach (var activity in modul.Activities)
+                                    {
                                         <tr>
-                                            <th> Activity Name</th>
-                                            <th> Activity Type</th>
-                                            <th> StartDate </th>
-                                            <th> EndDate </th>
-                                            <th>
-                                                @Html.ActionLink("Create Act", "Create", "Activities", new { moduleId = modul.Id }, null)
-                                            </th>
+                                            <td>@Html.DisplayFor(x => activity.ActivityName)</td>
+                                            <td>@Html.DisplayFor(x => activity.ActivityTypes.ActivityTypeName)</td>
+                                            <td>@Html.DisplayFor(x => activity.StartDate)</td>
+                                            <td>@Html.DisplayFor(x => activity.EndDate)</td>
+                                            <td>@Ajax.ActionLink("Edit", "Edit", "Activities", new { id = activity.Id }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)</td>
+                                            <td>@Ajax.ActionLink("Delete", "DeleteAjaxAct", "Activities", new { id = activity.Id }, new AjaxOptions { HttpMethod = "Post", Confirm = $"Delete activity {activity.ActivityName}?", OnComplete = "OnComplete" }, null)</td>
+                                            <td>@Html.Partial("_ActivityDoc", activity)</td>
                                         </tr>
-                                        @foreach (var activity in modul.Activities)
-                                        {
-                                            <tr>
-                                                <td>@Html.DisplayFor(x => activity.ActivityName)</td>
-                                                <td>@Html.DisplayFor(x => activity.ActivityTypes.ActivityTypeName)</td>
-                                                <td>@Html.DisplayFor(x => activity.StartDate)</td>
-                                                <td>@Html.DisplayFor(x => activity.EndDate)</td>
-                                                <td>Edit @*@Html.ActionLink("Edit", "Edit", "Activities", new { id = activity.Id }, null)*@</td>
-                                                <td>@Html.ActionLink("Delete", "Delete", "Activities", new { id = activity.Id }, null)</td>
-                                                <td>@Html.Partial("_ActivityDoc", activity)</td>
-                                            </tr>
-                                        }
-                                    </table>
-                                </td>
+                                    }
+                                </table>
+                            </td>
 
 
-                            </tr>
-                        }
-                    </table>
+                        </tr>
+                    }
+                </table>
             </div>
         </div>
         <div id="menu1" class="tab-pane fade">
@@ -119,6 +118,15 @@
 
 
 <p>
-    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/test.js")
+}
+
+
+
