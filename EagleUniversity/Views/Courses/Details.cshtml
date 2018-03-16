@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Details";
 }
+<h1 id="Redirected">@ViewBag.redirect</h1>
 
 <br />
 <h2 class="col-md-4">
@@ -20,12 +21,12 @@
 
 <div> . <hr /> <br /> </div>
 <div class="container">
-    <header><h2 class="greypapper">Course Detail Information</h2></header>
+    <header><h2 id="test" class="greypapper">Course Detail Information</h2></header>
     <span id="create-entity"></span>
-    <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#home">Schedule </a></li>
-        <li><a data-toggle="tab" href="#menu1">Students </a></li>
-        <li><a data-toggle="tab" href="#menu2">Document </a></li>        
+    <ul id="test2" class="nav nav-tabs">
+        <li id="Default" class="active"><a data-toggle="tab" href="#home">Schedule </a></li>
+        <li id="Student"><a data-toggle="tab" href="#menu1">Students </a></li>
+        <li id="Document"><a data-toggle="tab" href="#menu2">Document </a></li>        
         
     </ul>
 
