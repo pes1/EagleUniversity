@@ -19,6 +19,8 @@
     @Html.HiddenFor(model => model.assignedEntity.Id)
     @Html.HiddenFor(model => model.assignedEntity.EntityName)
     @Html.HiddenFor(model => model.assignedEntity.EntityType)
+    @Html.HiddenFor(model => model.assignedEntity.returnId)
+    @Html.HiddenFor(model => model.assignedEntity.returnTarget)
 
     <div class="form-group">
         @Html.LabelFor(model => model.DocumentName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -63,7 +65,7 @@
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Save" class="btn btn-default" />
-            @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.assignedEntity.Id, redirect = "Document" }, null)
+            @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.assignedEntity.returnId, redirect = Model.assignedEntity.returnTarget }, null)
         </div>
     </div>
 </div>

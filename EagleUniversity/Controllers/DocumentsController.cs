@@ -52,16 +52,26 @@ namespace EagleUniversity.Controllers
                 entity.Id = CourseId;
                 var course = db.Courses.Where(r => r.Id == (CourseId)).SingleOrDefault();
                 entity.EntityName = course.CourseName;
+                entity.returnId = CourseId;
+                entity.returnTarget = "Document";
             }
             else if (ModuleId != 0)
             {
                 entity.EntityType = "Module";
                 entity.Id = ModuleId;
+                var module = db.Modules.Where(r => r.Id == (ModuleId)).SingleOrDefault();
+                entity.EntityName = module.ModuleName;
+                entity.returnId = module.CourseId;
+                entity.returnTarget = "Default";
             }
             else if(ActivityId!=0)
             {
                 entity.EntityType = "Activity";
-                entity.Id = ActivityId;                    
+                entity.Id = ActivityId;
+                var activity = db.Activities.Where(r => r.Id == (ActivityId)).SingleOrDefault();
+                entity.EntityName = activity.ActivityName;
+                entity.returnId = activity.Modules.CourseId;
+                entity.returnTarget = "Default";
             }            
 
 
@@ -96,18 +106,50 @@ namespace EagleUniversity.Controllers
 
                 var user = User.Identity.GetUserId();
 
-                var courseDocument = new CourseDocument()
+                if (document.assignedEntity.EntityType == "Course")
                 {
-                    DocumentId = addDocument.Id,
-                    AssignDate = DateTime.Now,
-                    OwnerId = User.Identity.GetUserId(),
-                    CourseId =document.assignedEntity.Id
-                 };
 
-                db.CourseDocuments.Add(courseDocument);
-                db.SaveChanges();
+                    var courseDocument = new CourseDocument()
+                    {
+                        DocumentId = addDocument.Id,
+                        AssignDate = DateTime.Now,
+                        OwnerId = User.Identity.GetUserId(),
+                        CourseId = document.assignedEntity.Id
+                    };
 
-                return RedirectToAction("Details", "Courses", new { id = document.assignedEntity.Id, redirect = "Document" });
+                    db.CourseDocuments.Add(courseDocument);
+                    db.SaveChanges();
+                }
+                else if (document.assignedEntity.EntityType == "Module")
+                {
+                    var moduleDocument = new ModuleDocument()
+                    {
+                        DocumentId = addDocument.Id,
+                        AssignDate = DateTime.Now,
+                        OwnerId = User.Identity.GetUserId(),
+                        ModuleId = document.assignedEntity.Id
+                    };
+
+                    db.ModuleDocuments.Add(moduleDocument);
+                    db.SaveChanges();
+                }
+                else if (document.assignedEntity.EntityType == "Activity")
+                {
+                    var activityDocument = new ActivityDocument()
+                    {
+                        DocumentId = addDocument.Id,
+                        AssignDate = DateTime.Now,
+                        OwnerId = User.Identity.GetUserId(),
+                        ActivityId = document.assignedEntity.Id
+                    };
+
+                    db.ActivityDocuments.Add(activityDocument);
+                    db.SaveChanges();
+                }
+
+
+
+                    return RedirectToAction("Details", "Courses", new { id = document.assignedEntity.returnId, redirect = document.assignedEntity.returnTarget });
             }
 
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "DocumentTypeName", document.DocumentTypeId);
@@ -130,6 +172,8 @@ namespace EagleUniversity.Controllers
             DocumentEntity entity = new DocumentEntity() { EntityType = "", Id = 0 };
 
             var assignedCourse = db.CourseDocuments.Where(r => r.DocumentId == (document.Id)).SingleOrDefault();
+            var assignedModule = db.ModuleDocuments.Where(r => r.DocumentId == (document.Id)).SingleOrDefault();
+            var assignedActivity = db.ActivityDocuments.Where(r => r.DocumentId == (document.Id)).SingleOrDefault();
 
             if (assignedCourse != null)
             {
@@ -137,8 +181,27 @@ namespace EagleUniversity.Controllers
                 entity.Id = assignedCourse.CourseId;
                 entity.EntityName = assignedCourse.AssignedCourse.CourseName;
                 entity.DocumentTypeName = document.DocumentTypes.DocumentTypeName;
+                entity.returnId= assignedCourse.CourseId;
+                entity.returnTarget = "Document";
             }
-
+            else if (assignedModule != null)
+            {
+                entity.EntityType = "Module";
+                entity.Id = assignedModule.ModuleId;
+                entity.EntityName = assignedModule.AssignedModule.ModuleName;
+                entity.DocumentTypeName = document.DocumentTypes.DocumentTypeName;
+                entity.returnId = assignedModule.AssignedModule.CourseId;
+                entity.returnTarget = "Default";
+            }
+            else if (assignedActivity != null)
+            {
+                entity.EntityType = "Activity";
+                entity.Id = assignedActivity.ActivityId;
+                entity.EntityName = assignedActivity.AssignedActivity.ActivityName;
+                entity.DocumentTypeName = document.DocumentTypes.DocumentTypeName;
+                entity.returnId = assignedActivity.AssignedActivity.Modules.CourseId;
+                entity.returnTarget = "Default";
+            }
 
 
             var viewModel = new DocumentViewModel()
@@ -165,7 +228,7 @@ namespace EagleUniversity.Controllers
             {
                 db.Entry(documentToEdit).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Details", "Courses", new { id = document.assignedEntity.Id, redirect = "Document" });
+                return RedirectToAction("Details", "Courses", new { id = document.assignedEntity.returnId, redirect = document.assignedEntity.returnTarget });
             }
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "DocumentTypeName", document.DocumentTypeId);
             return View(document);
@@ -199,17 +262,44 @@ namespace EagleUniversity.Controllers
         public ActionResult DeleteAjaxDoc(int id)
         {
             Document document = db.Documents.Where(r=>r.Id==id).SingleOrDefault();
-            CourseDocument courseDocument = db.CourseDocuments.Where(r => r.DocumentId == document.Id).SingleOrDefault();
 
-            int returnId=0;
-            if (courseDocument!=null)
+            DocumentEntity entity = new DocumentEntity() { EntityType = "", Id = 0 };
+
+            var assignedCourse = db.CourseDocuments.Where(r => r.DocumentId == (document.Id)).SingleOrDefault();
+            var assignedModule = db.ModuleDocuments.Where(r => r.DocumentId == (document.Id)).SingleOrDefault();
+            var assignedActivity = db.ActivityDocuments.Where(r => r.DocumentId == (document.Id)).SingleOrDefault();
+
+            if (assignedCourse != null)
             {
-                returnId = courseDocument.CourseId;
+                entity.EntityType = "Course";
+                entity.Id = assignedCourse.CourseId;
+                entity.EntityName = assignedCourse.AssignedCourse.CourseName;
+                entity.DocumentTypeName = document.DocumentTypes.DocumentTypeName;
+                entity.returnId = assignedCourse.CourseId;
+                entity.returnTarget = "Document";
+            }
+            else if (assignedModule != null)
+            {
+                entity.EntityType = "Module";
+                entity.Id = assignedModule.ModuleId;
+                entity.EntityName = assignedModule.AssignedModule.ModuleName;
+                entity.DocumentTypeName = document.DocumentTypes.DocumentTypeName;
+                entity.returnId = assignedModule.AssignedModule.CourseId;
+                entity.returnTarget = "Default";
+            }
+            else if (assignedActivity != null)
+            {
+                entity.EntityType = "Activity";
+                entity.Id = assignedActivity.ActivityId;
+                entity.EntityName = assignedActivity.AssignedActivity.ActivityName;
+                entity.DocumentTypeName = document.DocumentTypes.DocumentTypeName;
+                entity.returnId = assignedActivity.AssignedActivity.Modules.CourseId;
+                entity.returnTarget = "Default";
             }
 
             db.Documents.Remove(document);
             db.SaveChanges();
-            return RedirectToAction("Details", "Courses", new { id = returnId, redirect = "Document" });
+            return RedirectToAction("Details", "Courses", new { id = entity.returnId, redirect = entity.returnTarget });
         }
 
         protected override void Dispose(bool disposing)

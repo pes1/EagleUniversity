@@ -12,5 +12,7 @@ namespace EagleUniversity.Models
         public string EntityName { get; set; }
         public string EntityFull { get { return EntityType + " " + EntityName; }}
         public string DocumentTypeName { get; set; }
+        public int returnId { get; set; }
+        public string returnTarget { get; set; }
     }
 }

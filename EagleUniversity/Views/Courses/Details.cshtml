@@ -39,7 +39,7 @@
                         <th> Module Name</th>
                         <th> StartDate </th>
                         <th> EndDate </th>
-                        <th>@Ajax.ActionLink("Create Module", "Create", "Modules", new { courseid = Model.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </th>
+                        <th>@Ajax.ActionLink("Create Module", "Create", "Modules", new { courseid = Model.Id }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </th>
                     </tr>
                     @foreach (var modul in Model.Modules)
                     {
@@ -47,7 +47,7 @@
                             <td>@Html.DisplayFor(x => modul.ModuleName)</td>
                             <td>@Html.DisplayFor(x => modul.StartDate)</td>
                             <td>@Html.DisplayFor(x => modul.EndDate)</td>
-                            <td>@Ajax.ActionLink("Edit", "Edit", "Modules", new { id = modul.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </td>
+                            <td>@Ajax.ActionLink("Edit", "Edit", "Modules", new { id = modul.Id }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </td>
                             <td>@Ajax.ActionLink("Delete", "DeleteAjax", "Modules", new { id = modul.Id }, new AjaxOptions { HttpMethod = "Post", Confirm = $"Delete module {modul.ModuleName}?", OnComplete = "OnComplete" }, null)</td>
                             <td>
 
