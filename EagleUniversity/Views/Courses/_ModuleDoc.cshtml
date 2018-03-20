@@ -1,7 +1,7 @@
 ﻿@model EagleUniversity.Models.Module
 
 <table class="table">
-    <tr>
+    <tr>        
         <th> Doc Name</th>
         <th> Doc Type</th>
         <th> UploadDate </th>
@@ -11,6 +11,7 @@
     @foreach (var doc in Model.DocumentModuleAssignments)
     {
     <tr>
+        <td></td>
         <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentName)</td>
         <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentTypes.DocumentTypeName)</td>
         <td>@Html.DisplayFor(x => doc.AssignedDocument.UploadDate)</td>

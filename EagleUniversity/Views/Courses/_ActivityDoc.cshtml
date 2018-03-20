@@ -1,23 +1,19 @@
 ﻿@model EagleUniversity.Models.Activity
 
 
-<table class="table">
-    <tr>
-        <th> Doc Name</th>
-        <th> Doc Type</th>
-        <th> UploadDate </th>
-        <th> DueDate </th>
-        <th>@Ajax.ActionLink("CreateDoc", "Create", "Documents", new { ActivityId = Model.Id }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </th>
-    </tr>
+<table class="table">    
     @foreach (var doc in Model.DocumentActivityAssignments)
     {
     <tr>
-        <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentName)</td>
         <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentTypes.DocumentTypeName)</td>
+        <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentName)</td>
+        <th>Upload</th>
         <td>@Html.DisplayFor(x => doc.AssignedDocument.UploadDate)</td>
+        <th>DueDate</th>
         <td>@Html.DisplayFor(x => doc.AssignedDocument.DueDate)</td>
         <td>@Ajax.ActionLink("Edit", "Edit", "Documents", new { Id = doc.DocumentId }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </td>
         <td>@Ajax.ActionLink("Remove", "DeleteAjaxDoc", "Documents", new { id = doc.DocumentId }, new AjaxOptions { HttpMethod = "Post", Confirm = $"Delete module {doc.AssignedDocument.DocumentName}?", OnComplete = "OnComplete" }, null)</td>
+        <th>@Ajax.ActionLink("+Document", "Create", "Documents", new { ActivityId = Model.Id }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </th>
     </tr>
     }
 </table>
