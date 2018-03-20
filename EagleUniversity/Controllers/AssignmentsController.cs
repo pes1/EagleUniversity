@@ -142,6 +142,18 @@ namespace EagleUniversity.Controllers
             return RedirectToAction("Index", "Account", new { userRoleId = "Student" });
         }
 
+        //Need to secure
+        [HttpPost]
+        public ActionResult DeleteAjax(UserEntity userEntity)
+        {
+            Assignments deleteAssigments = db.Assignments
+                .Where(r => r.CourseId == userEntity.returnId)
+                .Where(r => r.ApplicationUserId.Contains(userEntity.UserId)).FirstOrDefault();
+            db.Assignments.Remove(deleteAssigments);
+            db.SaveChanges();
+            return RedirectToAction(userEntity.returnMethod, userEntity.returnController, new { id = userEntity.returnId, redirect = userEntity.returnTarget  });
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

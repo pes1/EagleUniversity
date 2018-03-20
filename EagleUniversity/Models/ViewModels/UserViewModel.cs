@@ -26,7 +26,7 @@ namespace EagleUniversity.Models.ViewModels
                 return role;
                 }
             }
-        //public string AuthUserRole { get; set; }
+        public UserEntity assignedEntity { get; set; }
         public Course course
             {
             get

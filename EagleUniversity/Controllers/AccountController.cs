@@ -65,7 +65,7 @@ namespace EagleUniversity.Controllers
             //}
             return PartialView("_UserList", viewModel);
         }
-
+        //Index Get
         public ActionResult Index(string userRoleId = "Teacher")
         {
             //Requested list
@@ -119,7 +119,7 @@ namespace EagleUniversity.Controllers
         }
         //Get /Account/CreateUser
         [Authorize(Roles = "Teacher, Admin")]
-        public ActionResult CreateUser(string userRoleId = "Teacher")
+        public ActionResult CreateUser(string userRoleId = "Teacher", int CourseId=0)
         {            
             var role = (from r in _db.Roles where r.Name.Contains(userRoleId) select r).FirstOrDefault();
 

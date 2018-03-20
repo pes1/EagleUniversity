@@ -23,6 +23,8 @@ namespace EagleUniversity.Models
         public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual Course Course { get; set; }
 
+
+        //public UserEntity assignedEntity { get; set; }
         //Users Views
         public static Assignments userToCourse(string userId)
         {
