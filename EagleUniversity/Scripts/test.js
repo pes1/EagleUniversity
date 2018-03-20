@@ -20,7 +20,7 @@ $(document).ready(
             $("#Document").addClass("active");
             $("#menu2").addClass("in active");
         }
-        $("#Redirected").hide();
+        //$("#Redirected").hide();
   
     }
 );
