@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -76,7 +75,7 @@ namespace EagleUniversity.Controllers
 
 
             var viewModel = new DocumentViewModel()
-            {  assignedEntity=entity  };
+            {  assignedEntity=entity, DueDate=DateTime.Now  };
 
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "DocumentTypeName");
             return View(viewModel);
@@ -87,7 +86,7 @@ namespace EagleUniversity.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(DocumentViewModel document)
+        public ActionResult Create(DocumentViewModel document, HttpPostedFileBase upload)
         {
             var addDocument = new Document()
             {
@@ -99,57 +98,83 @@ namespace EagleUniversity.Controllers
                 UploadDate = DateTime.Now
             };
 
-            if (ModelState.IsValid)
+            if (upload != null && upload.ContentLength > 0)
             {
-                db.Documents.Add(addDocument);
-                db.SaveChanges();
 
-                var user = User.Identity.GetUserId();
-
-                if (document.assignedEntity.EntityType == "Course")
+                try
                 {
+                    if (ModelState.IsValid)
 
-                    var courseDocument = new CourseDocument()
                     {
-                        DocumentId = addDocument.Id,
-                        AssignDate = DateTime.Now,
-                        OwnerId = User.Identity.GetUserId(),
-                        CourseId = document.assignedEntity.Id
-                    };
+                        if (upload != null && upload.ContentLength > 0)
+                        {
+                            addDocument.DocumentName = System.IO.Path.GetFileName(upload.FileName);
+                            addDocument.FileType = upload.ContentType;
+                            using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                            {
+                                addDocument.Content = reader.ReadBytes(upload.ContentLength);
+                            }
+                        }
 
-                    db.CourseDocuments.Add(courseDocument);
-                    db.SaveChanges();
+                        db.Documents.Add(addDocument);
+                        db.SaveChanges();
+
+
+
+                        var user = User.Identity.GetUserId();
+
+                        if (document.assignedEntity.EntityType == "Course")
+                        {
+
+                            var courseDocument = new CourseDocument()
+                            {
+                                DocumentId = addDocument.Id,
+                                AssignDate = DateTime.Now,
+                                OwnerId = User.Identity.GetUserId(),
+                                CourseId = document.assignedEntity.Id
+                            };
+
+                            db.CourseDocuments.Add(courseDocument);
+                            db.SaveChanges();
+                        }
+                        else if (document.assignedEntity.EntityType == "Module")
+                        {
+                            var moduleDocument = new ModuleDocument()
+                            {
+                                DocumentId = addDocument.Id,
+                                AssignDate = DateTime.Now,
+                                OwnerId = User.Identity.GetUserId(),
+                                ModuleId = document.assignedEntity.Id
+                            };
+
+                            db.ModuleDocuments.Add(moduleDocument);
+                            db.SaveChanges();
+                        }
+                        else if (document.assignedEntity.EntityType == "Activity")
+                        {
+                            var activityDocument = new ActivityDocument()
+                            {
+                                DocumentId = addDocument.Id,
+                                AssignDate = DateTime.Now,
+                                OwnerId = User.Identity.GetUserId(),
+                                ActivityId = document.assignedEntity.Id
+                            };
+
+                            db.ActivityDocuments.Add(activityDocument);
+                            db.SaveChanges();
+                        }
+
+
+
+                        return RedirectToAction("Details", "Courses", new { id = document.assignedEntity.returnId, redirect = document.assignedEntity.returnTarget });
+                    }
                 }
-                else if (document.assignedEntity.EntityType == "Module")
+                catch
                 {
-                    var moduleDocument = new ModuleDocument()
-                    {
-                        DocumentId = addDocument.Id,
-                        AssignDate = DateTime.Now,
-                        OwnerId = User.Identity.GetUserId(),
-                        ModuleId = document.assignedEntity.Id
-                    };
-
-                    db.ModuleDocuments.Add(moduleDocument);
-                    db.SaveChanges();
-                }
-                else if (document.assignedEntity.EntityType == "Activity")
-                {
-                    var activityDocument = new ActivityDocument()
-                    {
-                        DocumentId = addDocument.Id,
-                        AssignDate = DateTime.Now,
-                        OwnerId = User.Identity.GetUserId(),
-                        ActivityId = document.assignedEntity.Id
-                    };
-
-                    db.ActivityDocuments.Add(activityDocument);
-                    db.SaveChanges();
+                    //Log the error (uncomment dex variable name and add a line here to write a log.
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                 }
 
-
-
-                    return RedirectToAction("Details", "Courses", new { id = document.assignedEntity.returnId, redirect = document.assignedEntity.returnTarget });
             }
 
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "DocumentTypeName", document.DocumentTypeId);
@@ -216,16 +241,28 @@ namespace EagleUniversity.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(DocumentViewModel document)
+        public ActionResult Edit(DocumentViewModel document, HttpPostedFileBase upload)
         {
+
             Document documentToEdit = db.Documents.Find(document.Id);
-            documentToEdit.DocumentName = document.DocumentName;
+
+            //documentToEdit.DocumentName = document.DocumentName;
             documentToEdit.DocumentContent = document.DocumentContent;
             documentToEdit.DueDate = document.DueDate;
 
 
             if (ModelState.IsValid)
             {
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    documentToEdit.DocumentName = System.IO.Path.GetFileName(upload.FileName);
+                    documentToEdit.FileType = upload.ContentType;
+                    using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                    {
+                        documentToEdit.Content = reader.ReadBytes(upload.ContentLength);
+                    }
+                }
+
                 db.Entry(documentToEdit).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Details", "Courses", new { id = document.assignedEntity.returnId, redirect = document.assignedEntity.returnTarget });

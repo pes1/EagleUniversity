@@ -4,7 +4,7 @@
     ViewBag.Title = "Create";
 }
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Documents", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
@@ -23,21 +23,21 @@
         </div>
     </div>
 
-    <div class="form-group">
+    @*<div class="form-group">
         @Html.LabelFor(model => model.DocumentName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.DocumentName, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.DocumentName, "", new { @class = "text-danger" })
         </div>
-    </div>
+    </div>*@
 
-    <div class="form-group">
+    @*<div class="form-group">
         @Html.LabelFor(model => model.DocumentContent, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.DocumentContent, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.DocumentContent, "", new { @class = "text-danger" })
         </div>
-    </div>
+    </div>*@
 
     <div class="form-group">
         @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -52,6 +52,13 @@
         <div class="col-md-10">
             @Html.DropDownList("DocumentTypeId", null, htmlAttributes: new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.DocumentTypeId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Document", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="file" id="Document" name="upload" />
         </div>
     </div>
 
