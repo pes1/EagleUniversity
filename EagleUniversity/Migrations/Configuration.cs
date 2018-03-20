@@ -23,16 +23,132 @@ namespace EagleUniversity.Migrations
             //  to avoid creating duplicate seed data.
             context.Courses.AddOrUpdate(
               c => c.CourseName,
-            new Course { CourseName = ".NET", StartDate=DateTime.Now, EndDate=DateTime.Now },
-            new Course { CourseName = "OFFICE 365", StartDate = DateTime.Now, EndDate = DateTime.Now },
-            new Course { CourseName = "JAVA", StartDate = DateTime.Now, EndDate = DateTime.Now }
+            new Course { CourseName = ".NET", StartDate = DateTime.Parse("2018-03-01"), EndDate = DateTime.Parse("2018-09-30") },
+            new Course { CourseName = "OFFICE 365", StartDate = DateTime.Parse("2018-06-01"), EndDate = DateTime.Parse("2018-12-31") },
+            new Course { CourseName = "JAVA", StartDate = DateTime.Parse("2018-09-01"), EndDate = DateTime.Parse("2019-03-31") }
             );
+            context.SaveChanges();
+
+            var courseDot = context.Courses.Where(r => r.CourseName .Contains(".NET")).SingleOrDefault();
+            var courseOff = context.Courses.Where(r => r.CourseName.Contains("OFFICE 365")).SingleOrDefault();
+            var courseJav = context.Courses.Where(r => r.CourseName.Contains("JAVA")).SingleOrDefault();
+
+            context.Modules.AddOrUpdate(
+              c => c.ModuleName,
+            new Module { ModuleName = ".NET C#", StartDate = DateTime.Parse("2018-03-01"), EndDate = DateTime.Parse("2018-03-31"), CourseId = courseDot.Id },
+            new Module { ModuleName = ".NET WEBB", StartDate = DateTime.Parse("2018-04-01"), EndDate = DateTime.Parse("2018-04-30"), CourseId = courseDot.Id },
+            new Module { ModuleName = ".NET MVC P1", StartDate = DateTime.Parse("2018-05-01"), EndDate = DateTime.Parse("2018-05-31"), CourseId = courseDot.Id },
+            new Module { ModuleName = ".NET Database", StartDate = DateTime.Parse("2018-06-01"), EndDate = DateTime.Parse("2018-06-30"), CourseId = courseDot.Id },
+            new Module { ModuleName = ".NET MVC P2", StartDate = DateTime.Parse("2018-07-01"), EndDate = DateTime.Parse("2018-09-30"), CourseId = courseDot.Id },
+
+            new Module { ModuleName = "O365 MOD 1", StartDate = DateTime.Parse("2018-06-01"), EndDate = DateTime.Parse("2018-06-30"), CourseId = courseOff.Id },
+            new Module { ModuleName = "O365 MOD 2", StartDate = DateTime.Parse("2018-07-01"), EndDate = DateTime.Parse("2018-07-31"), CourseId = courseOff.Id },
+            new Module { ModuleName = "O365 MOD 3", StartDate = DateTime.Parse("2018-08-01"), EndDate = DateTime.Parse("2018-08-31"), CourseId = courseOff.Id },
+            new Module { ModuleName = "O365 MOD 4", StartDate = DateTime.Parse("2018-09-01"), EndDate = DateTime.Parse("2018-09-30"), CourseId = courseOff.Id },
+            new Module { ModuleName = "O365 MOD 5", StartDate = DateTime.Parse("2018-10-01"), EndDate = DateTime.Parse("2018-12-31"), CourseId = courseOff.Id },
+
+            new Module { ModuleName = "JAVA MOD 1", StartDate = DateTime.Parse("2018-09-01"), EndDate = DateTime.Parse("2018-09-30"), CourseId = courseJav.Id },
+            new Module { ModuleName = "JAVA MOD 2", StartDate = DateTime.Parse("2018-10-01"), EndDate = DateTime.Parse("2018-10-31"), CourseId = courseJav.Id },
+            new Module { ModuleName = "JAVA MOD 3", StartDate = DateTime.Parse("2018-11-01"), EndDate = DateTime.Parse("2018-11-30"), CourseId = courseJav.Id },
+            new Module { ModuleName = "JAVA MOD 4", StartDate = DateTime.Parse("2018-12-01"), EndDate = DateTime.Parse("2018-12-31"), CourseId = courseJav.Id },
+            new Module { ModuleName = "JAVA MOD 5", StartDate = DateTime.Parse("2019-01-01"), EndDate = DateTime.Parse("2019-03-31"), CourseId = courseJav.Id }
+            );
+            context.SaveChanges();
+
             context.ActivityTypes.AddOrUpdate(
-            c => c.ActivityTypeName,
-            new ActivityType { ActivityTypeName= "E-Learning" },
-            new ActivityType { ActivityTypeName = "Seminar" },
-            new ActivityType { ActivityTypeName = "Exercise" }
+                c => c.ActivityTypeName,
+                new ActivityType { ActivityTypeName = "E-Learning" },
+                new ActivityType { ActivityTypeName = "Seminar" },
+                new ActivityType { ActivityTypeName = "Exercise" }
+                );
+            context.SaveChanges();
+
+            var moduleMod1 = context.Modules.Where(m => m.ModuleName.Contains(".NET C#")).SingleOrDefault();
+            var moduleMod2 = context.Modules.Where(m => m.ModuleName.Contains(".NET WEBB")).SingleOrDefault();
+            var moduleMod3 = context.Modules.Where(m => m.ModuleName.Contains(".NET MVC P1")).SingleOrDefault();
+            var moduleMod4 = context.Modules.Where(m => m.ModuleName.Contains(".NET Database")).SingleOrDefault();
+            var moduleMod5 = context.Modules.Where(m => m.ModuleName.Contains(".NET MVC P2")).SingleOrDefault();
+
+            var moduleMod6 = context.Modules.Where(m => m.ModuleName.Contains("O365 MOD 1")).SingleOrDefault();
+            var moduleMod7 = context.Modules.Where(m => m.ModuleName.Contains("O365 MOD 2")).SingleOrDefault();
+            var moduleMod8 = context.Modules.Where(m => m.ModuleName.Contains("O365 MOD 3")).SingleOrDefault();
+            var moduleMod9 = context.Modules.Where(m => m.ModuleName.Contains("O365 MOD 4")).SingleOrDefault();
+            var moduleMod10 = context.Modules.Where(m => m.ModuleName.Contains("O365 MOD 5")).SingleOrDefault();
+
+            var moduleMod11 = context.Modules.Where(m => m.ModuleName.Contains("JAVA MOD 1")).SingleOrDefault();
+            var moduleMod12 = context.Modules.Where(m => m.ModuleName.Contains("JAVA MOD 2")).SingleOrDefault();
+            var moduleMod13 = context.Modules.Where(m => m.ModuleName.Contains("JAVA MOD 3")).SingleOrDefault();
+            var moduleMod14 = context.Modules.Where(m => m.ModuleName.Contains("JAVA MOD 4")).SingleOrDefault();
+            var moduleMod15 = context.Modules.Where(m => m.ModuleName.Contains("JAVA MOD 5")).SingleOrDefault();
+
+            var activityTypeElearning = context.ActivityTypes.Where(m => m.ActivityTypeName.Contains("E-Learning")).SingleOrDefault();
+            var activityTypeSeminar = context.ActivityTypes.Where(m => m.ActivityTypeName.Contains("Seminar")).SingleOrDefault();
+            var activityTypeExercise = context.ActivityTypes.Where(m => m.ActivityTypeName.Contains("Exercise")).SingleOrDefault();
+
+            context.Activities.AddOrUpdate(
+              c => c.ActivityName,
+            new Activity { ActivityName = ".NET C# ACT 1", StartDate = DateTime.Parse("2018-03-01"), EndDate = DateTime.Parse("2018-03-10"), ModuleId = moduleMod1.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = ".NET C# ACT 2", StartDate = DateTime.Parse("2018-03-11"), EndDate = DateTime.Parse("2018-03-20"), ModuleId = moduleMod1.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = ".NET C# ACT 3", StartDate = DateTime.Parse("2018-03-21"), EndDate = DateTime.Parse("2018-03-31"), ModuleId = moduleMod1.Id, ActivityTypeId = activityTypeExercise.Id },
+
+            new Activity { ActivityName = ".NET WEBB ACT 1", StartDate = DateTime.Parse("2018-04-01"), EndDate = DateTime.Parse("2018-04-10"), ModuleId = moduleMod2.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = ".NET WEBB ACT 2", StartDate = DateTime.Parse("2018-04-11"), EndDate = DateTime.Parse("2018-04-20"), ModuleId = moduleMod2.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = ".NET WEBB ACT 3", StartDate = DateTime.Parse("2018-04-21"), EndDate = DateTime.Parse("2018-04-30"), ModuleId = moduleMod2.Id, ActivityTypeId = activityTypeExercise.Id },
+
+            new Activity { ActivityName = ".NET MVC P1 ACT 1", StartDate = DateTime.Parse("2018-05-01"), EndDate = DateTime.Parse("2018-05-10"), ModuleId = moduleMod3.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = ".NET MVC P1 ACT 2", StartDate = DateTime.Parse("2018-05-11"), EndDate = DateTime.Parse("2018-05-20"), ModuleId = moduleMod3.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = ".NET MVC P1 ACT 3", StartDate = DateTime.Parse("2018-05-21"), EndDate = DateTime.Parse("2018-05-31"), ModuleId = moduleMod3.Id, ActivityTypeId = activityTypeExercise.Id },
+
+            new Activity { ActivityName = ".NET Database ACT 1", StartDate = DateTime.Parse("2018-06-01"), EndDate = DateTime.Parse("2018-06-10"), ModuleId = moduleMod4.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = ".NET Database ACT 2", StartDate = DateTime.Parse("2018-06-11"), EndDate = DateTime.Parse("2018-06-20"), ModuleId = moduleMod4.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = ".NET Database ACT 3", StartDate = DateTime.Parse("2018-06-21"), EndDate = DateTime.Parse("2018-06-30"), ModuleId = moduleMod4.Id, ActivityTypeId = activityTypeExercise.Id },
+
+            new Activity { ActivityName = ".NET MVC P2 ACT 1", StartDate = DateTime.Parse("2018-07-01"), EndDate = DateTime.Parse("2018-07-31"), ModuleId = moduleMod5.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = ".NET MVC P2 ACT 2", StartDate = DateTime.Parse("2018-08-01"), EndDate = DateTime.Parse("2018-08-31"), ModuleId = moduleMod5.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = ".NET MVC P2 ACT 3", StartDate = DateTime.Parse("2018-09-01"), EndDate = DateTime.Parse("2018-09-30"), ModuleId = moduleMod5.Id, ActivityTypeId = activityTypeExercise.Id },
+
+            new Activity { ActivityName = "O365 MOD 1 ACT 1", StartDate = DateTime.Parse("2018-06-01"), EndDate = DateTime.Parse("2018-06-10"), ModuleId = moduleMod6.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = "O365 MOD 1 ACT 2", StartDate = DateTime.Parse("2018-06-11"), EndDate = DateTime.Parse("2018-06-20"), ModuleId = moduleMod6.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = "O365 MOD 1 ACT 3", StartDate = DateTime.Parse("2018-06-21"), EndDate = DateTime.Parse("2018-06-30"), ModuleId = moduleMod6.Id, ActivityTypeId = activityTypeExercise.Id },
+
+            new Activity { ActivityName = "O365 MOD 2 ACT 1", StartDate = DateTime.Parse("2018-07-01"), EndDate = DateTime.Parse("2018-07-10"), ModuleId = moduleMod7.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = "O365 MOD 2 ACT 2", StartDate = DateTime.Parse("2018-07-11"), EndDate = DateTime.Parse("2018-07-20"), ModuleId = moduleMod7.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = "O365 MOD 2 ACT 3", StartDate = DateTime.Parse("2018-07-21"), EndDate = DateTime.Parse("2018-07-31"), ModuleId = moduleMod7.Id, ActivityTypeId = activityTypeExercise.Id },
+
+            new Activity { ActivityName = "O365 MOD 3 ACT 1", StartDate = DateTime.Parse("2018-08-01"), EndDate = DateTime.Parse("2018-08-10"), ModuleId = moduleMod8.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = "O365 MOD 3 ACT 2", StartDate = DateTime.Parse("2018-08-11"), EndDate = DateTime.Parse("2018-08-20"), ModuleId = moduleMod8.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = "O365 MOD 3 ACT 3", StartDate = DateTime.Parse("2018-08-21"), EndDate = DateTime.Parse("2018-08-31"), ModuleId = moduleMod8.Id, ActivityTypeId = activityTypeExercise.Id },
+
+            new Activity { ActivityName = "O365 MOD 4 ACT 1", StartDate = DateTime.Parse("2018-09-01"), EndDate = DateTime.Parse("2018-09-10"), ModuleId = moduleMod9.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = "O365 MOD 4 ACT 2", StartDate = DateTime.Parse("2018-09-11"), EndDate = DateTime.Parse("2018-09-20"), ModuleId = moduleMod9.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = "O365 MOD 4 ACT 3", StartDate = DateTime.Parse("2018-09-21"), EndDate = DateTime.Parse("2018-09-30"), ModuleId = moduleMod9.Id, ActivityTypeId = activityTypeExercise.Id },
+
+            new Activity { ActivityName = "O365 MOD 5 ACT 1", StartDate = DateTime.Parse("2018-10-01"), EndDate = DateTime.Parse("2018-10-31"), ModuleId = moduleMod10.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = "O365 MOD 5 ACT 2", StartDate = DateTime.Parse("2018-11-01"), EndDate = DateTime.Parse("2018-11-30"), ModuleId = moduleMod10.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = "O365 MOD 5 ACT 3", StartDate = DateTime.Parse("2018-12-01"), EndDate = DateTime.Parse("2018-12-31"), ModuleId = moduleMod10.Id, ActivityTypeId = activityTypeExercise.Id },
+
+            new Activity { ActivityName = "JAVA MOD 1 ACT 1", StartDate = DateTime.Parse("2018-09-01"), EndDate = DateTime.Parse("2018-09-10"), ModuleId = moduleMod11.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = "JAVA MOD 1 ACT 2", StartDate = DateTime.Parse("2018-09-11"), EndDate = DateTime.Parse("2018-09-20"), ModuleId = moduleMod11.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = "JAVA MOD 1 ACT 3", StartDate = DateTime.Parse("2018-09-21"), EndDate = DateTime.Parse("2018-09-30"), ModuleId = moduleMod11.Id, ActivityTypeId = activityTypeExercise.Id },
+
+            new Activity { ActivityName = "JAVA MOD 2 ACT 1", StartDate = DateTime.Parse("2018-10-01"), EndDate = DateTime.Parse("2018-10-10"), ModuleId = moduleMod12.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = "JAVA MOD 2 ACT 2", StartDate = DateTime.Parse("2018-10-11"), EndDate = DateTime.Parse("2018-10-20"), ModuleId = moduleMod12.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = "JAVA MOD 2 ACT 3", StartDate = DateTime.Parse("2018-10-21"), EndDate = DateTime.Parse("2018-10-31"), ModuleId = moduleMod12.Id, ActivityTypeId = activityTypeExercise.Id },
+
+            new Activity { ActivityName = "JAVA MOD 3 ACT 1", StartDate = DateTime.Parse("2018-11-01"), EndDate = DateTime.Parse("2018-11-10"), ModuleId = moduleMod13.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = "JAVA MOD 3 ACT 2", StartDate = DateTime.Parse("2018-11-11"), EndDate = DateTime.Parse("2018-11-20"), ModuleId = moduleMod13.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = "JAVA MOD 3 ACT 3", StartDate = DateTime.Parse("2018-11-21"), EndDate = DateTime.Parse("2018-11-30"), ModuleId = moduleMod13.Id, ActivityTypeId = activityTypeExercise.Id },
+
+            new Activity { ActivityName = "JAVA MOD 4 ACT 1", StartDate = DateTime.Parse("2018-12-01"), EndDate = DateTime.Parse("2018-12-10"), ModuleId = moduleMod14.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = "JAVA MOD 4 ACT 2", StartDate = DateTime.Parse("2018-12-11"), EndDate = DateTime.Parse("2018-12-20"), ModuleId = moduleMod14.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = "JAVA MOD 4 ACT 3", StartDate = DateTime.Parse("2018-12-21"), EndDate = DateTime.Parse("2018-12-31"), ModuleId = moduleMod14.Id, ActivityTypeId = activityTypeExercise.Id },
+
+            new Activity { ActivityName = "JAVA MOD 5 ACT 1", StartDate = DateTime.Parse("2019-01-01"), EndDate = DateTime.Parse("2019-01-31"), ModuleId = moduleMod15.Id, ActivityTypeId = activityTypeElearning.Id },
+            new Activity { ActivityName = "JAVA MOD 5 ACT 2", StartDate = DateTime.Parse("2019-02-01"), EndDate = DateTime.Parse("2019-02-28"), ModuleId = moduleMod15.Id, ActivityTypeId = activityTypeSeminar.Id },
+            new Activity { ActivityName = "JAVA MOD 5 ACT 3", StartDate = DateTime.Parse("2019-03-01"), EndDate = DateTime.Parse("2019-03-31"), ModuleId = moduleMod15.Id, ActivityTypeId = activityTypeExercise.Id }
             );
+
+            context.SaveChanges();    
 
             context.DocumentTypes.AddOrUpdate(
                 c => c.DocumentTypeName,
@@ -73,7 +189,6 @@ namespace EagleUniversity.Migrations
                         throw new Exception(string.Join("\n", result.Errors));
                     }
                 }
-
             }
             //Add to role
             foreach (var item in context.Users.ToList())
@@ -91,7 +206,6 @@ namespace EagleUniversity.Migrations
                     userManager.AddToRole(item.Id, "Student");
                 }
             }
-
         }
     }
 }

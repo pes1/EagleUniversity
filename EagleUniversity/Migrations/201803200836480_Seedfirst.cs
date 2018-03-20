@@ -3,7 +3,7 @@ namespace EagleUniversity.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Change2 : DbMigration
+    public partial class Seedfirst : DbMigration
     {
         public override void Up()
         {
