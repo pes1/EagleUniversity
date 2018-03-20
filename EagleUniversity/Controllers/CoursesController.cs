@@ -22,8 +22,9 @@ namespace EagleUniversity.Controllers
         }
 
         // GET: Courses/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, string redirect = "Default" )
         {
+            ViewBag.redirectViewBag = redirect;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

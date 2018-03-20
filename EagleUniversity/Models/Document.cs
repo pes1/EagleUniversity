@@ -13,6 +13,10 @@ namespace EagleUniversity.Models
         public string DocumentName { get; set; }
         [Display(Name = "Document Content")]
         public string DocumentContent { get; set; }
+        //
+        public byte[] Content { get; set; }
+        public string FileType { get; set; }
+        //
         [Display(Name = "Upload Date")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime UploadDate { get; set; }

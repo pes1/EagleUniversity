@@ -52,29 +52,33 @@
         <td>
             @Html.DisplayFor(modelItem => item.AssignedEntity)
         </td>
+
+        <td>
+            <img src="~/File?id=@item.Id" alt="test" />
+        </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
             @Html.ActionLink("Details", "Details", new { id = item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id = item.Id })
 
             @if (item.AssignedEntity == "Not Assigned")
-                {
-        @Html.ActionLink("AssignToCourse ", "Create", "CourseDocuments", new { DocumentId = item.Id }, null)
-        @Html.ActionLink("AssignToModule ", "Create", "ModuleDocuments", new { DocumentId = item.Id }, null)
-        @Html.ActionLink("AssignToAct ", "Create", "ActivityDocuments", new { DocumentId = item.Id }, null)
-                }
+        {
+            @Html.ActionLink("AssignToCourse ", "Create", "CourseDocuments", new { DocumentId = item.Id }, null)
+            @Html.ActionLink("AssignToModule ", "Create", "ModuleDocuments", new { DocumentId = item.Id }, null)
+            @Html.ActionLink("AssignToAct ", "Create", "ActivityDocuments", new { DocumentId = item.Id }, null)
+    }
             @if (item.AssignedEntity.Contains("Course"))
-                {
-        @Html.ActionLink("Remove ", "Delete", "CourseDocuments", new { DocumentId = item.Id }, null)
-                }
+        {
+            @Html.ActionLink("Remove ", "Delete", "CourseDocuments", new { DocumentId = item.Id }, null)
+    }
             @if (item.AssignedEntity.Contains("Module"))
-                {
-        @Html.ActionLink("Remove ", "Delete", "ModuleDocuments", new { DocumentId = item.Id }, null)
-                }
+        {
+            @Html.ActionLink("Remove ", "Delete", "ModuleDocuments", new { DocumentId = item.Id }, null)
+    }
             @if (item.AssignedEntity.Contains("Activity"))
-                {
-        @Html.ActionLink("Remove ", "Delete", "ActivityDocuments", new { DocumentId = item.Id }, null)
-                }
+        {
+            @Html.ActionLink("Remove ", "Delete", "ActivityDocuments", new { DocumentId = item.Id }, null)
+    }
 
         </td>
     </tr>

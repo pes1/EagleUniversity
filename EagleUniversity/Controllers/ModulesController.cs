@@ -77,7 +77,7 @@ namespace EagleUniversity.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseName", module.CourseId);
+            //ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseName", module.CourseId);
             return View(module);
         }
 
@@ -92,9 +92,9 @@ namespace EagleUniversity.Controllers
             {
                 db.Entry(module).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Courses", new { id = module.CourseId });
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseName", module.CourseId);
+            //ViewBag.CourseId = new SelectList(db.Courses, "Id", "CourseName", module.CourseId);
             return View(module);
         }
 

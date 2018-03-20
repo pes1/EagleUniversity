@@ -83,8 +83,8 @@ namespace EagleUniversity.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "ActivityTypeName", activity.ActivityTypeId);
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "ModuleName", activity.ModuleId);
+            //ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "ActivityTypeName", activity.ActivityTypeId);
+            //ViewBag.ModuleId = new SelectList(db.Modules, "Id", "ModuleName", activity.ModuleId);
             return View(activity);
         }
 
@@ -95,14 +95,16 @@ namespace EagleUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,ActivityName,StartDate,EndDate,ModuleId,ActivityTypeId")] Activity activity)
         {
+            var module = db.Modules.Where(r => r.Id == (activity.ModuleId)).SingleOrDefault();
+
             if (ModelState.IsValid)
             {
                 db.Entry(activity).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Courses", new { id = module.CourseId });
             }
-            ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "ActivityTypeName", activity.ActivityTypeId);
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "ModuleName", activity.ModuleId);
+            //ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "ActivityTypeName", activity.ActivityTypeId);
+            //ViewBag.ModuleId = new SelectList(db.Modules, "Id", "ModuleName", activity.ModuleId);
             return View(activity);
         }
 
