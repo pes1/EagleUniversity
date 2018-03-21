@@ -22,7 +22,7 @@ $(document).ready(
             $("#Document").addClass("active");
             $("#menu2").addClass("in active");
         }
-        else if ($("#Redirected").text() === "Document") {
+        else if ($("#Redirected").text() === "Student") {
             $("#Default").removeClass("active");
             $("#home").removeClass("in active");
             $("#Document").removeClass("active");

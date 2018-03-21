@@ -88,7 +88,17 @@
         </div>
         <div id="menu1" class="tab-pane fade">
             <div class="row">
-                @Html.Action("UserListPartial", "Account", new { CourseId = Model.Id })
+                <table class="table">
+                    <tr>
+                        <th>Course Student</th>
+                        <th>Available Student</th>
+                    </tr>
+                    <tr>
+                        <td>@Html.Action("UserListPartial", "Account", new { CourseId = Model.Id })</td>
+                        <td>@Html.Action("UserListPartial", "Account", new { CourseId = Model.Id , isEmpty=true })</td>
+                    </tr>
+                </table>
+
             </div>
         </div>
         <div id="menu2" class="tab-pane fade">

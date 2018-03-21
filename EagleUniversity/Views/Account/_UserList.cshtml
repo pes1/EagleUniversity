@@ -34,15 +34,43 @@
                     <a href=# class="dropdown-toggle btn btn-primary" data-toggle="dropdown">More ... </a>
                     <ul class="dropdown-menu">
                         @if (User.IsInRole("Teacher"))
-                            {
+                        {
                     <li>@Ajax.ActionLink("Edit", "EditUser", "Account", new { id = item.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </li>
-                    <li>@Ajax.ActionLink("Delete", "XXXDeleteUser", "Account", new { id = item.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </li>               
-                    <li>@Ajax.ActionLink("Remove", "DeleteAjax", "Assignments", new { UserId = item.Id, returnId = item.course.Id, returnController = "Courses"
-                       , returnMethod = "Details", returnTarget = "Student" }
-                   , new AjaxOptions { HttpMethod = "Post", Confirm = $"Remove student: {item.Fullname} from course: {item.course.CourseName}?"
-                       //, OnComplete = "OnComplete"
-                   }, null) </li>
-                            }
+                    <li>@Ajax.ActionLink("Delete", "XXXDeleteUser", "Account", new { id = item.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </li>  
+                        }
+                    @if (item.course.CourseName == "Not Assigned" && User.IsInRole("Teacher"))
+                    {
+                    <li>
+                        @Ajax.ActionLink("Add to Course", "CreateAjax", "Assignments", new
+                    {
+                    UserId = item.Id,
+                    returnId = item.requestedCourseId,
+                    returnController = "Courses",
+                    returnMethod = "Details",
+                    returnTarget = "Student"
+                    }
+                    , new AjaxOptions
+                    {
+                    UpdateTargetId = "create-entity",
+                    OnBegin = "OnBegin"
+                    }, null)
+                                        </li>
+                    }
+                    else
+                    {<li>@Ajax.ActionLink("Remove from Course", "DeleteAjax", "Assignments", new
+                    {
+                        UserId = item.Id,
+                        returnId = item.course.Id,
+                        returnController = "Courses",
+                        returnMethod = "Details",
+                        returnTarget = "Student"
+                    }
+                           , new AjaxOptions
+                           {
+                               UpdateTargetId = "create-entity",
+                               OnBegin = "OnBegin"
+                           }, null) </li>
+                     }       
                         <li>@Ajax.ActionLink("Detail", "DetailUser", "Account", new { id = item.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </li>
                     </ul>
                 </div>

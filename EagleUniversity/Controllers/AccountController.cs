@@ -36,33 +36,55 @@ namespace EagleUniversity.Controllers
 
         //Manage User Part
         [AllowAnonymous]
-        public ActionResult UserListPartial(int CourseId)
+        public ActionResult UserListPartial(int CourseId,  bool isEmpty=false)
         {
             var role = (from r in _db.Roles where r.Name.Contains("Student") select r).FirstOrDefault();
 
+
             var viewModel = _db.Users
-            .Where(
-            x => x.Roles.Select(r => r.RoleId)
-            .Contains(role.Id)
-            )
-            .Where(
-                    x => x.CourseUserAssigments.Select
-                    (k => k.CourseId)
-                    .Contains(CourseId)
-                )
-            .Select(r => new UserViewModel
+    .Where(x => x.Roles.Select(r => r.RoleId)
+    .Contains(role.Id)
+    )
+    .Where(
+        x => x.CourseUserAssigments.Select
+        (k => k.CourseId)
+        .Contains(CourseId)
+    )
+    .Select(r => new UserViewModel
+    {
+    Id = r.Id,
+    FirstName = r.FirstName,
+    Email = r.Email,
+    RegistrationTime = r.RegistrationTime,
+    LastName = r.LastName, requestedCourseId= CourseId
+    });
+            if (isEmpty)
             {
-                Id = r.Id,
-                FirstName = r.FirstName,
-                Email = r.Email,
-                RegistrationTime = r.RegistrationTime,
-                LastName = r.LastName
-            });
+                viewModel = _db.Users
+                .Where(
+                x => x.Roles.Select(r => r.RoleId)
+                .Contains(role.Id)
+                )
+                //.Where(
+                //            x => x.CourseUserAssigments.Select
+                //            (k => k.CourseId)
+                //            .Contains(CourseId)
+                //    )
+                .Select(r => new UserViewModel
+                {
+                    Id = r.Id,
+                    FirstName = r.FirstName,
+                    Email = r.Email,
+                    RegistrationTime = r.RegistrationTime,
+                    LastName = r.LastName, requestedCourseId= CourseId
+                });
+            }
 
             //if (viewModel.Count() <= 0)
             //{
             //    return HttpNotFound();
             //}
+
             return PartialView("_UserList", viewModel);
         }
         //Index Get

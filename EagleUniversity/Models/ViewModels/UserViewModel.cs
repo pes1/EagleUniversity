@@ -27,6 +27,7 @@ namespace EagleUniversity.Models.ViewModels
                 }
             }
         public UserEntity assignedEntity { get; set; }
+        public int requestedCourseId { get; set; }
         public Course course
             {
             get

@@ -1,0 +1,55 @@
+﻿@model EagleUniversity.Models.ViewModels.AssignmentsViewModel
+
+<h3 style="color:Tomato;">Are you sure?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        @*<dt>
+                @Html.DisplayNameFor(model => model.CourseId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CourseId)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ApplicationUserId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ApplicationUserId)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.AssignDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.AssignDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OwnerId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OwnerId)
+            </dd>*@
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.assignedPropety.returnController)
+        @Html.HiddenFor(model => model.assignedPropety.returnId)
+        @Html.HiddenFor(model => model.assignedPropety.returnMethod)
+        @Html.HiddenFor(model => model.assignedPropety.returnTarget)
+        @*@Html.HiddenFor(model => model.ApplicationUserId)
+        @Html.HiddenFor(model => model.CourseId)*@
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" />
+            @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.assignedPropety.returnId, redirect = Model.assignedPropety.returnTarget }, null)
+        </div>
+    }
+</div>
