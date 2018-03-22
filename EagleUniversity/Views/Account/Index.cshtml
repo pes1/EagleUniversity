@@ -62,7 +62,6 @@
                         {
                             <li>@Html.ActionLink("Edit ", "EditUser", new { id = item.Id })</li>
                         <li>@Html.ActionLink("Delete ", "DeleteUser", new { id = item.Id })</li>
-                        }
                         if (item.course.CourseName == "Not Assigned")
                         {
                         <li>@Html.ActionLink("AssignToCourse ", "Create", "Assignments", new { studentId = item.Id, courseId = item.course.Id }, null)</li>
@@ -70,7 +69,7 @@
                         else
                         {
                         <li>@Html.ActionLink("RemoveFromCourse ", "Delete", "Assignments", new { studentId = item.Id, courseId = item.course.Id }, null)</li>
-                        }
+                        }}
                         <li>@Html.ActionLink("Details ", "DetailUser", new { id = item.Id })</li>
                     </ul>
                 </div>
