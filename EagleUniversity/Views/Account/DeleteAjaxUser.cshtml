@@ -3,17 +3,19 @@
 <h2 style="color:Tomato;">Are you sure?</h2>
 <div>
     <hr />
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(model => model.assignedEntity.returnController)
-            @Html.HiddenFor(model => model.assignedEntity.returnId)
-            @Html.HiddenFor(model => model.assignedEntity.returnMethod)
-            @Html.HiddenFor(model => model.assignedEntity.returnTarget)
-            @Html.HiddenFor(model => model.Id)
-            <div class="form-actions no-color">
-                <input type="submit" value="Delete" class="btn btn-default" />
-                @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.assignedEntity.returnId, redirect = Model.assignedEntity.returnTarget }, null)
-            </div>
-        }
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.assignedEntity.returnController)
+        @Html.HiddenFor(model => model.assignedEntity.returnId)
+        @Html.HiddenFor(model => model.assignedEntity.returnMethod)
+        @Html.HiddenFor(model => model.assignedEntity.returnTarget)
+        @Html.HiddenFor(model => model.LastName)
+        @Html.HiddenFor(model => model.Email)
+        @Html.HiddenFor(model => model.Id)
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" />
+            @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.assignedEntity.returnId, redirect = Model.assignedEntity.returnTarget }, null)
+        </div>
+    }
 </div>

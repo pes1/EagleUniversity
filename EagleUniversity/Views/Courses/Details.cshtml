@@ -88,6 +88,21 @@
         </div>
         <div id="menu1" class="tab-pane fade">
             <div class="row">
+                @if (User.IsInRole("Teacher"))
+                {<br><div><h4>
+    @Ajax.ActionLink("Create New Student", "CreateAjaxUser", "Account", new
+    {        
+        returnId = Model.Id,
+        returnController = "Courses",
+        returnMethod = "Details",
+        returnTarget = "Student"
+    }
+           , new AjaxOptions
+           {
+               UpdateTargetId = "create-entity",
+               OnBegin = "OnBegin"
+           }, null)</h4>
+            </div><br>}
                 <table class="table">
                     <tr>
                         <th>Course Student</th>

@@ -351,6 +351,8 @@
     <Content Include="Views\Assignments\CreateAjax.cshtml" />
     <Content Include="Views\Account\EditAjaxUser.cshtml" />
     <Content Include="Views\Account\DeleteAjaxUser.cshtml" />
+    <Content Include="Views\Account\DetailAjaxUser.cshtml" />
+    <Content Include="Views\Account\CreateAjaxUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

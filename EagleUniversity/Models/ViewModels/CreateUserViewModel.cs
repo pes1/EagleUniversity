@@ -20,5 +20,7 @@ namespace EagleUniversity.Models.ViewModels
         public DateTime RegistrationTime { get; set; }
 
         public string Role { get; set; }
+
+        public UserEntity assignedEntity { get; set; }
     }
 }

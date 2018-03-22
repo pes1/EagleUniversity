@@ -338,6 +338,15 @@ namespace EagleUniversity.Controllers
         [Authorize(Roles = "Teacher, Admin")]
         public ActionResult EditAjaxUserConfirmed(UserViewModel model)
         {
+            var tempEntity = new UserEntity()
+            {
+                UserId = model.assignedEntity.UserId,
+                returnController = model.assignedEntity.returnController,
+                returnId = model.assignedEntity.returnId,
+                returnMethod = model.assignedEntity.returnMethod,
+                returnTarget = model.assignedEntity.returnTarget
+            };
+            model.assignedEntity = tempEntity;
             var userStore = new UserStore<ApplicationUser>(_db);
             var userManager = new UserManager<ApplicationUser>(userStore);
             if (ModelState.IsValid)
@@ -381,6 +390,16 @@ namespace EagleUniversity.Controllers
         [Authorize(Roles = "Teacher, Admin")]
         public ActionResult DeleteAjaxUserConfirmed(UserViewModel model)
         {
+            var tempEntity = new UserEntity()
+            {
+                UserId = model.assignedEntity.UserId,
+                returnController = model.assignedEntity.returnController,
+                returnId = model.assignedEntity.returnId,
+                returnMethod = model.assignedEntity.returnMethod,
+                returnTarget = model.assignedEntity.returnTarget
+            };
+            model.assignedEntity = tempEntity;
+
             var userStore = new UserStore<ApplicationUser>(_db);
             var userManager = new UserManager<ApplicationUser>(userStore);
             if (ModelState.IsValid)
@@ -393,9 +412,89 @@ namespace EagleUniversity.Controllers
 
             return View(model);
         }
+        // Get: /Account/DetailAjaxUser
+        public ActionResult DetailAjaxUser(UserEntity userEntity)
+        {
+            var viewModel = _db.Users
+            .Where(r => r.Id == userEntity.UserId)
+            .Select(r => new UserViewModel
+            {
+                Id = r.Id,
+                FirstName = r.FirstName,
+                Email = r.Email,
+                LastName = r.LastName,
+                RegistrationTime=r.RegistrationTime
+            }).SingleOrDefault();
 
+            viewModel.assignedEntity = userEntity;
 
+            if (viewModel == null)
+            {
+                return RedirectToAction(userEntity.returnMethod, userEntity.returnController, new { id = userEntity.returnId, redirect = userEntity.returnTarget });
+            }
+            return View(viewModel);
+        }
+        //CreateAjaxUser
+        public ActionResult CreateAjaxUser(UserEntity userEntity)
+        {
+            var role = (from r in _db.Roles where r.Name.Contains("Student") select r).FirstOrDefault();
 
+            if (role == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var viewModel = new CreateUserViewModel()
+            {
+                Role = role.Name, assignedEntity=userEntity
+            };
+
+            return View(viewModel);
+        }
+        //        // POST: /Account/CreateUser
+        [ValidateAntiForgeryToken]
+        [HttpPost, ActionName("CreateAjaxUser")]
+        public ActionResult CreateAjaxUserConfirmed(CreateUserViewModel model)
+        {
+            var userStore = new UserStore<ApplicationUser>(_db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+
+            var tempEntity = new UserEntity()
+            {
+                UserId = model.assignedEntity.UserId,
+                returnController = model.assignedEntity.returnController,
+                returnId = model.assignedEntity.returnId,
+                returnMethod = model.assignedEntity.returnMethod,
+                returnTarget = model.assignedEntity.returnTarget
+            };
+            model.assignedEntity = tempEntity;
+
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    LastName = model.LastName,
+                    FirstName = model.FirstName,
+                    RegistrationTime = DateTime.Now,
+
+                };
+                var result = UserManager.Create(user, "Passoword12345");
+                if (result.Succeeded)
+                {
+                    //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    //Roles
+                    var idResult = userManager.AddToRole(user.Id, model.Role);
+                    //?
+                    _db.SaveChanges();
+                    return RedirectToAction(model.assignedEntity.returnMethod, model.assignedEntity.returnController, new { id = model.assignedEntity.returnId, redirect = model.assignedEntity.returnTarget });
+                }
+            }            
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+        //------------------------------------------------------
         public ApplicationSignInManager SignInManager
         {
             get
