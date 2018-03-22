@@ -1,17 +1,13 @@
-﻿$(function () {
-    $("tbody#firstlist").collapse('hide');
-    $("tfoot#secondlist").collapse('hide');
-});
-
-$(function () {
-    $("#Demo").collapse('hide');
+﻿$(document).ready(function () {
+    $("tbody#firstlist").addClass("collapse");
+    $("tr#secondlist").addClass("collapse"); 
 });
 $(function () {
-    $("#CollapseDetail").click(function () {
-        $("#Demo").collapse('toggle');       
+    $(".btn.btn-link.col-lg-1").click(function () {
+        var CurrentId = $(this).parent().next().attr("id", "newId");
+        $(CurrentId).collapse('toggle');
     });
 });
-
 $(function () {
     $(".btn.btn-link").click(function () {
         var CurrentId = $(this).parent().parent().next().attr("id", "newId");
