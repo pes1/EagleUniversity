@@ -177,7 +177,11 @@ namespace EagleUniversity.Migrations
 
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
-            var emails = new[] { "admin@eagle.com", "teacher@eagle.com", "student@eagle.com" };
+            var emails = new[] { "admin@eagle.com", "teacher@eagle.com", "student@eagle.com", "evorn.martensson@eagle.com",
+                "pavel.bespalov@eagle.com", "dany.kassdaood@eagle.com", "pereinar.stromme@eagle.com",
+                "laura.brannigan@eagle.com", "madonna.louise.ciccone@eagle.com", "maria.magdalena@eagle.com",
+                "alan.shepard@eagle.com", "virgil.grissom@eagle.com", "john.glenn@eagle.com", "scott.carpenter@eagle.com",
+                "walter.schirra@eagle.com", "gordon.cooper@eagle.com", "deke.slayton@eagle.com" };
             foreach (var email in emails)
             {
                 if (!context.Users.Any(r => r.UserName == email))
@@ -205,7 +209,72 @@ namespace EagleUniversity.Migrations
                 {
                     userManager.AddToRole(item.Id, "Student");
                 }
+                else if (item.UserName == "evorn.martensson@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+                else if (item.UserName == "pavel.bespalov@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+                else if (item.UserName == "dany.kassdaood@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+                else if (item.UserName == "per-einar.stromme@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+                else if (item.UserName == "laura.brannigan@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+                else if (item.UserName == "madonna.louise.ciccone@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+                else if (item.UserName == "maria.magdalena@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+                else if (item.UserName == "alan.shepard@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+                else if (item.UserName == "virgil.grissom@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+                else if (item.UserName == "john.glenn@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+                else if (item.UserName == "scott.carpenter@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+                else if (item.UserName == "walter.schirra@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+                else if (item.UserName == "gordon.cooper@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
+                else if (item.UserName == "deke.slayton@eagle.com")
+                {
+                    userManager.AddToRole(item.Id, "Student");
+                }
             }
+
+            //var role1 = context.Roles.Where(r => r.Id.Contains("Student")).SingleOrDefault();
+
+            //context.Users.AddOrUpdate(
+            //  c => c.UserName,
+            //new ApplicationUser { FirstName = "Anders", LastName = "Andersson" }
+            //);
+            //context.SaveChanges();
+
         }
     }
 }

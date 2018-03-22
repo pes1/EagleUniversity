@@ -22,11 +22,14 @@ namespace EagleUniversity
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/bootstrap-datepicker.js",    // ** NEW for Bootstrap Datepicker
+                      "~/Scripts/moment.min.js",
+                      "~/Scripts/bootstrap-sortable.js",
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-datepicker.css",  // ** NEW for Bootstrap Datepicker
+                      "~/Content/bootstrap-sortable.css",
                       "~/Content/site.css"));
         }
     }
