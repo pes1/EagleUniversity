@@ -41,13 +41,14 @@ namespace EagleUniversity.Controllers
         }
 
         // GET: Activities/Create
-        public ActionResult Create(int moduleId=0)
+        public ActionResult Create(int moduleId=0, string redirect="")
         {
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "ActivityTypeName");
             ViewBag.ModuleId = new SelectList(db.Modules, "Id", "ModuleName");
             var module = db.Modules.Where(r => r.Id == (moduleId)).SingleOrDefault();
             var viewModel = new Activity()
             { ModuleId = moduleId, Modules = module, StartDate = module.StartDate, EndDate = module.EndDate };
+            ViewBag.redirectActivity = redirect;
             return View(viewModel);
         }
 
