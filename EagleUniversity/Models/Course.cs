@@ -9,6 +9,9 @@ namespace EagleUniversity.Models
     public class Course
     {
         public int Id { get; set; }
+
+        [Required]
+        [StringLength(30, MinimumLength = 1, ErrorMessage = "Maximum lenght 30 characters")]
         [Display(Name = "Course Name")]
         public string CourseName { get; set; }
 

@@ -14,9 +14,9 @@ namespace EagleUniversity.Models
         //Nav prop
         public virtual ICollection<Assignments> CourseUserAssigments { get; set; }
 
-       
         public string FirstName { get; set; }
         [Required]
+        [StringLength(50, MinimumLength = 1, ErrorMessage = "Maximum lenght 50 characters")]
         public string LastName { get; set; }
         public string Fullname { get { return LastName + " " + FirstName;  }}
         public DateTime RegistrationTime { get; set; }
