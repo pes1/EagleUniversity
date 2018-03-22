@@ -91,11 +91,13 @@
                 <table class="table">
                     <tr>
                         <th>Course Student</th>
-                        <th>Available Student</th>
+                        @if (User.IsInRole("Teacher"))
+                        {<th>Available Student</th>}
                     </tr>
                     <tr>
-                        <td>@Html.Action("UserListPartial", "Account", new { CourseId = Model.Id })</td>
-                        <td>@Html.Action("UserListPartial", "Account", new { CourseId = Model.Id , isEmpty=true })</td>
+                    <td>@Html.Action("UserListPartial", "Account", new { CourseId = Model.Id })</td>
+                        @if (User.IsInRole("Teacher"))
+                    {<td>@Html.Action("UserListPartial", "Account", new { CourseId = Model.Id, isEmpty = true })</td>}
                     </tr>
                 </table>
 

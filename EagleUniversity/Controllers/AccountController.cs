@@ -65,11 +65,11 @@ namespace EagleUniversity.Controllers
                 x => x.Roles.Select(r => r.RoleId)
                 .Contains(role.Id)
                 )
-                //.Where(
-                //            x => x.CourseUserAssigments.Select
-                //            (k => k.CourseId)
-                //            .Contains(CourseId)
-                //    )
+                .Where(
+                            x => !x.CourseUserAssigments.Select
+                            (k => k.CourseId)
+                            .Contains(CourseId)
+                    )
                 .Select(r => new UserViewModel
                 {
                     Id = r.Id,
@@ -309,6 +309,91 @@ namespace EagleUniversity.Controllers
         }
 
         //-------------------------------
+        //Edit Ajax section
+        public ActionResult EditAjaxUser(UserEntity userEntity)
+        {
+
+
+            var viewModel = _db.Users
+            .Where(r => r.Id == userEntity.UserId)
+            .Select(r => new UserViewModel
+            {
+                Id = r.Id,
+                FirstName = r.FirstName,
+                Email = r.Email,
+                LastName = r.LastName
+            }).SingleOrDefault();
+
+            viewModel.assignedEntity = userEntity;
+
+            if (viewModel == null)
+            {
+                return RedirectToAction(userEntity.returnMethod, userEntity.returnController, new { id = userEntity.returnId, redirect = userEntity.returnTarget });
+            }
+            return View(viewModel);
+        }
+        //POST: Account/EditAjaxUser
+        [HttpPost, ActionName("EditAjaxUser")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher, Admin")]
+        public ActionResult EditAjaxUserConfirmed(UserViewModel model)
+        {
+            var userStore = new UserStore<ApplicationUser>(_db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+            if (ModelState.IsValid)
+            {
+                var changedUser = userManager.FindById(model.Id);
+                changedUser.LastName = model.LastName;
+                changedUser.FirstName = model.FirstName;
+                changedUser.Email = model.Email;
+                _db.Entry(changedUser).State = EntityState.Modified;
+                _db.SaveChanges();
+                return RedirectToAction(model.assignedEntity.returnMethod, model.assignedEntity.returnController, new { id = model.assignedEntity.returnId, redirect = model.assignedEntity.returnTarget });
+            } 
+
+           return View(model);
+        }
+
+        //Edit Ajax section
+        public ActionResult DeleteAjaxUser(UserEntity userEntity)
+        {
+            var viewModel = _db.Users
+            .Where(r => r.Id == userEntity.UserId)
+            .Select(r => new UserViewModel
+            {
+                Id = r.Id,
+                FirstName = r.FirstName,
+                Email = r.Email,
+                LastName = r.LastName
+            }).SingleOrDefault();
+
+            viewModel.assignedEntity = userEntity;
+
+            if (viewModel == null)
+            {
+                return RedirectToAction(userEntity.returnMethod, userEntity.returnController, new { id = userEntity.returnId, redirect = userEntity.returnTarget });
+            }
+            return View(viewModel);
+        }
+        //POST: Account/DeleteAjaxUser
+        [HttpPost, ActionName("DeleteAjaxUser")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher, Admin")]
+        public ActionResult DeleteAjaxUserConfirmed(UserViewModel model)
+        {
+            var userStore = new UserStore<ApplicationUser>(_db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+            if (ModelState.IsValid)
+            {
+                var deletedUser = userManager.FindById(model.Id);
+                userManager.Delete(deletedUser);
+                _db.SaveChanges();
+                return RedirectToAction(model.assignedEntity.returnMethod, model.assignedEntity.returnController, new { id = model.assignedEntity.returnId, redirect = model.assignedEntity.returnTarget });
+            }
+
+            return View(model);
+        }
+
 
 
         public ApplicationSignInManager SignInManager
