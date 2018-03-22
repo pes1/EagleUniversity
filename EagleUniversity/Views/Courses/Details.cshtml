@@ -79,7 +79,7 @@
                                 <ul class="dropdown-menu">
                                     <li>@Ajax.ActionLink("Edit", "Edit", "Activities", new { id = activity.Id, redirect= $"module_{k}" }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)</li>
                                     <li>@Ajax.ActionLink("Delete", "DeleteAjaxAct", "Activities", new { id = activity.Id, redirect= $"module_{k}" }, new AjaxOptions { HttpMethod = "Post", Confirm = $"Delete activity {activity.ActivityName}?", OnComplete = "OnComplete" }, null)</li>
-                                    <li>@Ajax.ActionLink("+Document", "Create", "Documents", new { ActivityId = Model.Id, redirect = $"activity_{j}" }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
+                                    <li>@Ajax.ActionLink("+Document", "Create", "Documents", new { ActivityId = activity.Id, redirect = $"activity_{j}" }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
                                 </ul>
                             </div>
                         </td>
