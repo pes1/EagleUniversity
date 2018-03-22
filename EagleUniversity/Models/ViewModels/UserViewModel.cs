@@ -13,8 +13,12 @@ namespace EagleUniversity.Models.ViewModels
     {
 
         public string Id { get; set; }
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
         public string Email { get; set; }
         public string FirstName { get; set; }
+        [Required]
         public string LastName { get; set; }
         public string Fullname { get { return LastName + " " + FirstName; } }
         public DateTime RegistrationTime { get; set; }
@@ -27,6 +31,7 @@ namespace EagleUniversity.Models.ViewModels
                 }
             }
         public UserEntity assignedEntity { get; set; }
+        public int requestedCourseId { get; set; }
         public Course course
             {
             get
