@@ -39,40 +39,8 @@ namespace EagleUniversity.Controllers
         }
 
         // GET: Documents/Create
-        public ActionResult Create(int CourseId =0, int ModuleId=0, int ActivityId=0)
-        {
-            DocumentEntity entity= new DocumentEntity() { EntityType="",Id=0 };
-
-
-            if (CourseId != 0)
-            {
-
-                entity.EntityType = "Course";
-                entity.Id = CourseId;
-                var course = db.Courses.Where(r => r.Id == (CourseId)).SingleOrDefault();
-                entity.EntityName = course.CourseName;
-                entity.returnId = CourseId;
-                entity.returnTarget = "Document";
-            }
-            else if (ModuleId != 0)
-            {
-                entity.EntityType = "Module";
-                entity.Id = ModuleId;
-                var module = db.Modules.Where(r => r.Id == (ModuleId)).SingleOrDefault();
-                entity.EntityName = module.ModuleName;
-                entity.returnId = module.CourseId;
-                entity.returnTarget = "Default";
-            }
-            else if(ActivityId!=0)
-            {
-                entity.EntityType = "Activity";
-                entity.Id = ActivityId;
-                var activity = db.Activities.Where(r => r.Id == (ActivityId)).SingleOrDefault();
-                entity.EntityName = activity.ActivityName;
-                entity.returnId = activity.Modules.CourseId;
-                entity.returnTarget = "Default";
-            }            
-
+        public ActionResult Create(DocumentEntity entity)
+        {        
 
             var viewModel = new DocumentViewModel()
             {  assignedEntity=entity, DueDate=DateTime.Now  };
@@ -88,6 +56,17 @@ namespace EagleUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(DocumentViewModel document, HttpPostedFileBase upload)
         {
+            var tempEntity = new DocumentEntity()
+            {
+                Id = document.assignedEntity.Id,
+                 returnTarget= document.assignedEntity.returnTarget,
+                 EntityName= document.assignedEntity.EntityName,
+                 returnId= document.assignedEntity.returnId,
+                 EntityType= document.assignedEntity.EntityType,
+                 DocumentTypeName= document.assignedEntity.DocumentTypeName
+            };
+            document.assignedEntity = tempEntity;
+
             var addDocument = new Document()
             {
                 //Id = document.Id,
@@ -182,57 +161,18 @@ namespace EagleUniversity.Controllers
         }
 
         // GET: Documents/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(DocumentEntity entity)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Document document = db.Documents.Find(id);
-            if (document == null)
-            {
-                return HttpNotFound();
-            }
 
-            DocumentEntity entity = new DocumentEntity() { EntityType = "", Id = 0 };
-
-            var assignedCourse = db.CourseDocuments.Where(r => r.DocumentId == (document.Id)).SingleOrDefault();
-            var assignedModule = db.ModuleDocuments.Where(r => r.DocumentId == (document.Id)).SingleOrDefault();
-            var assignedActivity = db.ActivityDocuments.Where(r => r.DocumentId == (document.Id)).SingleOrDefault();
-
-            if (assignedCourse != null)
-            {
-                entity.EntityType = "Course";
-                entity.Id = assignedCourse.CourseId;
-                entity.EntityName = assignedCourse.AssignedCourse.CourseName;
-                entity.DocumentTypeName = document.DocumentTypes.DocumentTypeName;
-                entity.returnId= assignedCourse.CourseId;
-                entity.returnTarget = "Document";
-            }
-            else if (assignedModule != null)
-            {
-                entity.EntityType = "Module";
-                entity.Id = assignedModule.ModuleId;
-                entity.EntityName = assignedModule.AssignedModule.ModuleName;
-                entity.DocumentTypeName = document.DocumentTypes.DocumentTypeName;
-                entity.returnId = assignedModule.AssignedModule.CourseId;
-                entity.returnTarget = "Default";
-            }
-            else if (assignedActivity != null)
-            {
-                entity.EntityType = "Activity";
-                entity.Id = assignedActivity.ActivityId;
-                entity.EntityName = assignedActivity.AssignedActivity.ActivityName;
-                entity.DocumentTypeName = document.DocumentTypes.DocumentTypeName;
-                entity.returnId = assignedActivity.AssignedActivity.Modules.CourseId;
-                entity.returnTarget = "Default";
-            }
-
+            Document document = db.Documents.Find(entity.Id);
 
             var viewModel = new DocumentViewModel()
-            { Id= document.Id, DocumentContent= document.DocumentContent, DocumentName= document.DocumentName, UploadDate=document.UploadDate, DueDate=document.DueDate
-            , DocumentTypeId=document.DocumentTypeId, assignedEntity=entity};
-
+            {Id= document.Id, DocumentContent= document.DocumentContent,
+                DocumentName = document.DocumentName,
+                UploadDate =document.UploadDate,
+                DueDate =document.DueDate,
+                DocumentTypeId =document.DocumentTypeId,
+                assignedEntity =entity};
             return View(viewModel);
         }
 
@@ -243,13 +183,21 @@ namespace EagleUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(DocumentViewModel document, HttpPostedFileBase upload)
         {
+            var tempEntity = new DocumentEntity()
+            {
+                Id = document.assignedEntity.Id,
+                returnTarget = document.assignedEntity.returnTarget,
+                EntityName = document.assignedEntity.EntityName,
+                returnId = document.assignedEntity.returnId,
+                EntityType = document.assignedEntity.EntityType,
+                DocumentTypeName = document.assignedEntity.DocumentTypeName
+            };
+            document.assignedEntity = tempEntity;
 
             Document documentToEdit = db.Documents.Find(document.Id);
 
-            //documentToEdit.DocumentName = document.DocumentName;
             documentToEdit.DocumentContent = document.DocumentContent;
             documentToEdit.DueDate = document.DueDate;
-
 
             if (ModelState.IsValid)
             {
@@ -271,68 +219,17 @@ namespace EagleUniversity.Controllers
             return View(document);
         }
 
-        // GET: Documents/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult DeleteAjax(DocumentEntity entity)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Document document = db.Documents.Find(id);
-            if (document == null)
-            {
-                return HttpNotFound();
-            }
-            return View(document);
+            return View(entity);
         }
 
         // POST: Documents/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteAjax")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteAjaxConfirmed(DocumentEntity entity)
         {
-            Document document = db.Documents.Find(id);
-            db.Documents.Remove(document);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-        public ActionResult DeleteAjaxDoc(int id)
-        {
-            Document document = db.Documents.Where(r=>r.Id==id).SingleOrDefault();
-
-            DocumentEntity entity = new DocumentEntity() { EntityType = "", Id = 0 };
-
-            var assignedCourse = db.CourseDocuments.Where(r => r.DocumentId == (document.Id)).SingleOrDefault();
-            var assignedModule = db.ModuleDocuments.Where(r => r.DocumentId == (document.Id)).SingleOrDefault();
-            var assignedActivity = db.ActivityDocuments.Where(r => r.DocumentId == (document.Id)).SingleOrDefault();
-
-            if (assignedCourse != null)
-            {
-                entity.EntityType = "Course";
-                entity.Id = assignedCourse.CourseId;
-                entity.EntityName = assignedCourse.AssignedCourse.CourseName;
-                entity.DocumentTypeName = document.DocumentTypes.DocumentTypeName;
-                entity.returnId = assignedCourse.CourseId;
-                entity.returnTarget = "Document";
-            }
-            else if (assignedModule != null)
-            {
-                entity.EntityType = "Module";
-                entity.Id = assignedModule.ModuleId;
-                entity.EntityName = assignedModule.AssignedModule.ModuleName;
-                entity.DocumentTypeName = document.DocumentTypes.DocumentTypeName;
-                entity.returnId = assignedModule.AssignedModule.CourseId;
-                entity.returnTarget = "Default";
-            }
-            else if (assignedActivity != null)
-            {
-                entity.EntityType = "Activity";
-                entity.Id = assignedActivity.ActivityId;
-                entity.EntityName = assignedActivity.AssignedActivity.ActivityName;
-                entity.DocumentTypeName = document.DocumentTypes.DocumentTypeName;
-                entity.returnId = assignedActivity.AssignedActivity.Modules.CourseId;
-                entity.returnTarget = "Default";
-            }
+            Document document = db.Documents.Where(r=>r.Id==entity.Id).SingleOrDefault();
 
             db.Documents.Remove(document);
             db.SaveChanges();
