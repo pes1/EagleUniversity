@@ -40,7 +40,7 @@
                         @{int k = 0;}
                         @foreach (var modul in Model.Modules)
     {
-                    <tr class="col-lg-11" id="module_@k">
+                    <tr class="col-lg-11">
                         <td class="btn btn-link col-lg-4">@Html.DisplayFor(x => modul.ModuleName)</td>
                         <th class="col-lg-1">From</th>
                         <td class="col-lg-2">@Html.DisplayFor(x => modul.StartDate)</td>
@@ -66,7 +66,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tbody id="firstlist">
+                    <tbody id="firstlist" class="module_@k">
                         <tr>
                             <td>
                                 <table class="table table-hover">
