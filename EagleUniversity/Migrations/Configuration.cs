@@ -23,15 +23,18 @@ namespace EagleUniversity.Migrations
             //  to avoid creating duplicate seed data.
             context.Courses.AddOrUpdate(
               c => c.CourseName,
-            new Course { CourseName = ".NET", StartDate = DateTime.Parse("2018-03-01"), EndDate = DateTime.Parse("2018-09-30") },
-            new Course { CourseName = "OFFICE 365", StartDate = DateTime.Parse("2018-06-01"), EndDate = DateTime.Parse("2018-12-31") },
-            new Course { CourseName = "JAVA", StartDate = DateTime.Parse("2018-09-01"), EndDate = DateTime.Parse("2019-03-31") }
+            new Course { CourseName = ".NET VT18", StartDate = DateTime.Parse("2018-03-01"), EndDate = DateTime.Parse("2018-09-30") },
+            new Course { CourseName = "OFFICE 365 VT18", StartDate = DateTime.Parse("2018-06-01"), EndDate = DateTime.Parse("2018-12-31") },
+            new Course { CourseName = "JAVA HT18", StartDate = DateTime.Parse("2018-09-01"), EndDate = DateTime.Parse("2019-03-31") },
+            new Course { CourseName = ".NET HT18", StartDate = DateTime.Parse("2018-10-01"), EndDate = DateTime.Parse("2018-04-30") },
+            new Course { CourseName = "OFFICE 365 HT18", StartDate = DateTime.Parse("2018-11-01"), EndDate = DateTime.Parse("2019-05-31") },
+            new Course { CourseName = "JAVA VT19", StartDate = DateTime.Parse("2018-02-01"), EndDate = DateTime.Parse("2019-08-31") }
             );
             context.SaveChanges();
 
-            var courseDot = context.Courses.Where(r => r.CourseName .Contains(".NET")).SingleOrDefault();
-            var courseOff = context.Courses.Where(r => r.CourseName.Contains("OFFICE 365")).SingleOrDefault();
-            var courseJav = context.Courses.Where(r => r.CourseName.Contains("JAVA")).SingleOrDefault();
+            var courseDot = context.Courses.Where(r => r.CourseName .Contains(".NET VT18")).SingleOrDefault();
+            var courseOff = context.Courses.Where(r => r.CourseName.Contains("OFFICE 365 VT18")).SingleOrDefault();
+            var courseJav = context.Courses.Where(r => r.CourseName.Contains("JAVA HT18")).SingleOrDefault();
 
             context.Modules.AddOrUpdate(
               c => c.ModuleName,
@@ -177,16 +180,104 @@ namespace EagleUniversity.Migrations
 
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
+
             var emails = new[] { "admin@eagle.com", "teacher@eagle.com", "student@eagle.com", "evorn.martensson@eagle.com",
                 "pavel.bespalov@eagle.com", "dany.kassdaood@eagle.com", "pereinar.stromme@eagle.com",
                 "laura.brannigan@eagle.com", "madonna.louise.ciccone@eagle.com", "maria.magdalena@eagle.com",
                 "alan.shepard@eagle.com", "virgil.grissom@eagle.com", "john.glenn@eagle.com", "scott.carpenter@eagle.com",
                 "walter.schirra@eagle.com", "gordon.cooper@eagle.com", "deke.slayton@eagle.com" };
+            
             foreach (var email in emails)
             {
                 if (!context.Users.Any(r => r.UserName == email))
                 {
-                    var user = new ApplicationUser { UserName = email, Email = email, LastName = email, RegistrationTime=DateTime.Now};
+                    var lastName = "";
+                    var firstName = "";
+                    if (email == "admin@eagle.com")
+                    {
+                        lastName = "admin@eagle.com";
+                    }
+                    else if (email == "teacher@eagle.com")
+                    {
+                        lastName = "teacher@eagle.com";
+                    }
+                    else if (email == "student@eagle.com")
+                    {
+                        lastName = "student@eagle.com";
+                    }
+                    else if (email == "evorn.martensson@eagle.com")
+                    {
+                        firstName = "Evorn";
+                        lastName = "Mårtensson";
+                    }
+                    else if (email == "pavel.bespalov@eagle.com")
+                    {
+                        firstName = "Pavel";
+                        lastName = "Bespalov";
+                    }
+                    else if (email == "dany.kassdaood@eagle.com")
+                    {
+                        firstName = "Dany Kass";
+                        lastName = "Daood";
+                    }
+                    else if (email == "pereinar.stromme@eagle.com")
+                    {
+                        firstName = "Per Einar";
+                        lastName = "Strömme";
+                    }
+                    else if (email == "laura.brannigan@eagle.com")
+                    {
+                        firstName = "Laura";
+                        lastName = "Brannigan";
+                    }
+                    else if (email == "madonna.louise.ciccone@eagle.com")
+                    {
+                        firstName = "Madonna Louise";
+                        lastName = "Ciccone";
+                    }
+                    else if (email == "maria.magdalena@eagle.com")
+                    {
+                        firstName = "Maria";
+                        lastName = "Magdalena";
+                    }
+                    else if (email == "alan.shepard@eagle.com")
+                    {
+                        firstName = "Alan";
+                        lastName = "Shepard";
+                    }
+                    else if (email == "virgil.grissom@eagle.com")
+                    {
+                        firstName = "Virgil";
+                        lastName = "Grissom";
+                    }
+                    else if (email == "john.glenn@eagle.com")
+                    {
+                        firstName = "John";
+                        lastName = "Glenn";
+                    }
+                    else if (email == "scott.carpenter@eagle.com")
+                    {
+                        firstName = "Scott";
+                        lastName = "Carpenter";
+                    }
+                    else if (email == "walter.schirra@eagle.com")
+                    {
+                        firstName = "Walter";
+                        lastName = "Schirra";
+                    }
+                    else if (email == "gordon.cooper@eagle.com")
+                    {
+                        firstName = "Gordon";
+                        lastName = "Cooper";
+                    }
+                    else if (email == "deke.slayton@eagle.com")
+                    {
+                        firstName = "Deke";
+                        lastName = "Slayton";
+                    }
+
+
+                    var user = new ApplicationUser { UserName = email, Email = email, FirstName = firstName, LastName = lastName, RegistrationTime=DateTime.Now};
                     var result = userManager.Create(user, "Password12345");
                     if (!result.Succeeded)
                     {
@@ -221,7 +312,7 @@ namespace EagleUniversity.Migrations
                 {
                     userManager.AddToRole(item.Id, "Student");
                 }
-                else if (item.UserName == "per-einar.stromme@eagle.com")
+                else if (item.UserName == "pereinar.stromme@eagle.com")
                 {
                     userManager.AddToRole(item.Id, "Student");
                 }
@@ -266,15 +357,6 @@ namespace EagleUniversity.Migrations
                     userManager.AddToRole(item.Id, "Student");
                 }
             }
-
-            //var role1 = context.Roles.Where(r => r.Id.Contains("Student")).SingleOrDefault();
-
-            //context.Users.AddOrUpdate(
-            //  c => c.UserName,
-            //new ApplicationUser { FirstName = "Anders", LastName = "Andersson" }
-            //);
-            //context.SaveChanges();
-
         }
     }
 }

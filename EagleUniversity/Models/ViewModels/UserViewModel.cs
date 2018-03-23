@@ -20,7 +20,7 @@ namespace EagleUniversity.Models.ViewModels
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        public string Fullname { get { return LastName + " " + FirstName; } }
+        public string Fullname { get { return FirstName + " " + LastName; } }
         public DateTime RegistrationTime { get; set; }
         public string Role
             {

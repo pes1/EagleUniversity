@@ -18,7 +18,7 @@ namespace EagleUniversity.Models
         [Required]
         [StringLength(50, MinimumLength = 1, ErrorMessage = "Maximum lenght 50 characters")]
         public string LastName { get; set; }
-        public string Fullname { get { return LastName + " " + FirstName;  }}
+        public string Fullname { get { return FirstName + " " + LastName;  }}
         public DateTime RegistrationTime { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)

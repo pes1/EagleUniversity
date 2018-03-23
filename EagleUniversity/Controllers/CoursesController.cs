@@ -40,7 +40,9 @@ namespace EagleUniversity.Controllers
         // GET: Courses/Create
         public ActionResult Create()
         {
-            return View();
+            var viewModel = new Course()
+            { StartDate = DateTime.Now, EndDate = DateTime.Now };
+            return View(viewModel);
         }
 
         // POST: Courses/Create
