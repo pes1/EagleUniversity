@@ -32,7 +32,7 @@ namespace EagleUniversity.Migrations
             );
             context.SaveChanges();
 
-            var courseDot = context.Courses.Where(r => r.CourseName .Contains(".NET VT18")).SingleOrDefault();
+            var courseDot = context.Courses.Where(r => r.CourseName.Contains(".NET VT18")).SingleOrDefault();
             var courseOff = context.Courses.Where(r => r.CourseName.Contains("OFFICE 365 VT18")).SingleOrDefault();
             var courseJav = context.Courses.Where(r => r.CourseName.Contains("JAVA HT18")).SingleOrDefault();
 
