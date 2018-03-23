@@ -11,13 +11,19 @@ namespace EagleUniversity.Models
     public class Activity
     {
         public int Id { get; set; }
+
+        [Required]
+        [StringLength(30, MinimumLength = 1, ErrorMessage = "Maximum lenght 30 characters")]
         public string ActivityName { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
+
         //public Epass Pass { get; set; }
         public int ModuleId { get; set; }
         public int ActivityTypeId { get; set; }

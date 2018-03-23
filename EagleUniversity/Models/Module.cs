@@ -9,10 +9,15 @@ namespace EagleUniversity.Models
     public class Module
     {
         public int Id { get; set; }
+
+        [Required]
+        [StringLength(30, MinimumLength = 1, ErrorMessage = "Maximum lenght 30 characters")]
         public string ModuleName { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
