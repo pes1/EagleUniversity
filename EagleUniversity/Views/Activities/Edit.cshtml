@@ -79,8 +79,8 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
-            @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.redirectProperty.returnId, redirect = Model.redirectProperty.returnTarget }, null)
+            <input type="submit" value="Save" class="btn btn-primary" />
+            @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.redirectProperty.returnId, redirect = Model.redirectProperty.returnTarget }, new { @class = "btn btn-primary" })
         </div>
     </div>
 </div>
