@@ -9,6 +9,7 @@ namespace EagleUniversity.Models.ViewModels
     public class ActivityViewModel
     {
         public int Id { get; set; }
+        [Required]
         public string ActivityName { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

@@ -7,7 +7,7 @@
         <th></th>
         <th> UploadDate </th>
         <th> DueDate </th>
-        <th>@Ajax.ActionLink("CreateDoc", "Create", "Documents", new { ModuleId = Model.Id }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </th>
+        <th>@Ajax.ActionLink("CreateDoc", "Create", "Documents", new { returnTarget = "Document", returnId = Model.CourseId, Id = Model.Id, EntityType = "Module", EntityName = Model.ModuleName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </th>
     </tr>
     @foreach (var doc in Model.DocumentModuleAssignments)
     {
