@@ -52,7 +52,15 @@
                                 <ul class="dropdown-menu">
                                     <li>@Ajax.ActionLink("Edit", "Edit", "Modules", new { id = modul.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </li>
                                     <li>@Ajax.ActionLink("Delete", "DeleteAjax", "Modules", new { id = modul.Id }, new AjaxOptions { HttpMethod = "Post", Confirm = $"Delete module {modul.ModuleName}?", OnComplete = "OnComplete" }, null)</li>
-                                    <li>@Ajax.ActionLink("+Activity", "Create", "Activities", new { moduleId = modul.Id, redirect = $"module_{k}" }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)</li>
+                                    <li>@Ajax.ActionLink("+Activity", "Create", "Activities"
+                                       , new {
+                                           Id = modul.Id,
+                                           returnId = Model.Id,
+                                           returnController = "Courses",
+                                           returnMethod = "Details",
+                                           returnTarget = $"module_{k}"
+                                       }
+                                       , new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)</li>
 
                                 </ul>
                             </div>
@@ -77,8 +85,24 @@
                             <div class="dropdown">
                                 <a href=# class="dropdown-toggle btn btn-success" data-toggle="dropdown">More ... </a>
                                 <ul class="dropdown-menu">
-                                    <li>@Ajax.ActionLink("Edit", "Edit", "Activities", new { id = activity.Id, redirect= $"module_{k}" }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)</li>
-                                    <li>@Ajax.ActionLink("Delete", "DeleteAjaxAct", "Activities", new { id = activity.Id, redirect= $"module_{k}" }, new AjaxOptions { HttpMethod = "Post", Confirm = $"Delete activity {activity.ActivityName}?", OnComplete = "OnComplete" }, null)</li>
+                                    <li>@Ajax.ActionLink("Edit", "Edit", "Activities"
+                                       , new {
+                                           Id = activity.Id,
+                                           returnId = Model.Id,
+                                           returnController = "Courses",
+                                           returnMethod = "Details",
+                                           returnTarget = $"module_{k}"                                           
+                                       }
+                                   , new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)</li>
+                                    <li>@Ajax.ActionLink("Delete", "DeleteAjax", "Activities"
+                                       , new {
+                                           Id = activity.Id,
+                                           returnId = Model.Id,
+                                           returnController = "Courses",
+                                           returnMethod = "Details",
+                                           returnTarget = $"module_{k}"
+                                       }
+                                       , new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)</li>
                                     <li>@Ajax.ActionLink("+Document", "Create", "Documents", new { ActivityId = activity.Id, redirect = $"activity_{j}" }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
                                 </ul>
                             </div>

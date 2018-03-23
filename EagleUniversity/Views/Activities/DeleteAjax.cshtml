@@ -1,0 +1,20 @@
+﻿@model EagleUniversity.Models.commonEntity
+
+
+<h2 style="color:Tomato;">Are you sure?</h2>
+<div>
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.returnController)
+        @Html.HiddenFor(model => model.returnId)
+        @Html.HiddenFor(model => model.returnMethod)
+        @Html.HiddenFor(model => model.returnTarget)
+        @Html.HiddenFor(model => model.Id)
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" />
+            @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.returnId, redirect = Model.returnTarget }, null)
+        </div>
+    }
+</div>

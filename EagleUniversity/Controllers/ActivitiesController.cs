@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using EagleUniversity.Models;
+using EagleUniversity.Models.ViewModels;
 
 namespace EagleUniversity.Controllers
 {
@@ -41,14 +42,14 @@ namespace EagleUniversity.Controllers
         }
 
         // GET: Activities/Create
-        public ActionResult Create(int moduleId=0, string redirect="")
+        public ActionResult Create(commonEntity entity)
+        //int moduleId=0, string redirect=""
         {
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "ActivityTypeName");
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "ModuleName");
-            var module = db.Modules.Where(r => r.Id == (moduleId)).SingleOrDefault();
-            var viewModel = new Activity()
-            { ModuleId = moduleId, Modules = module, StartDate = module.StartDate, EndDate = module.EndDate };
-            ViewBag.redirectActivity = redirect;
+
+
+            var viewModel = new ActivityViewModel()
+            { redirectProperty=entity, ModuleId=entity.Id, EndDateAm=false, StartDateAm=true , StartDate=DateTime.Now, EndDate=DateTime.Now };
             return View(viewModel);
         }
 
@@ -57,36 +58,74 @@ namespace EagleUniversity.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ActivityName,StartDate,EndDate,ModuleId,ActivityTypeId")] Activity activity)
+        public ActionResult Create(ActivityViewModel activity)
         {
-            var module = db.Modules.Where(r => r.Id == (activity.ModuleId)).SingleOrDefault();
+            var tempEntity = new commonEntity()
+            {
+                Id = activity.redirectProperty.Id,
+                returnController = activity.redirectProperty.returnController,
+                returnId = activity.redirectProperty.returnId,
+                returnMethod = activity.redirectProperty.returnMethod,
+                returnTarget = activity.redirectProperty.returnTarget
+            };
+            activity.redirectProperty = tempEntity;
+
+            
             if (ModelState.IsValid)
             {
-                db.Activities.Add(activity);
+                var addActivity = new Activity()
+                {
+                    ActivityName = activity.ActivityName,
+                    ActivityTypeId = activity.ActivityTypeId,
+                    ModuleId =activity.ModuleId,
+                };
+                DateTime s = activity.StartDate;
+                DateTime e = activity.EndDate;
+                if (activity.StartDateAm)
+                {                    
+                    addActivity.StartDate = new DateTime(s.Year, s.Month, s.Day, 0, 0, 0);
+                }
+                else
+                {
+                    addActivity.StartDate = new DateTime(s.Year, s.Month, s.Day, 12, 0, 0);
+                }
+                if (activity.EndDateAm)
+                {
+                    addActivity.EndDate = new DateTime(e.Year, e.Month, e.Day, 11, 59, 59);
+                }
+                else
+                {
+                    addActivity.EndDate = new DateTime(e.Year, e.Month, e.Day, 23, 59, 59);
+                }
+
+                db.Activities.Add(addActivity);
                 db.SaveChanges();
-                return RedirectToAction("Details", "Courses", new { id = module.CourseId });
+                return RedirectToAction(activity.redirectProperty.returnMethod, activity.redirectProperty.returnController, new { id = activity.redirectProperty.returnId, redirect = activity.redirectProperty.returnTarget });
             }
 
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "ActivityTypeName", activity.ActivityTypeId);
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "ModuleName", activity.ModuleId);
             return View(activity);
         }
 
         // GET: Activities/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(commonEntity entity)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Activity activity = db.Activities.Find(id);
+
+            Activity activity = db.Activities.Find(entity.Id);
             if (activity == null)
             {
                 return HttpNotFound();
             }
-            //ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "ActivityTypeName", activity.ActivityTypeId);
-            //ViewBag.ModuleId = new SelectList(db.Modules, "Id", "ModuleName", activity.ModuleId);
-            return View(activity);
+
+            var viewModel = new ActivityViewModel()
+            { redirectProperty = entity, ModuleId = entity.Id
+            , EndDateAm = false, StartDateAm = true
+            , StartDate = activity.StartDate
+            , EndDate = activity.EndDate
+            , Id=activity.Id
+            , ActivityName=activity.ActivityName};
+
+            return View(viewModel);
         }
 
         // POST: Activities/Edit/5
@@ -94,18 +133,46 @@ namespace EagleUniversity.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ActivityName,StartDate,EndDate,ModuleId,ActivityTypeId")] Activity activity)
+        public ActionResult Edit(ActivityViewModel activity)
         {
-            var module = db.Modules.Where(r => r.Id == (activity.ModuleId)).SingleOrDefault();
+            var tempEntity = new commonEntity()
+            {
+                Id = activity.redirectProperty.Id,
+                returnController = activity.redirectProperty.returnController,
+                returnId = activity.redirectProperty.returnId,
+                returnMethod = activity.redirectProperty.returnMethod,
+                returnTarget = activity.redirectProperty.returnTarget
+            };
+            activity.redirectProperty = tempEntity;
 
             if (ModelState.IsValid)
             {
-                db.Entry(activity).State = EntityState.Modified;
+                Activity editActivity = db.Activities.Find(activity.redirectProperty.Id);
+                editActivity.ActivityName = activity.ActivityName;
+                DateTime s = activity.StartDate;
+                DateTime e = activity.EndDate;
+                if (activity.StartDateAm)
+                {
+                    editActivity.StartDate = new DateTime(s.Year, s.Month, s.Day, 0, 0, 0);
+                }
+                else
+                {
+                    editActivity.StartDate = new DateTime(s.Year, s.Month, s.Day, 12, 0, 0);
+                }
+                if (activity.EndDateAm)
+                {
+                    editActivity.EndDate = new DateTime(e.Year, e.Month, e.Day, 11, 59, 59);
+                }
+                else
+                {
+                    editActivity.EndDate = new DateTime(e.Year, e.Month, e.Day, 23, 59, 59);
+                }
+
+
+                db.Entry(editActivity).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Details", "Courses", new { id = module.CourseId });
+                return RedirectToAction(activity.redirectProperty.returnMethod, activity.redirectProperty.returnController, new { id = activity.redirectProperty.returnId, redirect = activity.redirectProperty.returnTarget });
             }
-            //ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "ActivityTypeName", activity.ActivityTypeId);
-            //ViewBag.ModuleId = new SelectList(db.Modules, "Id", "ModuleName", activity.ModuleId);
             return View(activity);
         }
 
@@ -135,15 +202,19 @@ namespace EagleUniversity.Controllers
             db.SaveChanges();
             return RedirectToAction("Details", "Courses", new { id = courseId  });
         }
-        //Need to secure
-        [HttpPost]
-        public ActionResult DeleteAjaxAct(int id)
+        //-----------------------------Delete post
+        public ActionResult DeleteAjax(commonEntity entity)
         {
-            Activity activity = db.Activities.Find(id);
-            var courseId = activity.Modules.CourseId;
+            return View(entity);
+        }
+        //Need to secure
+        [HttpPost, ActionName("DeleteAjax")]
+        public ActionResult DeleteAjaxConfimed(commonEntity entity)
+        {
+            Activity activity = db.Activities.Find(entity.Id);
             db.Activities.Remove(activity);
             db.SaveChanges();
-            return RedirectToAction("Details", "Courses", new { id = courseId });
+            return RedirectToAction(entity.returnMethod, entity.returnController, new { id = entity.returnId, redirect = entity.returnTarget });
         }
 
         protected override void Dispose(bool disposing)
