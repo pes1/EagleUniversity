@@ -1,23 +1,24 @@
-﻿@model EagleUniversity.Models.Activity
+﻿@model EagleUniversity.Models.ViewModels.ActivityViewModel
 
 @{
     ViewBag.Title = "Edit";
 }
-
-<h2>Edit</h2>
-
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>Activity</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.ModuleId)
     @Html.HiddenFor(model => model.ActivityTypeId)
+    @Html.HiddenFor(model => model.redirectProperty.returnId)
+    @Html.HiddenFor(model => model.redirectProperty.returnMethod)
+    @Html.HiddenFor(model => model.redirectProperty.returnTarget)
+    @Html.HiddenFor(model => model.redirectProperty.returnController)
+    @Html.HiddenFor(model => model.redirectProperty.Id)
 
     <div class="form-group">
         @Html.LabelFor(model => model.ActivityName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -28,18 +29,26 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.ActivityTypeId, "ActivityTypeId", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.ActivityTypes.ActivityTypeName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ActivityTypeId, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
         @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+            <div>
+                <table>
+                    <tr>
+                        <th> AM </th>
+                        <th> PM </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.RadioButtonFor(model => model.StartDateAm, true)
+                        </td>
+                        <td>
+                            @Html.RadioButtonFor(model => model.StartDateAm, false)
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -48,21 +57,30 @@
         <div class="col-md-10">
             @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-        </div>
-    </div>
+            <div>
+                <table>
+                    <tr>
+                        <th> AM </th>
+                        <th> PM </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.RadioButtonFor(model => model.EndDateAm, true)
+                        </td>
+                        <td>
+                            @Html.RadioButtonFor(model => model.EndDateAm, false)
+                        </td>
+                    </tr>
+                </table>
+            </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.ModuleId, "ModuleId", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.Modules.ModuleName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ModuleId, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Save" class="btn btn-default" />
-            @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.Modules.CourseId }, null)
+            @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.redirectProperty.returnId, redirect = Model.redirectProperty.returnTarget }, null)
         </div>
     </div>
 </div>
