@@ -2,11 +2,21 @@
     $("tbody#firstlist").addClass('collapse');
     $("tr#secondlist").addClass('collapse');
 
-    if ($("#Redirected").text() != "Default") {
-        BackID = "."+$("#Redirected").text();
+    var redirectLink = $("#Redirected").text();
+
+    if (redirectLink.length>10) {
+        var redirectModule = "." + redirectLink.substring(redirectLink.search("module"));
+        var redirectActivity = "." + redirectLink.substring(0, redirectLink.search("module") - 1);
+        $(redirectModule).removeClass('collapse');
+        $(redirectModule).addClass('in');       
+        $(redirectActivity).addClass('in');
+    }
+
+    if (redirectLink != "Default") {
+        BackID = "." + redirectLink;
         $(BackID).addClass('in');
     }
-    if ($("#Redirected").text() === "Document") {
+    if (redirectLink === "Document") {
         $("#Default").removeClass("active");
         $("#home").removeClass("in active");
         $("#Student").removeClass("active");
@@ -14,7 +24,7 @@
         $("#Document").addClass("active");
         $("#menu2").addClass("in active");
     }
-    else if ($("#Redirected").text() === "Student") {
+    else if (redirectLink === "Student") {
         $("#Default").removeClass("active");
         $("#home").removeClass("in active");
         $("#Document").removeClass("active");
