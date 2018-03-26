@@ -16,12 +16,12 @@ namespace EagleUniversity.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [MStartDateTest]
+        //[MStartDateTest]
         public DateTime StartDate { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [MEndDateTest]
+        //[MEndDateTest]
         public DateTime EndDate { get; set; }
 
         public int CourseId { get; set; }
