@@ -31,7 +31,7 @@ namespace EagleUniversity.Controllers
             .Contains(courseId))
             .Count();
 
-            var currentActivity = db.Activities.Where(r => r.Modules.CourseId == courseId).Where(k => k.EndDate >= DateTime.Now && k.StartDate<=DateTime.Now).Select(v => v).SingleOrDefault();
+            var currentActivity = db.Activities.Where(r => r.Modules.CourseId == courseId).Where(k => k.EndDate >= DateTime.Now && k.StartDate <= DateTime.Now).Select(v => v).FirstOrDefault();
 
             var viewModel = new CourseStatModel()
             { students=students, DocumentName="Not Assigned", DueDate=DateTime.Now };
