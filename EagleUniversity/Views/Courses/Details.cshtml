@@ -19,9 +19,13 @@
     @Html.DisplayFor(model => model.EndDate)
 </h3>
 
+
 <div> . <hr /> <br /> </div>
 <div class="container">
     <header><h2 id="test" class="greypapper">Course Detail Information</h2></header>
+    <div>
+        @Html.Action("CourseStat", "Courses", new { courseId = Model.Id })
+    </div>
     <span id="create-entity"></span>
     <ul id="test2" class="nav nav-tabs">
         <li id="Default" class="active"><a data-toggle="tab" href="#home">Schedule </a></li>
@@ -42,7 +46,7 @@
                         @foreach (var modul in Model.Modules)
     {
                     <tr class="col-lg-11">
-                        <td class="btn btn-link col-lg-4">@Html.DisplayFor(x => modul.ModuleName)</td>
+                        <td class="btn btn-link col-lg-4" style="text-align:left">@Html.DisplayFor(x => modul.ModuleName)</td>
                         <th class="col-lg-1">From</th>
                         <td class="col-lg-2">@Html.DisplayFor(x => modul.StartDate)</td>
                         <th class="col-lg-1">To</th>
@@ -78,46 +82,46 @@
 
                                     @foreach (var activity in modul.Activities)
                 {
-                    <tr class="col-lg-11">
-                        <td class="col-lg-2">@Html.DisplayFor(x => activity.ActivityTypes.ActivityTypeName)</td>
-                        <td class="btn btn-link col-lg-1">@Html.DisplayFor(x => activity.ActivityName)</td>
-                        <th>From</th>
-                        <td>@Html.DisplayFor(x => activity.StartDate)</td>
-                        <th>To</th>
-                        <td>@Html.DisplayFor(x => activity.EndDate)</td>
-                        <td>
-                            <div class="dropdown">
-                                <a href=# class="dropdown-toggle btn btn-success" data-toggle="dropdown">More ... </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        @Ajax.ActionLink("Edit", "Edit", "Activities"
-                        , new
-                        {
-                            Id = activity.Id,
-                            returnId = Model.Id,
-                            returnController = "Courses",
-                            returnMethod = "Details",
-                            returnTarget = $"module_{k}"
-                        }
-                    , new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)
-                                </li>
-                                <li>
-                                    @Ajax.ActionLink("Delete", "DeleteAjax", "Activities"
-                    , new
-                    {
-                        Id = activity.Id,
-                        returnId = Model.Id,
-                        returnController = "Courses",
-                        returnMethod = "Details",
-                        returnTarget = $"module_{k}"
-                    }
-                    , new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)
-                            </li>
-                            <li>@Ajax.ActionLink("+Document", "Create", "Documents", new { returnTarget = $"activity_{j}_module_{k}", returnId = Model.Id, Id = activity.Id, EntityType = "Activity", EntityName = activity.ActivityName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
-                        </ul>
-                    </div>
-                    </td>                   
-                    </tr>
+                                    <tr class="col-lg-11">
+                                        <td class="btn btn-link col-lg-1">@Html.DisplayFor(x => activity.ActivityName)</td>
+                                        <td class="col-lg-2">@Html.DisplayFor(x => activity.ActivityTypes.ActivityTypeName)</td>
+                                        <th>From</th>
+                                        <td>@Html.DisplayFor(x => activity.StartDate)</td>
+                                        <th>To</th>
+                                        <td>@Html.DisplayFor(x => activity.EndDate)</td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <a href=# class="dropdown-toggle btn btn-success" data-toggle="dropdown">More ... </a>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        @Ajax.ActionLink("Edit", "Edit", "Activities"
+         , new
+         {
+             Id = activity.Id,
+             returnId = Model.Id,
+             returnController = "Courses",
+             returnMethod = "Details",
+             returnTarget = $"module_{k}"
+         }
+     , new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)
+                                                    </li>
+                                                    <li>
+                                                        @Ajax.ActionLink("Delete", "DeleteAjax", "Activities"
+         , new
+         {
+             Id = activity.Id,
+             returnId = Model.Id,
+             returnController = "Courses",
+             returnMethod = "Details",
+             returnTarget = $"module_{k}"
+         }
+         , new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)
+                                                    </li>
+                                                    <li>@Ajax.ActionLink("+Document", "Create", "Documents", new { returnTarget = $"activity_{j}_module_{k}", returnId = Model.Id, Id = activity.Id, EntityType = "Activity", EntityName = activity.ActivityName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
                     <tr id="secondlist" class="activity_@j col-lg-12">
                         <td>
                             @*@Html.Partial("_ActivityDoc", activity)*@
