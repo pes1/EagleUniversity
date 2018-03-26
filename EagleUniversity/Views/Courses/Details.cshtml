@@ -61,7 +61,7 @@
                                         <ul class="dropdown-menu">
                                             <li>@Ajax.ActionLink("Edit", "Edit", "Modules", new { id = modul.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </li>                                            
                                             <li>@Ajax.ActionLink("Delete", "DeleteAjax", "Modules", new { id = modul.Id }, new AjaxOptions { HttpMethod = "Post", Confirm = $"Delete module {modul.ModuleName}?", OnComplete = "OnComplete" }, null)</li>
-                                            <li>@Ajax.ActionLink("+Document", "Create", "Documents", new { returnTarget = $"module_{k}", returnId = Model.Id, Id = modul.Id, EntityType = "Modul", EntityName = modul.ModuleName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
+                                            <li>@Ajax.ActionLink("+Document", "Create", "Documents", new { returnTarget = $"module_{k}", returnId = Model.Id, Id = modul.Id, EntityType = "Module", EntityName = modul.ModuleName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
                                             <li>
                                                 @Ajax.ActionLink("+Activity", "Create", "Activities"
             , new
