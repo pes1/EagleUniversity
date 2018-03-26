@@ -1,21 +1,22 @@
-﻿@model EagleUniversity.Models.Document
-
-@{
-    ViewBag.Title = "Details";
-}
-
-<h2>Details</h2>
+﻿@model EagleUniversity.Models.ViewModels.DocumentViewModel
 
 <div>
-    <h4>Document</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.DocumentTypes.DocumentTypeName)
+            @Html.DisplayNameFor(model => model.assignedEntity.EntityFull)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.DocumentTypes.DocumentTypeName)
+            @Html.DisplayFor(model => model.assignedEntity.EntityFull)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DocumentTypeName)
         </dd>
 
         <dt>
@@ -23,15 +24,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.DocumentName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DocumentContent)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DocumentContent)
+            <a href="~/File?id=@Model.Id" alt="doc" download="@Model.DocumentName">@Model.DocumentName </a>
         </dd>
 
         <dt>
@@ -50,9 +43,17 @@
             @Html.DisplayFor(model => model.DueDate)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.ownerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ownerName)
+        </dd>
+
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.assignedEntity.returnId, redirect = Model.assignedEntity.returnTarget }, new { @class = "btn btn-danger" })
 </p>
+

@@ -13,8 +13,9 @@ namespace EagleUniversity.Models.ViewModels
         public string DocumentName { get; set; }
         [Display(Name = "Description")]
         public string DocumentContent { get; set; }
+        [DataType(DataType.Date)]
         [Display(Name = "Upload Date")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime UploadDate { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Due Date")]
@@ -22,6 +23,11 @@ namespace EagleUniversity.Models.ViewModels
         public DateTime DueDate { get; set; }
 
         public int DocumentTypeId { get; set; }
+
+        [Display(Name = "OWNER")]
+        public string ownerName { get; set; }
+        [Display(Name = "Document Type")]
+        public string DocumentTypeName { get; set; }
 
         public DocumentEntity assignedEntity { get; set; }
  

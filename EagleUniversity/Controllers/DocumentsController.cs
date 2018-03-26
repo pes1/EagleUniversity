@@ -5,9 +5,11 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using EagleUniversity.Models;
 using EagleUniversity.Models.ViewModels;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace EagleUniversity.Controllers
 {
@@ -24,18 +26,43 @@ namespace EagleUniversity.Controllers
         }
 
         // GET: Documents/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(DocumentEntity entity)
         {
-            if (id == null)
+            Document document = db.Documents.Find(entity.Id);
+
+            var viewModel = new DocumentViewModel()
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Document document = db.Documents.Find(id);
-            if (document == null)
+                Id = document.Id,
+                DocumentContent = document.DocumentContent,
+                DocumentName = document.DocumentName,
+                UploadDate = document.UploadDate,
+                DueDate = document.DueDate,
+                DocumentTypeId = document.DocumentTypeId,
+                DocumentTypeName=document.DocumentTypes.DocumentTypeName,
+                assignedEntity = entity
+            };
+
+            string owner = User.Identity.GetUserId();
+
+            if (entity.EntityType == "Course")
             {
-                return HttpNotFound();
+                owner = db.CourseDocuments.Where(r => r.DocumentId == document.Id).FirstOrDefault().OwnerId;
             }
-            return View(document);
+            else if (entity.EntityType == "Module")
+            {
+                owner = db.ModuleDocuments.Where(r => r.DocumentId == document.Id).FirstOrDefault().OwnerId;
+            }
+            else
+            {
+                owner = db.ActivityDocuments.Where(r => r.DocumentId == document.Id).FirstOrDefault().OwnerId;
+            }
+
+            var user=  db.Users.Find(owner);
+            var role = UserViewModel.userToRole(user.Id)?.Name ?? "Not Assigned";
+
+            viewModel.ownerName=role + " " +  user.Fullname;
+
+            return View(viewModel);
         }
 
         // GET: Documents/Create
