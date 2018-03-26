@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using EagleUniversity.Models;
+using EagleUniversity.Models.ViewModels;
 
 namespace EagleUniversity.Controllers
 {
@@ -14,6 +15,45 @@ namespace EagleUniversity.Controllers
     public class CoursesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        //Partial Stat
+        public ActionResult CourseStat(int courseId)
+        {
+
+            var role = (from r in db.Roles where r.Name.Contains("Student") select r).FirstOrDefault();
+            var students = db.Users
+            .Where(x => x.Roles.Select(r => r.RoleId)
+            .Contains(role.Id)
+            )
+            .Where(
+            x => x.CourseUserAssigments.Select
+            (k => k.CourseId)
+            .Contains(courseId))
+            .Count();
+
+            var currentActivity = db.Activities.Where(r => r.Modules.CourseId == courseId).Where(k => k.EndDate >= DateTime.Now && k.StartDate<=DateTime.Now).Select(v => v).SingleOrDefault();
+
+            var viewModel = new CourseStatModel()
+            { students=students, DocumentName="Not Assigned", DueDate=DateTime.Now };
+
+            if (currentActivity!=null)
+            {
+                var document = db.Documents
+                    .Where(d=>d.DocumentTypes.DocumentTypeName.Contains("Task"))
+                    .Where(
+                    x => x.ActivityDocumentAssignments.Select
+                    (k => k.ActivityId)
+                    .Contains(currentActivity.Id)).SingleOrDefault();
+                if (document!=null)
+                {
+                    viewModel.DocumentId = document.Id;
+                    viewModel.DocumentName = document.DocumentName;
+                    viewModel.DueDate = document.DueDate;
+                }
+                
+            }             
+            return PartialView("_CourseStat", viewModel);
+        }
 
         // GET: Courses
         public ActionResult Index()
