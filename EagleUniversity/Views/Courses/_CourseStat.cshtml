@@ -1,0 +1,21 @@
+﻿@model EagleUniversity.Models.ViewModels.CourseStatModel
+
+<div>
+<table>
+    <tr>
+        <th>Students</th>
+        <td>@Model.students</td>
+    </tr>
+    @if (Model.DocumentName != "Not Assigned")
+    {
+    <tr>
+        <th>Currunt Task</th>
+        <td><a href="~/File?id=@Model.DocumentId" alt="doc" download="@Model.DocumentName">@Model.DocumentName </a></td>
+    </tr>
+    <tr>
+        <th>DeadLine</th>
+        <td>@Model.Deadline</td>
+    </tr>
+    }
+</table>
+</div>

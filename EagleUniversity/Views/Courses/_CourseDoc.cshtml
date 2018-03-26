@@ -4,41 +4,29 @@
     <tr>
         <th> File Name</th>
         <th> Document Type</th>
-        @*<th>Description </th>*@
         <th></th>
         <th> UploadDate </th>
         <th> DueDate </th>
-
-        <th>@Ajax.ActionLink("CreateDoc", "Create", "Documents", new { CourseId = Model.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </th>
+        <th>@Ajax.ActionLink("CreateDoc", "Create", "Documents", new { returnTarget="Document", returnId = Model.Id, Id= Model.Id, EntityType="Course", EntityName=Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </th>
     </tr>
     @foreach (var doc in Model.DocumentCourseAssignments)
     {
     <tr>
         <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentName)</td>
         <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentTypes.DocumentTypeName)</td>
-        @*<td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentContent)</td>*@
-
-
         @if (doc.AssignedDocument.FileType != null)
         {
         <td>
             <a href="~/File?id=@doc.DocumentId" alt="doc" download="@doc.AssignedDocument.DocumentName">Download </a>
         </td>
-        @*<td>
-            <img src="~/File?id=@doc.DocumentId" alt="doc" />
-        </td>*@
         }
         else
         {
-    <td>    </td>}
-
-
-
-
+        <td></td>}
         <td>@Html.DisplayFor(x => doc.AssignedDocument.UploadDate)</td>
         <td>@Html.DisplayFor(x => doc.AssignedDocument.DueDate)</td>
-        <td>@Ajax.ActionLink("Edit", "Edit", "Documents", new { Id = doc.DocumentId }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </td>
-        <td>@Ajax.ActionLink("Remove", "DeleteAjaxDoc", "Documents", new { id = doc.DocumentId }, new AjaxOptions { HttpMethod = "Post", Confirm = $"Delete document {doc.AssignedDocument.DocumentName}?", OnComplete = "OnComplete" }, null)</td>
+        <td>@Ajax.ActionLink("Edit", "Edit", "Documents", new { returnTarget = "Document", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Course", EntityName = Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </td>
+        <td>@Ajax.ActionLink("Remove", "DeleteAjax", "Documents", new { returnTarget = "Document", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Course", EntityName = Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </td>
     </tr>
     }
 </table>
