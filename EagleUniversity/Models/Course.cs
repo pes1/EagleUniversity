@@ -18,13 +18,13 @@ namespace EagleUniversity.Models
         [DataType(DataType.Date)]
         [Display(Name = "Start Date")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [StartDateTest]
+        //[StartDateTest]
         public DateTime StartDate { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "End Date")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [EndDateTest]
+        //[EndDateTest]
         public DateTime EndDate { get; set; }
 
         public string OwnerId { get; set; }

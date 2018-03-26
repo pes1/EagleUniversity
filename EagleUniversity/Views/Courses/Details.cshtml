@@ -20,18 +20,22 @@
 </h3>
 
 
+
+
 <div> . <hr /> <br /> </div>
 <div class="container">
     <header><h2 id="test" class="greypapper">Course Detail Information</h2></header>
     <div>
+        <br />
         @Html.Action("CourseStat", "Courses", new { courseId = Model.Id })
+        <br />
     </div>
     <span id="create-entity"></span>
     <ul id="test2" class="nav nav-tabs">
         <li id="Default" class="active"><a data-toggle="tab" href="#home">Schedule </a></li>
         <li id="Student"><a data-toggle="tab" href="#menu1">Students </a></li>
         <li id="Document"><a data-toggle="tab" href="#menu2">Document </a></li>
-       
+
     </ul>
 
     <div class="tab-content">
@@ -44,129 +48,167 @@
                         @{int k = 0;}
                         @{int j = 0;}
                         @foreach (var modul in Model.Modules)
-    {
-                    <tr class="col-lg-11">
-                        <td class="btn btn-link col-lg-4" style="text-align:left">@Html.DisplayFor(x => modul.ModuleName)</td>
-                        <th class="col-lg-1">From</th>
-                        <td class="col-lg-2">@Html.DisplayFor(x => modul.StartDate)</td>
-                        <th class="col-lg-1">To</th>
-                        <td class="col-lg-2">@Html.DisplayFor(x => modul.EndDate)</td>
-                        <td>
-                            <div class="dropdown">
-                                <a href=# class="dropdown-toggle btn btn-info" data-toggle="dropdown">More ... </a>
-                                <ul class="dropdown-menu">
-                                    <li>@Ajax.ActionLink("Edit", "Edit", "Modules", new { id = modul.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </li>
-                                    <li>@Ajax.ActionLink("Delete", "DeleteAjax", "Modules", new { id = modul.Id }, new AjaxOptions { HttpMethod = "Post", Confirm = $"Delete module {modul.ModuleName}?", OnComplete = "OnComplete" }, null)</li>
-                                    <li>
-                                        @Ajax.ActionLink("+Activity", "Create", "Activities"
-                        , new
                         {
-                            Id = modul.Id,
-                            returnId = Model.Id,
-                            returnController = "Courses",
-                            returnMethod = "Details",
-                            returnTarget = $"module_{k}"
-                        }
-                        , new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)
-                                </li>
+                            <tr class="col-lg-11">
+                                <td class="btn btn-link col-lg-4" style="text-align:left">@Html.DisplayFor(x => modul.ModuleName)</td>
+                                <th class="col-lg-1">From</th>
+                                <td class="col-lg-2">@Html.DisplayFor(x => modul.StartDate)</td>
+                                <th class="col-lg-1">To</th>
+                                <td class="col-lg-2">@Html.DisplayFor(x => modul.EndDate)</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a href=# class="dropdown-toggle btn btn-info" data-toggle="dropdown">More ... </a>
+                                        <ul class="dropdown-menu">
+                                            <li>@Ajax.ActionLink("Edit", "Edit", "Modules", new { id = modul.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </li>                                            
+                                            <li>@Ajax.ActionLink("Delete", "DeleteAjax", "Modules", new { id = modul.Id }, new AjaxOptions { HttpMethod = "Post", Confirm = $"Delete module {modul.ModuleName}?", OnComplete = "OnComplete" }, null)</li>
+                                            <li>@Ajax.ActionLink("+Document", "Create", "Documents", new { returnTarget = $"module_{k}", returnId = Model.Id, Id = modul.Id, EntityType = "Modul", EntityName = modul.ModuleName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
+                                            <li>
+                                                @Ajax.ActionLink("+Activity", "Create", "Activities"
+            , new
+            {
+                Id = modul.Id,
+                returnId = Model.Id,
+                returnController = "Courses",
+                returnMethod = "Details",
+                returnTarget = $"module_{k}"
+            }
+            , new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)
+                                            </li>
 
-                            </ul>
-                        </div>
-                    </td>
-                    </tr>
-                    <tbody id="firstlist" class="module_@k">
-                        <tr>
-                            <td>
-                                <table class="table table-hover">
-                                    <tr class="col-lg-12"></tr>
-
-                                    @foreach (var activity in modul.Activities)
-                {
-                                    <tr class="col-lg-11">
-                                        <td class="btn btn-link col-lg-1">@Html.DisplayFor(x => activity.ActivityName)</td>
-                                        <td class="col-lg-2">@Html.DisplayFor(x => activity.ActivityTypes.ActivityTypeName)</td>
-                                        <th>From</th>
-                                        <td>@Html.DisplayFor(x => activity.StartDate)</td>
-                                        <th>To</th>
-                                        <td>@Html.DisplayFor(x => activity.EndDate)</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <a href=# class="dropdown-toggle btn btn-success" data-toggle="dropdown">More ... </a>
-                                                <ul class="dropdown-menu">
-                                                    <li>
-                                                        @Ajax.ActionLink("Edit", "Edit", "Activities"
-         , new
-         {
-             Id = activity.Id,
-             returnId = Model.Id,
-             returnController = "Courses",
-             returnMethod = "Details",
-             returnTarget = $"module_{k}"
-         }
-     , new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)
-                                                    </li>
-                                                    <li>
-                                                        @Ajax.ActionLink("Delete", "DeleteAjax", "Activities"
-         , new
-         {
-             Id = activity.Id,
-             returnId = Model.Id,
-             returnController = "Courses",
-             returnMethod = "Details",
-             returnTarget = $"module_{k}"
-         }
-         , new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)
-                                                    </li>
-                                                    <li>@Ajax.ActionLink("+Document", "Create", "Documents", new { returnTarget = $"activity_{j}_module_{k}", returnId = Model.Id, Id = activity.Id, EntityType = "Activity", EntityName = activity.ActivityName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                    <tr id="secondlist" class="activity_@j col-lg-12">
-                        <td>
-                            @*@Html.Partial("_ActivityDoc", activity)*@
-                                                <table class="table">
-                                                    @foreach (var doc in activity.DocumentActivityAssignments)
-                            {
-                                                    <tr>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tbody id="firstlist" class="module_@k">
+                                <tr>
+                                    <td>
+                                        @*@Html.Partial("_ModuleDoc", modul)*@
+                                        <table class="table">
+                                            @foreach (var doc in modul.DocumentModuleAssignments)
+                                            {
+                                                <tr>
+                                                    @if (doc.AssignedDocument.FileType != null)
+                                                    {
                                                         <td>
-                                                            <a href="~/File?id=@doc.DocumentId" alt="doc" download="@doc.AssignedDocument.DocumentName">@Html.DisplayFor(x => doc.AssignedDocument.DocumentName)</a>
+                                                            <a href="~/File?id=@doc.DocumentId" alt="doc" download="@doc.AssignedDocument.DocumentName">@doc.AssignedDocument.DocumentName</a>
                                                         </td>
-                                                        <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentTypes.DocumentTypeName)</td>
-                                                        <th> DueDate </th>
-                                                        <td>@Html.DisplayFor(x => doc.AssignedDocument.DueDate)</td>
-                                                        <td>
-                                                            <div class="dropdown">
-                                                                <a href=# class="dropdown-toggle btn btn-warning" data-toggle="dropdown">More ... </a>
-                                                                <ul class="dropdown-menu">
-                                                        <li>@Ajax.ActionLink("Edit", "Edit", "Documents", new { returnTarget = $"activity_{j}_module_{k}", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Activity", EntityName = Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
-                                                        <li>@Ajax.ActionLink("Remove", "DeleteAjax", "Documents", new { returnTarget = $"activity_{j}_module_{k}", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Activity", EntityName = Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
-                                                        @if (doc.AssignedDocument.FileType != null)
-    {
-                                                    <li>
-                                                        <a href="~/File?id=@doc.DocumentId" alt="doc" download="@doc.AssignedDocument.DocumentName">Download </a>
-                                                    </li>
-}
+                                                    }
+                                                    <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentTypes.DocumentTypeName)</td>
+                                                    <th> DueDate </th>
+                                                    <td>@Html.DisplayFor(x => doc.AssignedDocument.DueDate)</td>
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <a href=# class="dropdown-toggle btn btn-warning" data-toggle="dropdown">More ... </a>
+                                                            <ul class="dropdown-menu">                                                               
+                                                                <li>@Ajax.ActionLink("Details", "Details", "Documents", new { returnTarget = $"module_{k}", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Module", EntityName = modul.ModuleName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
+                                                                <li>@Ajax.ActionLink("Edit", "Edit", "Documents", new { returnTarget = $"module_{k}", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Module", EntityName = modul.ModuleName },
+                                                                   new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
+                                                                <li>@Ajax.ActionLink("Remove", "DeleteAjax", "Documents", new { returnTarget = $"module_{k}", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Module", EntityName = modul.ModuleName },
+                                                                   new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)</li>
+                                                                                                                                                @if (doc.AssignedDocument.FileType != null)
+                                                                                {
+                                                                                    <li>
+                                                                                        <a href="~/File?id=@doc.DocumentId" alt="doc" download="@doc.AssignedDocument.DocumentName">Download </a>
+                                                                                    </li>
+                                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </table>
+                                        <table class="table table-hover">
 
-                                                        </ul>
-</div>
+                                            <tr class="col-lg-12"></tr>
+
+                                            @foreach (var activity in modul.Activities)
+                                            {
+                                                <tr class="col-lg-11">
+                                                    <td class="btn btn-link col-lg-1">@Html.DisplayFor(x => activity.ActivityName)</td>
+                                                    <td class="col-lg-2">@Html.DisplayFor(x => activity.ActivityTypes.ActivityTypeName)</td>
+                                                    <th>From</th>
+                                                    <td>@Html.DisplayFor(x => activity.StartDate)</td>
+                                                    <th>To</th>
+                                                    <td>@Html.DisplayFor(x => activity.EndDate)</td>
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <a href=# class="dropdown-toggle btn btn-success" data-toggle="dropdown">More ... </a>
+                                                            <ul class="dropdown-menu">
+                                                                <li>
+                                                                    @Ajax.ActionLink("Edit", "Edit", "Activities"
+, new
+{
+Id = activity.Id,
+returnId = Model.Id,
+returnController = "Courses",
+returnMethod = "Details",
+returnTarget = $"module_{k}"
+}
+, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)
+                                                                </li>
+                                                                <li>
+                                                                    @Ajax.ActionLink("Delete", "DeleteAjax", "Activities"
+, new
+{
+Id = activity.Id,
+returnId = Model.Id,
+returnController = "Courses",
+returnMethod = "Details",
+returnTarget = $"module_{k}"
+}
+, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)
+                                                                </li>
+                                                                <li>@Ajax.ActionLink("+Document", "Create", "Documents", new { returnTarget = $"activity_{j}_module_{k}", returnId = Model.Id, Id = activity.Id, EntityType = "Activity", EntityName = activity.ActivityName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr id="secondlist" class="activity_@j col-lg-12">
+                                                    <td>
+                                                        @*@Html.Partial("_ActivityDoc", activity)*@
+                                                        <table class="table">
+                                                            @foreach (var doc in activity.DocumentActivityAssignments)
+                                                            {
+                                                                <tr>
+                                                                    <td>
+                                                                        <a href="~/File?id=@doc.DocumentId" alt="doc" download="@doc.AssignedDocument.DocumentName">@Html.DisplayFor(x => doc.AssignedDocument.DocumentName)</a>
+                                                                    </td>
+                                                                    <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentTypes.DocumentTypeName)</td>
+                                                                    <th> DueDate </th>
+                                                                    <td>@Html.DisplayFor(x => doc.AssignedDocument.DueDate)</td>
+                                                                    <td>
+                                                                        <div class="dropdown">
+                                                                            <a href=# class="dropdown-toggle btn btn-warning" data-toggle="dropdown">More ... </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li>@Ajax.ActionLink("Edit", "Edit", "Documents", new { returnTarget = $"activity_{j}_module_{k}", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Activity", EntityName = Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
+                                                                                <li>@Ajax.ActionLink("Details", "Details", "Documents", new { returnTarget = $"activity_{j}_module_{k}", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Activity", EntityName = Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
+                                                                                <li>@Ajax.ActionLink("Remove", "DeleteAjax", "Documents", new { returnTarget = $"activity_{j}_module_{k}", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Activity", EntityName = Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
+                                                                                @if (doc.AssignedDocument.FileType != null)
+                                                                                {
+                                                                                    <li>
+                                                                                        <a href="~/File?id=@doc.DocumentId" alt="doc" download="@doc.AssignedDocument.DocumentName">Download </a>
+                                                                                    </li>
+                                                                                }
+
+                                                                            </ul>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </table>
+
+                                                    </td>
+                                                </tr>
+                                                j++;
+                                            }
+                                        </table>
+
                                     </td>
                                 </tr>
-    }
-                                                </table>
 
-                                            </td>
-                    </tr>
-j++;
-}
-                                </table>
-
-                            </td>
-                        </tr>
-
-                    </tbody>
-k++;
-}
+                            </tbody>
+                            k++;
+                        }
                     </table>
                     <p>
                         @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
@@ -188,11 +230,11 @@ k++;
                                 returnMethod = "Details",
                                 returnTarget = "Student"
                             }
-                                                 , new AjaxOptions
-                                                 {
-                                                     UpdateTargetId = "create-entity",
-                                                     OnBegin = "OnBegin"
-                                                 }, null)
+                                                                , new AjaxOptions
+                                                                {
+                                                                    UpdateTargetId = "create-entity",
+                                                                    OnBegin = "OnBegin"
+                                                                }, null)
                         </h4>
                     </div><br>}
                 <table class="table">
@@ -217,7 +259,7 @@ k++;
             @Html.Partial("_CourseDoc", this.Model)
 
         </div>
-      
+
     </div>
 </div>
 
@@ -228,9 +270,9 @@ k++;
 @section Scripts {
     @Scripts.Render("~/Scripts/Collpase.js")
     @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/Scripts/test.js")    
-    
-   
+    @Scripts.Render("~/Scripts/test.js")
+
+
 }
 
 
