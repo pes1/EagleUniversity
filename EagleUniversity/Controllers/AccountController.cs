@@ -194,7 +194,7 @@ namespace EagleUniversity.Controllers
                     RegistrationTime = DateTime.Now,
                      
                 };
-                var result = await UserManager.CreateAsync(user, "Passoword12345");
+                var result = await UserManager.CreateAsync(user, "Password12345");
                 if (result.Succeeded)
                 {
                     //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
