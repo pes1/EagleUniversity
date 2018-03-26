@@ -19,9 +19,13 @@
     @Html.DisplayFor(model => model.EndDate)
 </h3>
 
+
 <div> . <hr /> <br /> </div>
 <div class="container">
     <header><h2 id="test" class="greypapper">Course Detail Information</h2></header>
+    <div>
+        @Html.Action("CourseStat", "Courses", new { courseId = Model.Id })
+    </div>
     <span id="create-entity"></span>
     <ul id="test2" class="nav nav-tabs">
         <li id="Default" class="active"><a data-toggle="tab" href="#home">Schedule </a></li>

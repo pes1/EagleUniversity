@@ -8,6 +8,7 @@
         var redirectModule = "." + redirectLink.substring(redirectLink.search("module"));
         var redirectActivity = "." + redirectLink.substring(0, redirectLink.search("module") - 1);
         $(redirectModule).removeClass('collapse');
+        $(redirectActivity).removeClass('collapse');
         $(redirectModule).addClass('in');       
         $(redirectActivity).addClass('in');
     }
