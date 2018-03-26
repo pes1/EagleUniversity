@@ -1,7 +1,74 @@
 ﻿@{
-    ViewBag.Title = "About Eagle University";
+    ViewBag.Title = "About EAGLE CONTROL";
 }
 <h2>@ViewBag.Title</h2>
-<h3>@ViewBag.Message</h3>
+@*<h3>@ViewBag.Message</h3>*@
 
-<p>Our Uneversity is LMS</p>
+
+<h3>Organization</h3>
+<p>EAGLE CONTROL is a product owned by Eagle Control Department, wich is a seperate department within Eagle University.</p>
+
+<h3>Description</h3>
+<p>EAGLE CONTROL is developed according to Lexicon LMS specification.</p>
+<p>The EAGLE CONTROL system has the primary purpose and aim to easily make course materials and schedules available for students. It will also serve as a gathering place for assignments. Teachers can also easily manage these classes, students, schedules and documents.</p>
+
+<h3>Entities, relationships and attributes</h3>
+<p>The entities and attributes described below are a minimum. In particular, the attributes will need to be expanded when planning the system in more detail.</p>
+
+<h4>Users</h4>
+<p>The application should handle users in the roles of students and teachers, all of which must have login and accounts in the application. Users should be saved with at least one name and an email address.</p>
+
+<h4>Course</h4>
+<p>All students belong to a specific course, which in turn has a course name, a description and a start date. Example of course name: ".NET Fall 2015".</p>
+
+<h4>Module</h4>
+<p>Each course have one or more modules. These have module names, a description, start date and end date. Examples of modules: "Database Design", "AngularJS".</p>
+
+<h4>Activity</h4>
+<p>The modules, in turn, have activities. These activities can be e-learning pass, lectures, exercises or other. The activities have a type, a name, a start, end-time and a description.</p>
+
+<h4>Document</h4>
+<p>All entities above - course, module and activity - can hold documents; student assignments, module documents, general information documents for the course, module documents, lectures or exercises related to the activities. These document entities should have a name, a description, a time stamp for the upload time and information about which user uploaded the file. If the document is a submission, it must also keep time information about the deadline.</p>
+
+<h3>Use-cases - Required</h3>
+<p>These use cases are not comprehensive; Depending on the implementation, more detailed cases must be made to cover all practical functionality.</p>
+
+<h4>Not logged-in user</h4>
+<p>An unregistered visitor should be able to:</p>
+<li>Log-in</li>
+
+<h4>Student user</h4>
+<p>A student should be able to:</p>
+<li>See which course this reads and what the other course participants are.</li>
+<li>See which modules this reads.</li>
+<li>See the activities for a specific module (module schedule).</li>
+<li>Check if a specific module or activity has any documents attached to it and, if so, download them.</li>
+<li>See what exercises this has received; if it has already been submitted, when it is last submitted and if it is delayed.</li>
+<li>Be able to upload files as practice submissions.</li>
+
+<h4>Teacher user</h4>
+<p>A teacher should be able to:</p>
+<li>See all courses</li>
+<li>See all modules included in a course</li>
+<li>See all activities and documents a module contains</li>
+<li>Create and edit users (teachers and students)</li>
+<li>Create and edit courses</li>
+<li>Create and edit modules</li>
+<li>Create and edit edit activities</li>
+<li>Upload document for courses / modules / activities</li>
+<li>Receive submission tasks</li>
+
+<h3>Use-cases - Desirable</h3>
+
+<h4>Not logged-in user</h4>
+<p>An unregistered visitor should be able to:</p>
+<li>Request new password</li>
+
+<h4>Student user</h4>
+<p>A student should be able to:</p>
+<li>Receive feedback on assignments</li>
+<li>Share documents with their course or module</li>
+
+<h4>Teacher user</h4>
+<p>A teacher should be able to:</p>
+<li>Give feedback on assignments</li>
