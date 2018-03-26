@@ -2,31 +2,35 @@
 
 <table class="table">
     <tr>
-        <th> File Name</th>
-        <th> Document Type</th>
-        <th></th>
-        <th> UploadDate </th>
-        <th> DueDate </th>
-        <th>@Ajax.ActionLink("CreateDoc", "Create", "Documents", new { returnTarget="Document", returnId = Model.Id, Id= Model.Id, EntityType="Course", EntityName=Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </th>
+        <td>@Ajax.ActionLink("+Document", "Create", "Documents", new { returnTarget = "Document", returnId = Model.Id, Id = Model.Id, EntityType = "Course", EntityName = Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity" }, new {@class= "btn btn-primary" }) </td>
     </tr>
     @foreach (var doc in Model.DocumentCourseAssignments)
     {
     <tr>
-        <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentName)</td>
-        <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentTypes.DocumentTypeName)</td>
         @if (doc.AssignedDocument.FileType != null)
-        {
+    {
         <td>
-            <a href="~/File?id=@doc.DocumentId" alt="doc" download="@doc.AssignedDocument.DocumentName">Download </a>
+            <a href="~/File?id=@doc.DocumentId" alt="doc" download="@doc.AssignedDocument.DocumentName">@doc.AssignedDocument.DocumentName</a>
         </td>
-        }
-        else
-        {
-        <td></td>}
+}
+else
+{
+    <td></td>                }
+        <td>@Html.DisplayFor(x => doc.AssignedDocument.DocumentTypes.DocumentTypeName)</td>
+        <th> UploadDate </th>
         <td>@Html.DisplayFor(x => doc.AssignedDocument.UploadDate)</td>
+        <th> DueDate </th>
         <td>@Html.DisplayFor(x => doc.AssignedDocument.DueDate)</td>
-        <td>@Ajax.ActionLink("Edit", "Edit", "Documents", new { returnTarget = "Document", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Course", EntityName = Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </td>
-        <td>@Ajax.ActionLink("Remove", "DeleteAjax", "Documents", new { returnTarget = "Document", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Course", EntityName = Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </td>
+        <td>
+            <div class="dropdown">
+                <a href=# class="dropdown-toggle btn btn-warning" data-toggle="dropdown">More ... </a>
+                <ul class="dropdown-menu">                    
+                    <li>@Ajax.ActionLink("Edit", "Edit", "Documents", new { returnTarget = "Document", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Course", EntityName = Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </li>
+                    <li>@Ajax.ActionLink("Details", "Details", "Documents", new { returnTarget = "Document", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Course", EntityName = Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </li>
+                    <li>@Ajax.ActionLink("Remove", "DeleteAjax", "Documents", new { returnTarget = "Document", returnId = Model.Id, Id = doc.DocumentId, EntityType = "Course", EntityName = Model.CourseName }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </li>
+               </ul>
+            </div>
+        </td>
     </tr>
     }
 </table>

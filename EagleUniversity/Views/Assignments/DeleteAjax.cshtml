@@ -48,8 +48,8 @@
         @*@Html.HiddenFor(model => model.ApplicationUserId)
         @Html.HiddenFor(model => model.CourseId)*@
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" />
-            @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.assignedPropety.returnId, redirect = Model.assignedPropety.returnTarget }, null)
+            <input type="submit" value="Remove" class="btn btn-primary" />
+            @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.assignedPropety.returnId, redirect = Model.assignedPropety.returnTarget }, new { @class = "btn btn-primary" })
         </div>
     }
 </div>

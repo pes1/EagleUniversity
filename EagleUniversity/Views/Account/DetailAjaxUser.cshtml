@@ -68,5 +68,5 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Cancel", "Details", "Courses", new { id = Model.assignedEntity.returnId, redirect = Model.assignedEntity.returnTarget }, null)
+    @Html.ActionLink("Ok", "Details", "Courses", new { id = Model.assignedEntity.returnId, redirect = Model.assignedEntity.returnTarget }, new{ @class="btn btn-primary"})
 </p>
