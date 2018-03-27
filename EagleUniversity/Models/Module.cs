@@ -16,12 +16,12 @@ namespace EagleUniversity.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        //[MStartDateTest]
+        [MStartDateTest]
         public DateTime StartDate { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        //[MEndDateTest]
+        [MEndDateTest]
         public DateTime EndDate { get; set; }
 
         public int CourseId { get; set; }
@@ -65,18 +65,18 @@ namespace EagleUniversity.Models
                     return new ValidationResult("A course must be choosen.");
                 }
                 DateTime startDateCourse = vCourse.StartDate;
-                if (_StartDate <= startDateCourse)
+                if (_StartDate < startDateCourse)
                 {
                     return new ValidationResult("Start Date must start after the course start date.");
                 }
 
             }
-            if (_StartDate < DateTime.Now)
-            {
-                return new ValidationResult("Start Date must be a future date.");
-            }
-            else { return ValidationResult.Success; }   //- The Date fulfilled the requirements.
-
+            //- removed to make the seed pass
+            //{
+            //    return new ValidationResult("Start Date must be a future date.");
+            //}
+            //else { return ValidationResult.Success; }   //- The Date fulfilled the requirements.
+            return ValidationResult.Success;
         }
     }//- of class StartDateTestAttribute
 
@@ -92,6 +92,7 @@ namespace EagleUniversity.Models
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            //var Type = validationContext.ObjectInstance.GetType();     //- test to see the type of the instance
             var model = (Models.Module)validationContext.ObjectInstance;
             //if (value != null) // lets check if we have some value
             //{
