@@ -23,7 +23,7 @@ namespace EagleUniversity.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
-        //[AEndDateTest]
+        [AEndDateTest]
         public DateTime EndDate { get; set; }
 
         //public Epass Pass { get; set; }
@@ -73,9 +73,9 @@ namespace EagleUniversity.Models
                     return new ValidationResult("A course must be choosen.");
                 }
                 DateTime startDateModule = vModule.StartDate;
-                if (_StartDate <= startDateModule)
+                if (_StartDate.Date < startDateModule.Date)
                 {
-                    return new ValidationResult("Start Date must start after the course start date.");
+                    return new ValidationResult("Must start same day or after the course start date.");
                 }
             }
             //- removed to make the seed pass
@@ -105,6 +105,7 @@ namespace EagleUniversity.Models
             //{
             //    if (value is DateTime) // check if it is a valid Date and Time object
             //    {
+
             DateTime _EndDate = Convert.ToDateTime(value);
 
             if (!(model.StartDate <= _EndDate))
@@ -121,12 +122,12 @@ namespace EagleUniversity.Models
                     return new ValidationResult("A course must be choosen.");
                 }
                 DateTime startDateModule = vModule.StartDate; //-
-                if (!(_EndDate >= startDateModule))
+                if (!(_EndDate.Date >= startDateModule.Date))
                 {
                     return new ValidationResult("End Date of activity must be after the module start date.");
                 }
                 DateTime endDateModule = vModule.EndDate;
-                if (!(_EndDate <= endDateModule))
+                if (!(_EndDate.Date <= endDateModule.Date))
                 {                           //- "End Date of activity must be befor or same as end date of course."
                     return new ValidationResult("Must be befor or same as end date of course.");
                 }
