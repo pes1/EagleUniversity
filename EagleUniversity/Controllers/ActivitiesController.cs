@@ -46,10 +46,11 @@ namespace EagleUniversity.Controllers
         //int moduleId=0, string redirect=""
         {
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "ActivityTypeName");
-
-
+            //var module = db.Modules.Where(r => r.Id == (moduleId)).SingleOrDefault();
+            //var entidstart = (DateTime)module.StartDate;
+            //var entidend = (DateTime)module.EndDate;
             var viewModel = new ActivityViewModel()
-            { redirectProperty=entity, ModuleId=entity.Id, EndDateAm=false, StartDateAm=true , StartDate=DateTime.Now, EndDate=DateTime.Now };
+            { redirectProperty=entity, ModuleId=entity.Id, EndDateAm=false, StartDateAm=true , StartDate= DateTime.Now, EndDate= DateTime.Now };
             return View(viewModel);
         }
 
