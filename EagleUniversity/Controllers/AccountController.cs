@@ -113,6 +113,12 @@ namespace EagleUniversity.Controllers
             var userId = User.Identity.GetUserId();
             var role = (from r in _db.Roles where r.Name.Contains(userRoleId) select r).FirstOrDefault();
             var course = _db.Assignments.Where(r=>r.ApplicationUserId.Contains(userId)).Select(r=> r.Course).FirstOrDefault();
+            var courseItem = 0;
+
+            if (course!=null)
+            {
+                courseItem = course.Id;
+            }
             //For the students should be implemented restriction to assigned course 
             //Resticted select
             var viewModel = _db.Users
@@ -138,7 +144,7 @@ namespace EagleUniversity.Controllers
                         .Where(
                             x => x.CourseUserAssigments.Select
                             (k => k.CourseId)
-                            .Contains(course.Id)
+                            .Contains(courseItem)
                             )
                         .Select(r => new UserViewModel
                         {
