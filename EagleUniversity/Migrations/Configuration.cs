@@ -26,7 +26,7 @@ namespace EagleUniversity.Migrations
             new Course { CourseName = ".NET VT18", StartDate = DateTime.Parse("2018-03-01"), EndDate = DateTime.Parse("2018-09-30") },
             new Course { CourseName = "OFFICE 365 VT18", StartDate = DateTime.Parse("2018-06-01"), EndDate = DateTime.Parse("2018-12-31") },
             new Course { CourseName = "JAVA HT18", StartDate = DateTime.Parse("2018-09-01"), EndDate = DateTime.Parse("2019-03-31") },
-            new Course { CourseName = ".NET HT18", StartDate = DateTime.Parse("2018-10-01"), EndDate = DateTime.Parse("2018-04-30") },
+            new Course { CourseName = ".NET HT18", StartDate = DateTime.Parse("2018-10-01"), EndDate = DateTime.Parse("2019-04-30") },
             new Course { CourseName = "OFFICE 365 HT18", StartDate = DateTime.Parse("2018-11-01"), EndDate = DateTime.Parse("2019-05-31") },
             new Course { CourseName = "JAVA VT19", StartDate = DateTime.Parse("2018-02-01"), EndDate = DateTime.Parse("2019-08-31") }
             );

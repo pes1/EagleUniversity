@@ -3,7 +3,7 @@ namespace EagleUniversity.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Timeframendstart : DbMigration
+    public partial class AddMigrationTimeframe : DbMigration
     {
         public override void Up()
         {

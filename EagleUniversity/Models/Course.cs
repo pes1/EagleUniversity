@@ -36,33 +36,33 @@ namespace EagleUniversity.Models
     }
 
 
-    public class StartDateTestAttribute : ValidationAttribute
-    {
-        //private DateTime _dateTime;
-        //public StartDateTest(int Year) //- parameter in the annotation, if any.
-        //{                              //- like this: [StartDateTest(1)]
-        //    _dateTime = _DateTime;     //- need a cast to create a timespan.
-        //}
+    //public class StartDateTestAttribute : ValidationAttribute
+    //{
+    //    //private DateTime _dateTime;
+    //    //public StartDateTest(int Year) //- parameter in the annotation, if any.
+    //    //{                              //- like this: [StartDateTest(1)]
+    //    //    _dateTime = _DateTime;     //- need a cast to create a timespan.
+    //    //}
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            var model = (Models.Course)validationContext.ObjectInstance;
-            //if (value != null) // lets check if we have some value
-            //{
-            //    if (value is DateTime) // check if it is a valid Date and Time object
-            //    {
-            DateTime _StartDate = Convert.ToDateTime(value);
+    //    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    //    {
+    //        var model = (Models.Course)validationContext.ObjectInstance;
+    //        //if (value != null) // lets check if we have some value
+    //        //{
+    //        //    if (value is DateTime) // check if it is a valid Date and Time object
+    //        //    {
+    //        DateTime _StartDate = Convert.ToDateTime(value);
 
-            //- removed to make the seed pass
-            //if (_StartDate <= DateTime.Now)
-            //{
-            //    return new ValidationResult("Start Date must be a future date.");
-            //}
-            //else { return ValidationResult.Success; }   //- The Date fulfilled the requirements.
+    //        //- removed to make the seed pass
+    //        //if (_StartDate <= DateTime.Now)
+    //        //{
+    //        //    return new ValidationResult("Start Date must be a future date.");
+    //        //}
+    //        //else { return ValidationResult.Success; }   //- The Date fulfilled the requirements.
 
-            return ValidationResult.Success;
-        }
-    }//- of class StartDateTestAttribute
+    //        return ValidationResult.Success;
+    //    }
+    //}//- of class StartDateTestAttribute
 
 
 

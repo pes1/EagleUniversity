@@ -7,13 +7,13 @@ namespace EagleUniversity.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class Timeframendstart : IMigrationMetadata
+    public sealed partial class AddMigrationTimeframe : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Timeframendstart));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddMigrationTimeframe));
         
         string IMigrationMetadata.Id
         {
-            get { return "201803270937332_Timeframendstart"; }
+            get { return "201803270947409_Add-Migration Timeframe"; }
         }
         
         string IMigrationMetadata.Source
