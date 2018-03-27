@@ -72,7 +72,13 @@ namespace EagleUniversity.Controllers
             var viewModel = new DocumentViewModel()
             {  assignedEntity=entity, DueDate=DateTime.Now  };
 
-            ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "DocumentTypeName");
+            if (User.IsInRole("Student"))
+            {
+                ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes.Where(r=>r.DocumentTypeName.Contains("Task")), "Id", "DocumentTypeName");
+            }
+            else
+                ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "DocumentTypeName");
+
             return View(viewModel);
         }
 

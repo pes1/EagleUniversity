@@ -34,6 +34,24 @@ namespace EagleUniversity.Controllers
             SignInManager = signInManager;
         }
 
+        public static bool ActivityDocToUser(int DocumentId, string userId)
+        {
+            var visible = true;
+
+            ApplicationDbContext _db = new ApplicationDbContext();
+            var documents = _db.ActivityDocuments.Where(r => r.DocumentId == DocumentId).FirstOrDefault();
+            var ownerRole = UserViewModel.userToRole(documents.OwnerId).Name;
+            var userRole =  UserViewModel.userToRole(userId).Name;
+            if (userRole=="Student" && ownerRole=="Student" && userId!=documents.OwnerId)
+            {
+                visible = false;
+            }
+
+            return visible;
+
+        }
+
+
         //Manage User Part
         [AllowAnonymous]
         public ActionResult UserListPartial(int CourseId,  bool isEmpty=false)
@@ -176,7 +194,7 @@ namespace EagleUniversity.Controllers
                     RegistrationTime = DateTime.Now,
                      
                 };
-                var result = await UserManager.CreateAsync(user, "Passoword12345");
+                var result = await UserManager.CreateAsync(user, "Password12345");
                 if (result.Succeeded)
                 {
                     //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
