@@ -94,6 +94,8 @@ namespace EagleUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
+                DateTime e = course.EndDate;
+                course.EndDate = new DateTime(e.Year, e.Month, e.Day, 23, 59, 59);
                 db.Courses.Add(course);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -126,6 +128,8 @@ namespace EagleUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
+                DateTime e = course.EndDate;
+                course.EndDate = new DateTime(e.Year, e.Month, e.Day, 23, 59, 59);
                 db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

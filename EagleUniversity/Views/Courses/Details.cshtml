@@ -61,30 +61,32 @@
                     <th class="col-lg-1">To</th>
                     <td class="col-lg-2">@Html.DisplayFor(x => modul.EndDate)</td>
                     <td>
-                        <div class="dropdown">
-                            <a href=# class="dropdown-toggle btn btn-info" data-toggle="dropdown">More ... </a>
-                            @if (User.IsInRole("Teacher"))
-                            {
+                        @if (User.IsInRole("Teacher"))
+    {
+                    <div class="dropdown">
+                        <a href=# class="dropdown-toggle btn btn-info" data-toggle="dropdown">More ... </a>
+
                         <ul class="dropdown-menu">
                             <li>@Ajax.ActionLink("Edit", "Edit", "Modules", new { id = modul.Id }, new AjaxOptions { UpdateTargetId = "create-entity" }, null) </li>
                             <li>@Ajax.ActionLink("Delete", "DeleteAjax", "Modules", new { id = modul.Id }, new AjaxOptions { HttpMethod = "Post", Confirm = $"Delete module {modul.ModuleName}?", OnComplete = "OnComplete" }, null)</li>
                             <li>@Ajax.ActionLink("+Document", "Create", "Documents", new { returnTarget = $"module_{k}", returnId = Model.Id, Id = modul.Id, EntityType = "Module", EntityName = modul.ModuleName }, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null) </li>
                             <li>
                                 @Ajax.ActionLink("+Activity", "Create", "Activities"
-     , new
-     {
-         Id = modul.Id,
-         returnId = Model.Id,
-         returnController = "Courses",
-         returnMethod = "Details",
-         returnTarget = $"module_{k}"
-     }
-     , new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)
+, new
+{
+Id = modul.Id,
+returnId = Model.Id,
+returnController = "Courses",
+returnMethod = "Details",
+returnTarget = $"module_{k}"
+}
+, new AjaxOptions { UpdateTargetId = "create-entity", OnBegin = "OnBegin" }, null)
                             </li>
 
                         </ul>
-                            }
-                        </div>
+
+                    </div>
+}
                     </td>
                 </tr>
                 <tbody id="firstlist" class="module_@k">
