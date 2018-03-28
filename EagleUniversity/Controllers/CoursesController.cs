@@ -33,11 +33,13 @@ namespace EagleUniversity.Controllers
 
             var currentActivity = db.Activities.Where(r => r.Modules.CourseId == courseId).Where(k => k.EndDate >= DateTime.Now && k.StartDate <= DateTime.Now).Select(v => v).FirstOrDefault();
 
+
             var viewModel = new CourseStatModel()
-            { students=students, DocumentName="Not Assigned", DueDate=DateTime.Now };
+            { students=students, DocumentName="Not Assigned", DueDate=DateTime.Now, EntityName= "Not Assigned" };
 
             if (currentActivity!=null)
             {
+                viewModel.EntityName = $"Module {currentActivity.Modules.ModuleName}   =>   Activity {currentActivity.ActivityName}";
                 var document = db.Documents
                     .Where(d=>d.DocumentTypes.DocumentTypeName.Contains("Task"))
                     .Where(

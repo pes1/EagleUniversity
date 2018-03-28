@@ -1,25 +1,34 @@
 ﻿@model EagleUniversity.Models.ViewModels.CourseStatModel
 
 
-    <table>
-        <tr>
-            <td>
-                <b>
-                    Total Students in the Course:
-                    @Model.students
-                </b>
-            </td>
-            </tr>
-        <tr>
-            @if (Model.DocumentName != "Not Assigned")
-    {
+<table>
+    <tr>
         <td>
-            <b>Currunt Task:</b>
-            <a href="~/File?id=@Model.DocumentId" alt="doc" download="@Model.DocumentName">@Model.DocumentName</a>
+            <b>
+                Total Students in the Course:
+                @Model.students
+            </b>
         </td>
-     }
-            </tr>
-        <tr>
+    </tr>
+    <tr>
+    <tr>
+        <td>
+            <b>
+                Current Activity:
+                @Model.EntityName
+            </b>
+        </td>
+    </tr>
+    <tr>
+        @if (Model.DocumentName != "Not Assigned")
+        {
+            <td>
+                <b>Currunt Task:</b>
+                <a href="~/File?id=@Model.DocumentId" alt="doc" download="@Model.DocumentName">@Model.DocumentName</a>
+            </td>
+        }
+    </tr>
+    <tr>
         <td>
             <b>
                 Days left:
@@ -28,6 +37,6 @@
         </td>
 
 
-        </tr>
+    </tr>
 
-    </table>
+</table>

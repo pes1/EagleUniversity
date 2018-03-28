@@ -74,7 +74,7 @@ namespace EagleUniversity.Controllers
 
             if (User.IsInRole("Student"))
             {
-                ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes.Where(r=>r.DocumentTypeName.Contains("Task")), "Id", "DocumentTypeName");
+                ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes.Where(r=>r.DocumentTypeName.Contains("Report")), "Id", "DocumentTypeName");
             }
             else
                 ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "DocumentTypeName");

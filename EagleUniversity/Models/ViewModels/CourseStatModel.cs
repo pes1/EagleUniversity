@@ -12,5 +12,6 @@ namespace EagleUniversity.Models.ViewModels
         public string DocumentName { get; set; }       
         public DateTime DueDate { get; set; }
         public int Deadline { get { return ((DueDate)- DateTime.Now).Days; } }
+        public string EntityName { get; set; }
     }
 }
